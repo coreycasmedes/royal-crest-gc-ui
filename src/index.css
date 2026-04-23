@@ -1,5 +1,21 @@
 @import "tailwindcss";
 
+@font-face {
+  font-family: 'Geist';
+  src: url('./assets/fonts/Geist-Variable.woff2') format('woff2');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Geist';
+  src: url('./assets/fonts/Geist-Italic[wght].woff2') format('woff2');
+  font-weight: 100 900;
+  font-style: italic;
+  font-display: swap;
+}
+
 @theme {
   --color-gold:         #c4975a;
   --color-gold-light:   #d4aa72;
@@ -9,8 +25,14 @@
   --color-muted:        #7c7268;
   --color-faint:        #b3a89e;
 
-  --font-family-heading: 'Playfair Display', Georgia, serif;
-  --font-family-body:    'DM Sans', system-ui, sans-serif;
+  --font-heading: "Geist", ui-sans-serif, system-ui;
+  --font-body: "Geist", ui-sans-serif, system-ui;
+  --font-geist: "Geist", ui-sans-serif, system-ui;
+
+  /* --font-family-heading: 'Playfair Display', Georgia, serif;
+  --font-family-body:    'Geist', system-ui, sans-serif;
+  --font-heading: "Geist", ui-sans-serif, system-ui;
+  --font-geist: "Geist", ui-sans-serif, system-ui; */
 }
 
 @layer base {
