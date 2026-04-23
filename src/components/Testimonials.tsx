@@ -2,19 +2,19 @@ import { useInView } from '../hooks/useInView';
 
 const reviews = [
   {
-    text:    'Royal Crest built our forever home. Every detail handled with professionalism and care. The craftsmanship is simply stunning.',
-    name:    'Robert & Lisa Chen',
+    text:    'We were thoroughly impressed with the professionalism and attention to detail exhibited by Royal Crest General Contracting. Their work truly speaks for itself.',
+    name:    'Ryan Jeffrey',
     project: 'Custom Home · Highland Park',
   },
   {
-    text:    "Delivered our 12,000 sqft office two weeks early and under budget. I'll never use anyone else.",
-    name:    'Marcus Williams',
-    project: 'Commercial Office · Plano',
+    text:    "Royal Crest General Contracting transformed our vision into reality with their impeccable workmanship and dedication. Highly recommended!",
+    name:    'Nima Mojahed',
+    project: 'Commercial Office · Frisco',
   },
   {
-    text:    'Our kitchen renovation completely transformed how we live. Thoughtful, clean, communicative every step of the way.',
-    name:    'Amanda Thornton',
-    project: 'Kitchen Renovation · Frisco',
+    text:    'From start to finish, the team at Royal Crest General Contracting demonstrated reliability, skill, and a genuine passion for their craft. They exceeded our expectations in every way',
+    name:    'Christopher Strenger',
+    project: 'Kitchen Renovation · Plano',
   },
 ];
 
