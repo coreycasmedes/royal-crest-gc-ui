@@ -3,6 +3,7 @@ import Header from './components/Header'
 import Hero from './components/Hero'
 import Services from './components/Services'
 import Stats from './components/Stats'
+import Badges from './components/Badges'
 import Portfolio from './components/Portfolio'
 import WhyUs from './components/WhyUs'
 import Testimonials from './components/Testimonials'
@@ -15,8 +16,9 @@ export default function App() {
       <Header />
       <main>
         <Hero />
-        <Services />
         <Stats />
+        <Badges />
+        <Services />
         <Portfolio />
         <WhyUs />
         <Testimonials />
