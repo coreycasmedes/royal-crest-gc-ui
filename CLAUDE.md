@@ -42,6 +42,11 @@ import tailwindcss from '@tailwindcss/vite'
 plugins: [react(), tailwindcss()]
 ```
 
+## Design Guardrails
+- **Avoid:** "AI-default" aesthetics (Inter font, 12px border radius, 0.1 opacity shadows).
+- **Embrace:** Professional construction minimalism. Sharp edges, high-contrast monochrome with one bold accent, and heavy use of grid lines.
+- **Reference:** The structural layout of uniqueconstruction.com.
+
 ## Design Tokens (CSS custom properties)
 
 | Token                 | Value                       | Usage                    |
