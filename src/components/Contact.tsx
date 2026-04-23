@@ -12,9 +12,9 @@ const services = [
 ];
 
 const info = [
-  { label: 'Phone',    value: '(214) 555-0187'                     },
-  { label: 'Email',    value: 'info@royalcrestgc.com'              },
-  { label: 'Location', value: '1845 Oak Lawn Ave\nDallas, TX 75219'},
+  { label: 'Phone',    value: '(469) 432 0341'                     },
+  { label: 'Email',    value: 'royalcrestgeneralcontracting@outlook.com'              },
+  { label: 'Location', value: 'Dallas, Ft. Worth & Surrounding Areas'},
   { label: 'Hours',    value: 'Mon–Fri  7 AM – 6 PM\nSat  8 AM – 4 PM' },
 ];
 
@@ -40,7 +40,7 @@ export default function Contact() {
   const cls = `w-full px-4 py-3.5 text-[0.9rem] outline-none transition-all placeholder:opacity-40`;
 
   return (
-    <section id="contact" className="py-24 lg:py-28" style={{ background: '#f2ece3' }}>
+    <section id="contact" className="py-24 lg:py-28" style={{ background: '#fafaf8' }}>
       <div className="max-w-[1260px] mx-auto px-8 lg:px-12">
 
         <div ref={headRef} className={`mb-14 reveal ${headIn ? 'visible' : ''}`}>
@@ -106,7 +106,7 @@ export default function Contact() {
                   <label className="block text-[0.68rem] font-semibold tracking-[0.16em] uppercase mb-2" style={{ color: 'var(--color-muted)' }}>
                     Phone
                   </label>
-                  <input type="tel" className={cls} style={fieldStyle} placeholder="(214) 555-0100"
+                  <input type="tel" className={cls} style={fieldStyle} placeholder="(469) 432 0341"
                     value={form.phone} onChange={e => setForm({ ...form, phone: e.target.value })}
                     onFocus={onFocus} onBlur={onBlur} />
                 </div>

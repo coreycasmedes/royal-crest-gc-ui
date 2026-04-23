@@ -26,7 +26,7 @@ const svcList = [
 
 export default function Footer() {
   return (
-    <footer style={{ background: '#f2ece3', borderTop: '1px solid rgba(26,23,20,0.09)' }}>
+    <footer style={{ background: '#fafaf8', borderTop: '1px solid rgba(26,23,20,0.09)' }}>
       <div className="max-w-[1260px] mx-auto px-8 lg:px-12 pt-16 pb-8">
 
         <div className="flex flex-col lg:flex-row lg:justify-between gap-12 mb-14">
@@ -43,7 +43,7 @@ export default function Footer() {
               Dallas's premier general contractor since 2004.
             </p>
             <p className="text-[0.76rem] font-medium" style={{ color: 'var(--color-faint)' }}>
-              (214) 555-0187
+              (469) 432 0341
             </p>
           </div>
 
