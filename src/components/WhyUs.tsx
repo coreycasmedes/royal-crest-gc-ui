@@ -12,7 +12,7 @@ export default function WhyUs() {
   const { ref: rightRef, inView: rightIn } = useInView(0.06);
 
   return (
-    <section id="why" className="py-24 lg:py-28" style={{ background: '#f2ece3' }}>
+    <section id="why" className="py-24 lg:py-28" style={{ background: '#fafaf8' }}>
       <div className="max-w-[1260px] mx-auto px-8 lg:px-12">
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_2fr] gap-16 items-start">
 
@@ -40,9 +40,9 @@ export default function WhyUs() {
               <div
                 key={title}
                 className={`p-9 lg:p-10 transition-colors duration-300 reveal delay-${i + 1} ${rightIn ? 'visible' : ''}`}
-                style={{ background: '#f2ece3' }}
+                style={{ background: '#fafaf8' }}
                 onMouseEnter={e => (e.currentTarget.style.background = '#fafaf8')}
-                onMouseLeave={e => (e.currentTarget.style.background = '#f2ece3')}
+                onMouseLeave={e => (e.currentTarget.style.background = '#fafaf8')}
               >
                 <p className="text-[0.6rem] font-bold tracking-[0.24em] uppercase mb-4" style={{ color: 'var(--color-faint)' }}>
                   {num}

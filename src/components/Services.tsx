@@ -17,7 +17,7 @@ export default function Services() {
   const { ref: gridRef, inView: gridIn } = useInView(0.06);
 
   return (
-    <section id="services" className="py-24 lg:py-28" style={{ background: '#f2ece3' }}>
+    <section id="services" className="py-24 lg:py-28" style={{ background: '#fafaf8' }}>
       <div className="max-w-[1260px] mx-auto px-8 lg:px-12">
 
         <div
@@ -53,9 +53,9 @@ export default function Services() {
             <div
               key={title}
               className={`p-9 lg:p-11 transition-colors duration-300 reveal delay-${i + 1} ${gridIn ? 'visible' : ''}`}
-              style={{ background: '#f2ece3' }}
+              style={{ background: '#fafaf8' }}
               onMouseEnter={e => (e.currentTarget.style.background = '#fafaf8')}
-              onMouseLeave={e => (e.currentTarget.style.background = '#f2ece3')}
+              onMouseLeave={e => (e.currentTarget.style.background = '#fafaf8')}
             >
               <p className="text-[0.6rem] font-bold tracking-[0.24em] uppercase mb-5" style={{ color: 'var(--color-faint)' }}>
                 {num}
