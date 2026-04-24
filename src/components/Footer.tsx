@@ -1,12 +1,7 @@
+import logo from '../assets/images/royal_crest_logo.svg';
+
 const scrollTo = (id: string) =>
   document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
-
-const Crown = () => (
-  <svg viewBox="0 0 40 40" fill="none" style={{ width: '1.4rem', height: '1.4rem', color: 'var(--color-gold)' }} aria-hidden>
-    <path d="M20 7 L27 20 L36 13 L32 30 H8 L4 13 L13 20 Z" fill="currentColor" />
-    <rect x="9" y="31" width="22" height="3.5" rx="1" fill="currentColor" opacity="0.8" />
-  </svg>
-);
 
 const nav = [
   { label: 'Services',  id: 'services'     },
@@ -33,11 +28,8 @@ export default function Footer() {
 
           {/* Brand */}
           <div className="max-w-[240px]">
-            <button onClick={() => scrollTo('hero')} className="flex items-center gap-2 mb-4">
-              <Crown />
-              <span className="font-heading font-bold text-[0.95rem]" style={{ color: 'var(--color-ink)' }}>
-                Royal Crest GC
-              </span>
+            <button onClick={() => scrollTo('hero')} className="flex items-center mb-4">
+              <img src={logo} alt="Royal Crest General Contractors" className="h-16 w-auto" />
             </button>
             <p className="text-[0.84rem] leading-[1.75] mb-3" style={{ color: 'var(--color-muted)' }}>
               Dallas's premier general contractor since 2004.

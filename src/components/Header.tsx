@@ -1,11 +1,5 @@
 import { useState, useEffect } from 'react';
-
-const Crown = () => (
-  <svg viewBox="0 0 40 40" fill="none" style={{ width: '1.6rem', height: '1.6rem', color: 'var(--color-gold)' }} aria-hidden>
-    <path d="M20 7 L27 20 L36 13 L32 30 H8 L4 13 L13 20 Z" fill="currentColor" />
-    <rect x="9" y="31" width="22" height="3.5" rx="1" fill="currentColor" opacity="0.8" />
-  </svg>
-);
+import logo from '../assets/images/royal_crest_logo.svg';
 
 const links = [
   { label: 'Services',  id: 'services'     },
@@ -44,11 +38,8 @@ export default function Header() {
         style={{ borderBottom: '1px solid rgba(26,23,20,0.07)' }}
       >
         <div className="max-w-[1260px] mx-auto px-6 lg:px-10 flex items-center">
-          <button onClick={() => scrollTo('hero')} className="flex items-center gap-2.5 flex-shrink-0">
-            <Crown />
-            <span className="font-heading font-bold text-[0.97rem] leading-none" style={{ color: 'var(--color-ink)' }}>
-              Royal Crest GC
-            </span>
+          <button onClick={() => scrollTo('hero')} className="flex items-center flex-shrink-0">
+            <img src={logo} alt="Royal Crest General Contractors" className="h-16 w-auto" />
           </button>
 
           <nav className="hidden md:flex items-center gap-8 ml-auto">
