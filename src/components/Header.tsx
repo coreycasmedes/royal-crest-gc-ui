@@ -32,7 +32,7 @@ export default function Header() {
   return (
     <>
       <header
-        className={`fixed top-0 left-0 right-0 z-50 bg-white transition-all duration-300 ${
+        className={`fixed top-0 left-0 right-0 z-[70] bg-white transition-all duration-300 ${
           scrolled ? 'py-3 shadow-[0_1px_24px_rgba(0,0,0,0.07)]' : 'py-5'
         }`}
         style={{ borderBottom: '1px solid rgba(26,23,20,0.07)' }}
@@ -59,7 +59,7 @@ export default function Header() {
 
           <button
             onClick={() => scrollTo('contact')}
-            className="hidden md:inline-flex ml-8 items-center px-5 py-2.5 text-[0.76rem] font-semibold tracking-[0.07em] uppercase transition-all duration-200"
+            className="rounded-2xl hidden md:inline-flex ml-8 items-center px-5 py-2.5 text-[0.76rem] font-semibold tracking-[0.07em] uppercase transition-all duration-200"
             style={{ background: 'var(--color-ink)', color: '#fafaf8' }}
             onMouseEnter={e => { e.currentTarget.style.background = 'var(--color-gold)'; }}
             onMouseLeave={e => { e.currentTarget.style.background = 'var(--color-ink)'; }}
@@ -81,7 +81,7 @@ export default function Header() {
 
       {/* Mobile overlay */}
       <div
-        className={`fixed inset-0 z-40 bg-white flex flex-col px-8 pt-24 pb-12 transition-all duration-300 ${
+        className={`fixed inset-0 z-[60] bg-white flex flex-col px-8 pt-24 pb-12 transition-all duration-300 ${
           open ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
         }`}
       >
@@ -97,7 +97,7 @@ export default function Header() {
         ))}
         <button
           onClick={() => nav('contact')}
-          className="mt-10 w-full py-4 text-[0.85rem] font-semibold tracking-widest uppercase"
+          className="rounded-2xl mt-10 w-full py-4 text-[0.85rem] font-semibold tracking-widest uppercase"
           style={{ background: 'var(--color-ink)', color: '#fafaf8' }}
         >
           Get a Free Quote
