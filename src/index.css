@@ -17,31 +17,24 @@
 }
 
 @theme {
-  --color-gold:         #c4975a;
-  --color-gold-light:   #d4aa72;
-  --color-gold-dim:     rgba(196,151,90,0.10);
-  --color-gold-border:  rgba(26,23,20,0.09);
-  --color-ink:          #1a1714;
-  --color-muted:        #7c7268;
-  --color-faint:        #b3a89e;
+  --color-bg:      #f7f7f2;
+  --color-surface: #e4e6c3;
+  --color-accent:  #899878;
+  --color-text:    #222725;
+  --color-deep:    #121113;
 
   --font-heading: "Geist", ui-sans-serif, system-ui;
-  --font-body: "Geist", ui-sans-serif, system-ui;
-  --font-geist: "Geist", ui-sans-serif, system-ui;
-
-  /* --font-family-heading: 'Playfair Display', Georgia, serif;
-  --font-family-body:    'Geist', system-ui, sans-serif;
-  --font-heading: "Geist", ui-sans-serif, system-ui;
-  --font-geist: "Geist", ui-sans-serif, system-ui; */
+  --font-body:    "Geist", ui-sans-serif, system-ui;
+  --font-geist:   "Geist", ui-sans-serif, system-ui;
 }
 
 @layer base {
   *, *::before, *::after { box-sizing: border-box; }
   html { scroll-behavior: smooth; }
   body {
-    font-family: var(--font-family-body);
-    background-color: #fafaf8;
-    color: var(--color-ink);
+    font-family: var(--font-body);
+    background-color: var(--color-bg);
+    color: var(--color-text);
     -webkit-font-smoothing: antialiased;
   }
   img { display: block; max-width: 100%; }
@@ -49,7 +42,7 @@
 }
 
 @layer utilities {
-  .font-heading { font-family: var(--font-family-heading); }
+  .font-heading { font-family: var(--font-heading); }
 
   .label {
     display: block;
@@ -57,7 +50,7 @@
     font-weight: 600;
     letter-spacing: 0.22em;
     text-transform: uppercase;
-    color: var(--color-gold);
+    color: var(--color-accent);
     margin-bottom: 0.75rem;
   }
 
@@ -82,6 +75,18 @@
   .animate-scroll-bob { animation: scrollBob 2.2s ease-in-out infinite; }
 
   .shadow-input {
-    box-shadow: 0px 2px 3px -1px rgba(0,0,0,0.10), 0px 1px 0px 0px rgba(25,28,33,0.02), 0px 0px 0px 1px rgba(25,28,33,0.08);
+    box-shadow:
+      0px 2px 3px -1px rgba(0,0,0,0.10),
+      0px 1px 0px 0px rgba(18,17,19,0.02),
+      0px 0px 0px 1px rgba(18,17,19,0.08);
+  }
+
+  /* Blueprint-grid header for bento cards */
+  .grid-pattern {
+    background-color: rgba(137, 152, 120, 0.05);
+    background-image:
+      linear-gradient(rgba(137, 152, 120, 0.14) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(137, 152, 120, 0.14) 1px, transparent 1px);
+    background-size: 24px 24px;
   }
 }

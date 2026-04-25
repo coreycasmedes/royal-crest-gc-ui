@@ -12,14 +12,14 @@ export default function Contact() {
   const { ref: headRef, inView: headIn } = useInView();
 
   return (
-    <section id="contact" className="py-24 lg:py-28" style={{ background: '#fafaf8' }}>
+    <section id="contact" className="py-24 lg:py-28 bg-bg">
       <div className="max-w-[1260px] mx-auto px-8 lg:px-12">
 
         <div ref={headRef} className={`mb-14 reveal ${headIn ? 'visible' : ''}`}>
           <p className="label">Get In Touch</p>
           <h2
-            className="font-heading font-bold leading-tight"
-            style={{ fontSize: 'clamp(2.2rem, 4vw, 3.2rem)', color: 'var(--color-ink)' }}
+            className="font-heading font-bold leading-tight text-text"
+            style={{ fontSize: 'clamp(2.2rem, 4vw, 3.2rem)' }}
           >
             Start Your Project
           </h2>
@@ -31,16 +31,10 @@ export default function Contact() {
           <div className="flex flex-col gap-8 lg:pt-2">
             {info.map(({ label, value }) => (
               <div key={label}>
-                <p
-                  className="text-[0.66rem] font-semibold tracking-[0.22em] uppercase mb-1.5"
-                  style={{ color: 'var(--color-faint)' }}
-                >
+                <p className="text-[0.66rem] font-semibold tracking-[0.22em] uppercase mb-1.5 text-text/40">
                   {label}
                 </p>
-                <p
-                  className="text-[0.95rem] leading-relaxed whitespace-pre-line"
-                  style={{ color: 'var(--color-ink)' }}
-                >
+                <p className="text-[0.95rem] leading-relaxed whitespace-pre-line text-text">
                   {value}
                 </p>
               </div>

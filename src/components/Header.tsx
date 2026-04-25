@@ -32,10 +32,9 @@ export default function Header() {
   return (
     <>
       <header
-        className={`fixed top-0 left-0 right-0 z-[70] bg-white transition-all duration-300 ${
+        className={`fixed top-0 left-0 right-0 z-[70] bg-bg border-b border-surface transition-all duration-300 ${
           scrolled ? 'py-3 shadow-[0_1px_24px_rgba(0,0,0,0.07)]' : 'py-5'
         }`}
-        style={{ borderBottom: '1px solid rgba(26,23,20,0.07)' }}
       >
         <div className="max-w-[1260px] mx-auto px-6 lg:px-10 flex items-center">
           <button onClick={() => scrollTo('hero')} className="flex items-center flex-shrink-0">
@@ -47,10 +46,7 @@ export default function Header() {
               <button
                 key={id}
                 onClick={() => scrollTo(id)}
-                className="text-[0.82rem] font-medium transition-colors"
-                style={{ color: 'var(--color-muted)' }}
-                onMouseEnter={e => (e.currentTarget.style.color = 'var(--color-ink)')}
-                onMouseLeave={e => (e.currentTarget.style.color = 'var(--color-muted)')}
+                className="text-[0.82rem] font-medium text-text/60 hover:text-text transition-colors"
               >
                 {label}
               </button>
@@ -59,10 +55,7 @@ export default function Header() {
 
           <button
             onClick={() => scrollTo('contact')}
-            className="rounded-2xl hidden md:inline-flex ml-8 items-center px-5 py-2.5 text-[0.76rem] font-semibold tracking-[0.07em] uppercase transition-all duration-200"
-            style={{ background: 'var(--color-ink)', color: '#fafaf8' }}
-            onMouseEnter={e => { e.currentTarget.style.background = 'var(--color-gold)'; }}
-            onMouseLeave={e => { e.currentTarget.style.background = 'var(--color-ink)'; }}
+            className="rounded-2xl hidden md:inline-flex ml-8 items-center px-5 py-2.5 text-[0.76rem] font-semibold tracking-[0.07em] uppercase bg-deep text-bg hover:bg-accent transition-colors duration-200"
           >
             Get a Quote
           </button>
@@ -72,16 +65,16 @@ export default function Header() {
             aria-label="Toggle menu"
             className="md:hidden ml-auto flex flex-col gap-[5px] p-2"
           >
-            <span className={`block w-5 h-[1.5px] bg-ink transition-all origin-center ${open ? 'translate-y-[6.5px] rotate-45' : ''}`} style={{ background: 'var(--color-ink)' }} />
-            <span className={`block w-5 h-[1.5px] transition-all ${open ? 'opacity-0 scale-x-0' : ''}`} style={{ background: 'var(--color-ink)' }} />
-            <span className={`block w-5 h-[1.5px] transition-all origin-center ${open ? '-translate-y-[6.5px] -rotate-45' : ''}`} style={{ background: 'var(--color-ink)' }} />
+            <span className={`block w-5 h-[1.5px] bg-text transition-all origin-center ${open ? 'translate-y-[6.5px] rotate-45' : ''}`} />
+            <span className={`block w-5 h-[1.5px] bg-text transition-all ${open ? 'opacity-0 scale-x-0' : ''}`} />
+            <span className={`block w-5 h-[1.5px] bg-text transition-all origin-center ${open ? '-translate-y-[6.5px] -rotate-45' : ''}`} />
           </button>
         </div>
       </header>
 
       {/* Mobile overlay */}
       <div
-        className={`fixed inset-0 z-[60] bg-white flex flex-col px-8 pt-24 pb-12 transition-all duration-300 ${
+        className={`fixed inset-0 z-[60] bg-bg flex flex-col px-8 pt-24 pb-12 transition-all duration-300 ${
           open ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
         }`}
       >
@@ -89,16 +82,14 @@ export default function Header() {
           <button
             key={id}
             onClick={() => nav(id)}
-            className="font-heading text-[2.2rem] font-semibold text-left py-4 border-b"
-            style={{ color: 'var(--color-ink)', borderColor: 'rgba(26,23,20,0.08)' }}
+            className="font-heading text-[2.2rem] font-semibold text-left py-4 border-b border-surface text-text"
           >
             {label}
           </button>
         ))}
         <button
           onClick={() => nav('contact')}
-          className="rounded-2xl mt-10 w-full py-4 text-[0.85rem] font-semibold tracking-widest uppercase"
-          style={{ background: 'var(--color-ink)', color: '#fafaf8' }}
+          className="rounded-2xl mt-10 w-full py-4 text-[0.85rem] font-semibold tracking-widest uppercase bg-deep text-bg hover:bg-accent transition-colors duration-200"
         >
           Get a Free Quote
         </button>

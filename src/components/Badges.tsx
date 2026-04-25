@@ -12,15 +12,9 @@ const badges = [
 
 export default function Badges() {
   return (
-    <section
-      className="py-14 border-y"
-      style={{ borderColor: 'rgba(26,23,20,0.08)', background: '#fafaf8' }}
-    >
+    <section className="py-14  bg-bg">
       <div className="max-w-[1260px] mx-auto px-8 lg:px-12">
-        <p
-          className="text-center text-[0.66rem] font-semibold tracking-[0.26em] uppercase mb-10"
-          style={{ color: 'var(--color-faint)' }}
-        >
+        <p className="text-center text-[0.66rem] font-semibold tracking-[0.26em] uppercase mb-10 text-text/40">
           Partners &amp; Certifications
         </p>
 
@@ -30,10 +24,7 @@ export default function Badges() {
               key={alt}
               src={src}
               alt={alt}
-              className="h-14 w-auto object-contain transition-all duration-300"
-              style={{ filter: 'grayscale(1) opacity(0.55)' }}
-              onMouseEnter={e => (e.currentTarget.style.filter = 'grayscale(0) opacity(1)')}
-              onMouseLeave={e => (e.currentTarget.style.filter = 'grayscale(1) opacity(0.55)')}
+              className="h-14 w-auto object-contain transition-all duration-300 grayscale opacity-55 hover:grayscale-0 hover:opacity-100"
             />
           ))}
         </div>

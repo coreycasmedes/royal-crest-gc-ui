@@ -29,14 +29,14 @@ export default function Testimonials() {
   const { ref: headRef, inView: headIn } = useInView();
 
   return (
-    <section id="testimonials" className="py-24 lg:py-28" style={{ background: '#fafaf8' }}>
+    <section id="testimonials" className="py-24 lg:py-28 bg-bg">
       <div className="max-w-[1260px] mx-auto px-8 lg:px-12">
 
         <div ref={headRef} className={`mb-6 reveal ${headIn ? 'visible' : ''}`}>
           <p className="label">Client Reviews</p>
           <h2
-            className="font-heading font-bold leading-tight"
-            style={{ fontSize: 'clamp(2.2rem, 4vw, 3.2rem)', color: 'var(--color-ink)' }}
+            className="font-heading font-bold leading-tight text-text"
+            style={{ fontSize: 'clamp(2.2rem, 4vw, 3.2rem)' }}
           >
             What Clients Say
           </h2>

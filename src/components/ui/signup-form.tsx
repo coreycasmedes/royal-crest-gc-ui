@@ -26,14 +26,14 @@ export default function SignupForm() {
 
   if (sent) {
     return (
-      <div className="rounded-2xl shadow-input mx-auto w-full bg-white p-4 md:rounded-2xl md:p-8">
-        <h2 className="text-xl font-bold text-neutral-800">Message Received</h2>
-        <p className="mt-2 max-w-sm text-sm text-neutral-600">
+      <div className="rounded-2xl shadow-input mx-auto w-full bg-bg p-4 md:rounded-2xl md:p-8">
+        <h2 className="text-xl font-bold text-text">Message Received</h2>
+        <p className="mt-2 max-w-sm text-sm text-text/60">
           We'll be in touch within one business day.
         </p>
         <button
           onClick={() => setSent(false)}
-          className="mt-6 text-xs font-semibold tracking-widest uppercase pb-0.5 border-b border-neutral-800 text-neutral-800"
+          className="mt-6 text-xs font-semibold tracking-widest uppercase pb-0.5 border-b border-text text-text"
         >
           Send Another
         </button>
@@ -42,11 +42,11 @@ export default function SignupForm() {
   }
 
   return (
-    <div className="shadow-input mx-auto w-full rounded-2xl bg-white p-4 md:p-8">
-      <h2 className="text-xl font-bold text-neutral-800">
+    <div className="shadow-input mx-auto w-full rounded-2xl bg-bg p-4 md:p-8">
+      <h2 className="text-xl font-bold text-text">
         Request a Free Estimate
       </h2>
-      <p className="mt-2 max-w-sm text-sm text-neutral-600">
+      <p className="mt-2 max-w-sm text-sm text-text/60">
         Fill out the form and we'll get back to you within one business day.
       </p>
 
@@ -106,7 +106,7 @@ export default function SignupForm() {
             id="service"
             value={form.service}
             onChange={e => setForm({ ...form, service: e.target.value })}
-            className="shadow-input flex h-10 w-full rounded-md border-none bg-gray-50 px-3 py-2 text-sm text-black placeholder:text-neutral-400 focus-visible:ring-[2px] focus-visible:ring-neutral-400 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
+            className="shadow-input flex h-10 w-full rounded-md border-none bg-bg px-3 py-2 text-sm text-text placeholder:text-text/40 focus-visible:ring-[2px] focus-visible:ring-text/20 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
           >
             <option value="" disabled>Select a service…</option>
             {services.map(s => <option key={s} value={s}>{s}</option>)}
@@ -114,7 +114,7 @@ export default function SignupForm() {
         </LabelInputContainer>
 
         <button
-          className="group/btn relative block h-10 w-full rounded-md bg-gradient-to-br from-black to-neutral-600 font-medium text-white shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset]"
+          className="group/btn relative block h-10 w-full rounded-md bg-deep font-medium text-bg hover:bg-accent transition-colors duration-200"
           type="submit"
         >
           Send Request &rarr;
@@ -127,8 +127,8 @@ export default function SignupForm() {
 
 const BottomGradient = () => (
   <>
-    <span className="absolute inset-x-0 -bottom-px block h-px w-full bg-gradient-to-r from-transparent via-cyan-500 to-transparent opacity-0 transition duration-500 group-hover/btn:opacity-100" />
-    <span className="absolute inset-x-10 -bottom-px mx-auto block h-px w-1/2 bg-gradient-to-r from-transparent via-indigo-500 to-transparent opacity-0 blur-sm transition duration-500 group-hover/btn:opacity-100" />
+    <span className="absolute inset-x-0 -bottom-px block h-px w-full bg-gradient-to-r from-transparent via-accent to-transparent opacity-0 transition duration-500 group-hover/btn:opacity-100" />
+    <span className="absolute inset-x-10 -bottom-px mx-auto block h-px w-1/2 bg-gradient-to-r from-transparent via-accent to-transparent opacity-0 blur-sm transition duration-500 group-hover/btn:opacity-100" />
   </>
 );
 
