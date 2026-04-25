@@ -39,7 +39,7 @@ export default function Hero() {
               <div className="flex flex-wrap gap-3">
                 <button
                   onClick={() => scrollTo('portfolio')}
-                  className="px-7 py-3.5 text-[0.75rem] font-semibold tracking-[0.1em] uppercase transition-all duration-200"
+                  className="px-7 rounded-2xl py-3.5 text-[0.75rem] font-semibold tracking-[0.1em] uppercase transition-all duration-200"
                   style={{ background: 'var(--color-ink)', color: '#fafaf8' }}
                   onMouseEnter={e => { e.currentTarget.style.background = 'var(--color-gold)'; }}
                   onMouseLeave={e => { e.currentTarget.style.background = 'var(--color-ink)'; }}
@@ -48,7 +48,7 @@ export default function Hero() {
                 </button>
                 <button
                   onClick={() => scrollTo('contact')}
-                  className="px-7 py-3.5 text-[0.75rem] font-semibold tracking-[0.1em] uppercase border transition-all duration-200"
+                  className="px-7 rounded-2xl py-3.5 text-[0.75rem] font-semibold tracking-[0.1em] uppercase border transition-all duration-200"
                   style={{ borderColor: 'rgba(26,23,20,0.2)', color: 'var(--color-ink)' }}
                   onMouseEnter={e => { e.currentTarget.style.borderColor = 'var(--color-ink)'; }}
                   onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(26,23,20,0.2)'; }}

@@ -26,7 +26,7 @@ export default function SignupForm() {
 
   if (sent) {
     return (
-      <div className="shadow-input mx-auto w-full rounded-none bg-white p-4 md:rounded-2xl md:p-8">
+      <div className="rounded-2xl shadow-input mx-auto w-full bg-white p-4 md:rounded-2xl md:p-8">
         <h2 className="text-xl font-bold text-neutral-800">Message Received</h2>
         <p className="mt-2 max-w-sm text-sm text-neutral-600">
           We'll be in touch within one business day.
@@ -42,7 +42,7 @@ export default function SignupForm() {
   }
 
   return (
-    <div className="shadow-input mx-auto w-full rounded-none bg-white p-4 md:rounded-2xl md:p-8">
+    <div className="shadow-input mx-auto w-full rounded-2xl bg-white p-4 md:p-8">
       <h2 className="text-xl font-bold text-neutral-800">
         Request a Free Estimate
       </h2>

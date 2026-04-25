@@ -79,7 +79,7 @@ export default function Footer() {
             </p>
             <button
               onClick={() => scrollTo('contact')}
-              className="px-6 py-3 text-[0.75rem] font-semibold tracking-[0.1em] uppercase transition-all duration-200"
+              className="rounded-2xl px-6 py-3 text-[0.75rem] font-semibold tracking-[0.1em] uppercase transition-all duration-200"
               style={{ background: 'var(--color-ink)', color: '#fafaf8' }}
               onMouseEnter={e => { e.currentTarget.style.background = 'var(--color-gold)'; }}
               onMouseLeave={e => { e.currentTarget.style.background = 'var(--color-ink)'; }}
