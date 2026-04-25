@@ -1,44 +1,59 @@
 import { useInView } from '../hooks/useInView';
+import { LayoutGrid } from './ui/layout-grid';
 import bigRoofImg from '../assets/big_roof.jpg';
+import homeImg from '../assets/home.jpg';
 import roofBirdseyeImg from '../assets/roof_birdseye.jpg';
 import roofingTeamImg from '../assets/roofing_team.jpg';
 
-const projects = [
+function CardContent({ tag, title, meta }: { tag: string; title: string; meta: string }) {
+  return (
+    <div>
+      <p className="text-[0.6rem] font-semibold tracking-[0.24em] uppercase mb-1.5" style={{ color: 'var(--color-gold)' }}>
+        {tag}
+      </p>
+      <h3 className="font-bold text-white text-2xl mb-1">{title}</h3>
+      <p className="text-sm" style={{ color: 'rgba(255,255,255,0.45)' }}>{meta}</p>
+    </div>
+  );
+}
+
+const cards = [
   {
-    img:      bigRoofImg,
-    tag:      'Roofing & Exterior',
-    title:    'Highland Park Residence',
-    meta:     '2024 · Dallas, TX',
-    featured: true,
+    id: 1,
+    content: <CardContent tag="Roofing & Exterior" title="Highland Park Residence" meta="2024 · Dallas, TX" />,
+    className: "md:col-span-2",
+    thumbnail: bigRoofImg,
   },
   {
-    img:      roofBirdseyeImg,
-    tag:      'Roofing',
-    title:    'Lakewood Estate',
-    meta:     '2023 · Dallas, TX',
-    featured: false,
+    id: 2,
+    content: <CardContent tag="Roofing" title="Lakewood Estate" meta="2023 · Dallas, TX" />,
+    className: "md:col-span-1",
+    thumbnail: roofBirdseyeImg,
   },
   {
-    img:      roofingTeamImg,
-    tag:      'Roofing',
-    title:    'Frisco Custom Build',
-    meta:     '2024 · Frisco, TX',
-    featured: false,
+    id: 3,
+    content: <CardContent tag="Custom Home" title="Frisco Custom Build" meta="2024 · Frisco, TX" />,
+    className: "md:col-span-1",
+    thumbnail: homeImg,
+  },
+  {
+    id: 4,
+    content: <CardContent tag="Roofing" title="Prestonwood Installation" meta="2024 · Dallas, TX" />,
+    className: "md:col-span-2",
+    thumbnail: roofingTeamImg,
   },
 ];
 
 export default function Portfolio() {
   const { ref: headRef, inView: headIn } = useInView();
-  const { ref: gridRef, inView: gridIn } = useInView(0.06);
-  const [featured, ...rest] = projects;
 
   return (
     <section id="portfolio" className="py-24 lg:py-28" style={{ background: '#fafaf8' }}>
-      <div className="max-w-[1260px] mx-auto px-8 lg:px-12">
 
+      <div className="max-w-[1260px] mx-auto px-8 lg:px-12 mb-12">
         <div
           ref={headRef}
-          className={`flex items-end justify-between gap-6 mb-12 reveal ${headIn ? 'visible' : ''}`}
+          className={`flex items-end justify-between gap-6 reveal ${headIn ? 'visible' : ''}`}
         >
           <div>
             <p className="label">Our Work</p>
@@ -58,72 +73,12 @@ export default function Portfolio() {
             View All →
           </button>
         </div>
-
-        <div
-          ref={gridRef}
-          className="grid grid-cols-1 lg:grid-cols-3 lg:grid-rows-2 gap-3"
-          style={{ minHeight: '600px' }}
-        >
-          {/* Featured — 2 cols × 2 rows */}
-          <div
-            className={`relative overflow-hidden cursor-pointer group lg:col-span-2 lg:row-span-2 reveal delay-1 ${gridIn ? 'visible' : ''}`}
-            style={{ minHeight: '300px' }}
-          >
-            <img
-              src={featured.img}
-              alt={featured.title}
-              loading="lazy"
-              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
-              style={{ position: 'absolute', inset: 0, filter: 'saturate(0.75)' }}
-            />
-            <div
-              className="absolute inset-0"
-              style={{ background: 'linear-gradient(to top, rgba(10,8,6,0.88) 0%, transparent 55%)' }}
-            />
-            <div className="absolute bottom-0 left-0 right-0 p-8 lg:p-10">
-              <p
-                className="text-[0.6rem] font-semibold tracking-[0.24em] uppercase mb-1.5"
-                style={{ color: 'var(--color-gold)' }}
-              >
-                {featured.tag}
-              </p>
-              <h3 className="font-heading font-bold text-2xl text-white mb-1">{featured.title}</h3>
-              <p className="text-[0.78rem]" style={{ color: 'rgba(255,255,255,0.45)' }}>{featured.meta}</p>
-            </div>
-          </div>
-
-          {rest.map(({ img, tag, title, meta }, i) => (
-            <div
-              key={title}
-              className={`relative overflow-hidden cursor-pointer group reveal delay-${i + 2} ${gridIn ? 'visible' : ''}`}
-              style={{ minHeight: '200px' }}
-            >
-              <img
-                src={img}
-                alt={title}
-                loading="lazy"
-                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.06]"
-                style={{ position: 'absolute', inset: 0, filter: 'saturate(0.75)' }}
-              />
-              <div
-                className="absolute inset-0"
-                style={{ background: 'linear-gradient(to top, rgba(10,8,6,0.85) 0%, transparent 55%)' }}
-              />
-              <div className="absolute bottom-0 left-0 right-0 p-5 lg:p-6">
-                <p
-                  className="text-[0.56rem] font-semibold tracking-[0.22em] uppercase mb-1"
-                  style={{ color: 'var(--color-gold)' }}
-                >
-                  {tag}
-                </p>
-                <h3 className="font-heading font-bold text-lg text-white">{title}</h3>
-                <p className="text-[0.72rem]" style={{ color: 'rgba(255,255,255,0.4)' }}>{meta}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-
       </div>
+
+      <div className="h-[1200px] md:h-[900px]">
+        <LayoutGrid cards={cards} />
+      </div>
+
     </section>
   );
 }
