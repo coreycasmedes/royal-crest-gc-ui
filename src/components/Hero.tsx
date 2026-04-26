@@ -69,19 +69,19 @@ export default function Hero() {
               {word}
             </motion.span>
           ))}
-            {/* Force new line */}
-  <br />
+          {/* Force new line */}
+          <br />
 
-  {/* Third line (fixed) */}
-  <span className="block ">
-    <TextGenerateEffect
-      key={cyclingWords[wordIndex]}
-      words={cyclingWords[wordIndex]}
-      delay={cycleDelay}
-      duration={0.75}
-      className="text-accent"
-    />
-  </span>
+          {/* Third line (fixed) */}
+          <span className="block ">
+            <TextGenerateEffect
+              key={cyclingWords[wordIndex]}
+              words={cyclingWords[wordIndex]}
+              delay={cycleDelay}
+              duration={0.75}
+              className="text-accent"
+            />
+          </span>
         </h1>
 
         <motion.p
