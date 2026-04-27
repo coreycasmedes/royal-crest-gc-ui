@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { IconVideo } from "@tabler/icons-react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
@@ -16,7 +17,11 @@ const services = [
 export default function SignupForm() {
   const [sent, setSent] = useState(false);
   const [form, setForm] = useState({
-    first: "", last: "", email: "", phone: "", service: "",
+    first: "",
+    last: "",
+    email: "",
+    phone: "",
+    service: "",
   });
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -43,8 +48,12 @@ export default function SignupForm() {
 
   return (
     <div className="shadow-input mx-auto w-full rounded-2xl bg-bg p-4 md:p-8">
-      <h2 className="text-xl font-bold text-text">
+      <h2 className="flex flex-wrap items-center gap-2.5 text-xl font-bold text-text">
         Request a Free Estimate
+        <div className="flex-shrink-0 inline-flex items-center gap-1.5 border border-surface rounded-2xl px-2 py-0.5 font-light text-xs text-text/60">
+          <IconVideo className="h-4 w-4 text-accent flex-shrink-0" />
+          <span className="whitespace-nowrap">Online Available</span>
+        </div>
       </h2>
       <p className="mt-2 max-w-sm text-sm text-text/60">
         Fill out the form and we'll get back to you within one business day.
@@ -60,7 +69,7 @@ export default function SignupForm() {
               type="text"
               required
               value={form.first}
-              onChange={e => setForm({ ...form, first: e.target.value })}
+              onChange={(e) => setForm({ ...form, first: e.target.value })}
             />
           </LabelInputContainer>
           <LabelInputContainer>
@@ -71,7 +80,7 @@ export default function SignupForm() {
               type="text"
               required
               value={form.last}
-              onChange={e => setForm({ ...form, last: e.target.value })}
+              onChange={(e) => setForm({ ...form, last: e.target.value })}
             />
           </LabelInputContainer>
         </div>
@@ -85,7 +94,7 @@ export default function SignupForm() {
               type="email"
               required
               value={form.email}
-              onChange={e => setForm({ ...form, email: e.target.value })}
+              onChange={(e) => setForm({ ...form, email: e.target.value })}
             />
           </LabelInputContainer>
           <LabelInputContainer>
@@ -95,7 +104,7 @@ export default function SignupForm() {
               placeholder="(469) 432-0341"
               type="tel"
               value={form.phone}
-              onChange={e => setForm({ ...form, phone: e.target.value })}
+              onChange={(e) => setForm({ ...form, phone: e.target.value })}
             />
           </LabelInputContainer>
         </div>
@@ -105,11 +114,17 @@ export default function SignupForm() {
           <select
             id="service"
             value={form.service}
-            onChange={e => setForm({ ...form, service: e.target.value })}
+            onChange={(e) => setForm({ ...form, service: e.target.value })}
             className="shadow-input flex h-10 w-full rounded-md border-none bg-bg px-3 py-2 text-sm text-text placeholder:text-text/40 focus-visible:ring-[2px] focus-visible:ring-text/20 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
           >
-            <option value="" disabled>Select a service…</option>
-            {services.map(s => <option key={s} value={s}>{s}</option>)}
+            <option value="" disabled>
+              Select a service…
+            </option>
+            {services.map((s) => (
+              <option key={s} value={s}>
+                {s}
+              </option>
+            ))}
           </select>
         </LabelInputContainer>
 
