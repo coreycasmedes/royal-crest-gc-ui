@@ -39,16 +39,6 @@ export default function Hero() {
       className="relative mx-auto flex max-w-7xl flex-col items-center justify-center bg-bg"
       style={{ paddingTop: "88px" }}
     >
-      {/* Left accent line */}
-      <div className="absolute inset-y-0 left-0 h-full w-px bg-accent/20">
-        <div className="absolute top-0 h-40 w-px bg-gradient-to-b from-transparent via-accent to-transparent" />
-      </div>
-
-      {/* Right accent line */}
-      <div className="absolute inset-y-0 right-0 h-full w-px bg-accent/20">
-        <div className="absolute top-0 h-40 w-px bg-gradient-to-b from-transparent via-accent to-transparent" />
-      </div>
-
       <div className="w-full px-8 py-10 md:py-16 lg:px-12">
         <h1
           className="relative font-heading z-10 mx-auto max-w-4xl text-center font-black leading-tight tracking-tight text-text"
