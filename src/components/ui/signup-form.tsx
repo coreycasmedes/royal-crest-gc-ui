@@ -15,7 +15,9 @@ const services = [
 ];
 
 export default function SignupForm() {
-  const [sent, setSent] = useState(false);
+  const [sent, setSent]       = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError]     = useState("");
   const [form, setForm] = useState({
     first: "",
     last: "",
@@ -24,9 +26,24 @@ export default function SignupForm() {
     service: "",
   });
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setSent(true);
+    setLoading(true);
+    setError("");
+
+    const formData = new FormData(e.currentTarget);
+    const res  = await fetch("https://api.web3forms.com/submit", {
+      method: "POST",
+      body: formData,
+    });
+    const data = await res.json();
+
+    setLoading(false);
+    if (data.success) {
+      setSent(true);
+    } else {
+      setError(data.message ?? "Something went wrong. Please try again.");
+    }
   };
 
   if (sent) {
@@ -60,11 +77,13 @@ export default function SignupForm() {
       </p>
 
       <form className="my-8" onSubmit={handleSubmit}>
+        <input type="hidden" name="access_key" value="459de2ed-ea1d-4fb0-9618-ba87e8f7c47a" />
         <div className="mb-4 flex flex-col space-y-2 md:flex-row md:space-y-0 md:space-x-2">
           <LabelInputContainer>
             <Label htmlFor="firstname">First name</Label>
             <Input
               id="firstname"
+              name="first_name"
               placeholder="James"
               type="text"
               required
@@ -76,6 +95,7 @@ export default function SignupForm() {
             <Label htmlFor="lastname">Last name</Label>
             <Input
               id="lastname"
+              name="last_name"
               placeholder="Anderson"
               type="text"
               required
@@ -90,6 +110,7 @@ export default function SignupForm() {
             <Label htmlFor="email">Email address</Label>
             <Input
               id="email"
+              name="email"
               placeholder="james@example.com"
               type="email"
               required
@@ -101,6 +122,7 @@ export default function SignupForm() {
             <Label htmlFor="phone">Phone number</Label>
             <Input
               id="phone"
+              name="phone"
               placeholder="(469) 432-0341"
               type="tel"
               value={form.phone}
@@ -113,6 +135,7 @@ export default function SignupForm() {
           <Label htmlFor="service">Service needed</Label>
           <select
             id="service"
+            name="service"
             value={form.service}
             onChange={(e) => setForm({ ...form, service: e.target.value })}
             className="shadow-input flex h-10 w-full rounded-md border-none bg-bg px-3 py-2 text-sm text-text placeholder:text-text/40 focus-visible:ring-[2px] focus-visible:ring-text/20 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
@@ -129,12 +152,16 @@ export default function SignupForm() {
         </LabelInputContainer>
 
         <button
-          className="group/btn relative block h-10 w-full rounded-md bg-deep font-medium text-bg hover:bg-accent transition-colors duration-200"
           type="submit"
+          disabled={loading}
+          className="group/btn relative block h-10 w-full rounded-md bg-deep font-medium text-bg hover:bg-accent transition-colors duration-200 disabled:opacity-60 disabled:cursor-not-allowed"
         >
-          Send Request &rarr;
+          {loading ? "Sending…" : "Send Request →"}
           <BottomGradient />
         </button>
+        {error && (
+          <p className="mt-3 text-xs text-red-600">{error}</p>
+        )}
       </form>
     </div>
   );
