@@ -1,12 +1,32 @@
-import { useInView } from '../hooks/useInView';
-import SignupForm from './ui/signup-form';
+import { useInView } from "../hooks/useInView";
+import SignupForm from "./ui/signup-form";
 
 const info = [
-  { label: 'Phone',    value: '(469) 432 0341'                          },
-  { label: 'Email',    value: 'royalcrestgeneralcontracting@outlook.com' },
-  { label: 'Location', value: 'Dallas, Ft. Worth & Surrounding Areas'   },
-  { label: 'Hours',    value: 'Mon–Fri  7 AM – 6 PM\nSat  8 AM – 4 PM' },
+  { label: "Phone", value: "(469) 432 0341" },
+  { label: "Email", value: "royalcrestgeneralcontracting@outlook.com" },
+  { label: "Location", value: "Dallas, Ft. Worth & Surrounding Areas" },
+  { label: "Hours", value: "Mon–Fri  7 AM – 6 PM\nSat  8 AM – 4 PM" },
 ];
+
+function MapFrame() {
+  return (
+    <div className="rounded-lg ring-1 ring-text/8 hover:ring-2 hover:ring-accent transition duration-300">
+      <div className="m-0.5">
+        <iframe
+          title="Service Area"
+          src="https://maps.google.com/maps?ll=32.8,-97.0&z=9&output=embed"
+          width="100%"
+          height="320"
+          style={{ border: 0 }}
+          allowFullScreen
+          loading="lazy"
+          referrerPolicy="no-referrer-when-downgrade"
+          className="w-full grayscale block"
+        />
+      </div>
+    </div>
+  );
+}
 
 export default function Contact() {
   const { ref: headRef, inView: headIn } = useInView();
@@ -14,12 +34,14 @@ export default function Contact() {
   return (
     <section id="contact" className="py-24 lg:py-28 bg-bg">
       <div className="max-w-[1260px] mx-auto px-8 lg:px-12">
-
-        <div ref={headRef} className={`mb-14 reveal ${headIn ? 'visible' : ''}`}>
+        <div
+          ref={headRef}
+          className={`mb-14 reveal ${headIn ? "visible" : ""}`}
+        >
           <p className="label">Get In Touch</p>
           <h2
             className="font-heading font-bold leading-tight text-text"
-            style={{ fontSize: 'clamp(2.2rem, 4vw, 3.2rem)' }}
+            style={{ fontSize: "clamp(2.2rem, 4vw, 3.2rem)" }}
           >
             Start Your Project
           </h2>
@@ -39,9 +61,10 @@ export default function Contact() {
                 </p>
               </div>
             ))}
+
+            <MapFrame />
           </div>
         </div>
-
       </div>
     </section>
   );
