@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { AnimatePresence, motion, useMotionTemplate, useMotionValue } from "motion/react";
 import { IconVideo } from "@tabler/icons-react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
@@ -14,6 +15,16 @@ const services = [
   "Other",
 ];
 
+const detailsPlaceholder: Record<string, string> = {
+  "Custom Home Build":       "Tell us about your lot, desired square footage, style, and timeline…",
+  "Kitchen Remodel":         "Describe your current kitchen layout and what you'd like changed (cabinets, countertops, layout, etc.)…",
+  "Bathroom Renovation":     "Full gut or cosmetic update? Any specific fixtures, tile, or layout changes in mind?",
+  "Home Addition":           "What type of addition — bedroom, garage, ADU? Approximate square footage?",
+  "Roofing & Exterior":      "New install, repair, or replacement? Any storm damage or specific materials you're considering?",
+  "Commercial Construction": "Describe the project type, scope, and any deadlines or zoning considerations…",
+  "Other":                   "Tell us what you have in mind and we'll point you in the right direction…",
+};
+
 export default function SignupForm() {
   const [sent, setSent]       = useState(false);
   const [loading, setLoading] = useState(false);
@@ -24,6 +35,7 @@ export default function SignupForm() {
     email: "",
     phone: "",
     service: "",
+    message: "",
   });
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -151,6 +163,31 @@ export default function SignupForm() {
           </select>
         </LabelInputContainer>
 
+        <AnimatePresence>
+          {form.service && (
+            <motion.div
+              key="details"
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.25, ease: "easeOut" }}
+              style={{ overflow: "hidden" }}
+            >
+              <LabelInputContainer className="mb-8">
+                <Label htmlFor="message">Project details</Label>
+                <TextareaInput
+                  id="message"
+                  name="message"
+                  rows={4}
+                  placeholder={detailsPlaceholder[form.service]}
+                  value={form.message}
+                  onChange={(e) => setForm({ ...form, message: e.target.value })}
+                />
+              </LabelInputContainer>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
         <button
           type="submit"
           disabled={loading}
@@ -173,6 +210,36 @@ const BottomGradient = () => (
     <span className="absolute inset-x-10 -bottom-px mx-auto block h-px w-1/2 bg-gradient-to-r from-transparent via-accent to-transparent opacity-0 blur-sm transition duration-500 group-hover/btn:opacity-100" />
   </>
 );
+
+const TextareaInput = (props: React.TextareaHTMLAttributes<HTMLTextAreaElement>) => {
+  const radius = 100;
+  const [visible, setVisible] = React.useState(false);
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+
+  function handleMouseMove(e: React.MouseEvent<HTMLDivElement>) {
+    const { left, top } = e.currentTarget.getBoundingClientRect();
+    mouseX.set(e.clientX - left);
+    mouseY.set(e.clientY - top);
+  }
+
+  return (
+    <motion.div
+      style={{
+        background: useMotionTemplate`radial-gradient(${visible ? radius + "px" : "0px"} circle at ${mouseX}px ${mouseY}px, var(--color-accent), transparent 80%)`,
+      }}
+      onMouseMove={handleMouseMove}
+      onMouseEnter={() => setVisible(true)}
+      onMouseLeave={() => setVisible(false)}
+      className="group/input rounded-lg p-[2px] transition duration-300"
+    >
+      <textarea
+        {...props}
+        className="shadow-input w-full rounded-md border-none bg-bg px-3 py-2 text-sm text-text placeholder:text-text/40 focus-visible:ring-[2px] focus-visible:ring-accent focus-visible:outline-none outline-none resize-none group-hover/input:shadow-none transition duration-400"
+      />
+    </motion.div>
+  );
+};
 
 const LabelInputContainer = ({
   children,
