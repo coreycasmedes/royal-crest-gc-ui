@@ -5,7 +5,7 @@ const steps = [
   { text: "Family-owned personal accountability on every single job." },
   { text: "Top-tier suppliers only. No material substitutions, ever." },
   { text: "Transparent timelines, costs, and zero surprises." },
-  { text: "Design, permits, subs, inspections — all handled for you." },
+  { text: "Design, permits, and inspections all handled for you." },
 ];
 
 export default function WhyUs() {
@@ -37,7 +37,7 @@ export default function WhyUs() {
 
           {/* Right — cycling process steps */}
           <div ref={rightRef} className={`reveal ${rightIn ? "visible" : ""}`}>
-            <MultiStepLoader loadingStates={steps} duration={2200} loop />
+            <MultiStepLoader loadingStates={steps} duration={1500} loop />
           </div>
         </div>
       </div>
