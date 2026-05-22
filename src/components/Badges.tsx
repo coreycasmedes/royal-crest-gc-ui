@@ -1,20 +1,20 @@
-import gaf from '../assets/images/gaf.avif';
-import brava from '../assets/images/brava.avif';
-import certainteed from '../assets/images/certainteed.avif';
-import abc from '../assets/images/abc.avif';
+import gaf from "../assets/images/gaf.avif";
+import brava from "../assets/images/brava.avif";
+import certainteed from "../assets/images/certainteed.avif";
+import abc from "../assets/images/abc.avif";
 
 const badges = [
-  { src: gaf,         alt: 'GAF American Owned'          },
-  { src: brava,       alt: 'Brava Authorized Contractor'  },
-  { src: certainteed, alt: 'CertainTeed Saint-Gobain'     },
-  { src: abc,         alt: 'ABC Supply Co.'               },
+  { src: gaf, alt: "GAF American Owned" },
+  { src: brava, alt: "Brava Authorized Contractor" },
+  { src: certainteed, alt: "CertainTeed Saint-Gobain" },
+  { src: abc, alt: "ABC Supply Co." },
 ];
 
 export default function Badges() {
   return (
     <section className="py-14  bg-bg">
       <div className="max-w-[1260px] mx-auto px-8 lg:px-12">
-        <p className="text-center text-[0.66rem] font-semibold tracking-[0.26em] uppercase mb-10 text-text/40">
+        <p className="text-center text-[0.66rem] font-semibold tracking-[0.26em] uppercase mb-14 text-text/40">
           Partners &amp; Certifications
         </p>
 
@@ -24,7 +24,7 @@ export default function Badges() {
               key={alt}
               src={src}
               alt={alt}
-              className="h-14 w-auto object-contain transition-all duration-300 grayscale opacity-55 hover:grayscale-0 hover:opacity-100"
+              className="h-24 w-auto object-contain transition-all duration-300 grayscale opacity-55 hover:grayscale-0 hover:opacity-100"
             />
           ))}
         </div>
