@@ -32,6 +32,33 @@ const detailsPlaceholder: Record<string, string> = {
     "Tell us what you have in mind and we'll point you in the right direction…",
 };
 
+const RL_KEY     = "rcgc_submissions";
+const COOLDOWN   = 5 * 60 * 1000;   // 5 minutes between submissions
+const DAILY_MAX  = 3;                // max submissions per 24-hour window
+const DAY        = 24 * 60 * 60 * 1000;
+
+function getTimestamps(): number[] {
+  try {
+    return JSON.parse(localStorage.getItem(RL_KEY) ?? "[]");
+  } catch {
+    return [];
+  }
+}
+
+function hasRecentSubmission(): boolean {
+  const now  = Date.now();
+  const logs = getTimestamps().filter((t) => now - t < DAY);
+  if (logs.length >= DAILY_MAX) return true;
+  const last = logs.at(-1);
+  return !!(last && now - last < COOLDOWN);
+}
+
+function recordSubmission() {
+  const now  = Date.now();
+  const logs = getTimestamps().filter((t) => now - t < DAY);
+  localStorage.setItem(RL_KEY, JSON.stringify([...logs, now]));
+}
+
 function isValidEmail(v: string) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim());
 }
@@ -49,7 +76,7 @@ function isValidUSPhone(v: string) {
 }
 
 export default function SignupForm() {
-  const [sent, setSent] = useState(false);
+  const [sent, setSent] = useState(() => hasRecentSubmission());
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [touched, setTouched] = useState({ email: false, phone: false });
@@ -79,6 +106,7 @@ export default function SignupForm() {
       (form.phone && !isValidUSPhone(form.phone))
     )
       return;
+
     setLoading(true);
     setError("");
 
@@ -91,6 +119,7 @@ export default function SignupForm() {
 
     setLoading(false);
     if (data.success) {
+      recordSubmission();
       setSent(true);
     } else {
       setError(data.message ?? "Something went wrong. Please try again.");
@@ -100,16 +129,20 @@ export default function SignupForm() {
   if (sent) {
     return (
       <div className="rounded-2xl shadow-input mx-auto w-full bg-bg p-4 md:rounded-2xl md:p-8">
-        <h2 className="text-xl font-bold text-text">Message Received</h2>
-        <p className="mt-2 max-w-sm text-sm text-text/60">
-          We'll be in touch within one business day.
+        <h2 className="text-xl font-bold text-text">Request Received</h2>
+        <p className="mt-2 text-sm text-text/60">
+          We received your request and will get back to you within one business day.
         </p>
-        <button
-          onClick={() => setSent(false)}
-          className="mt-6 text-xs font-semibold tracking-widest uppercase pb-0.5 border-b border-text text-text"
-        >
-          Send Another
-        </button>
+        <p className="mt-3 text-sm text-text/60">
+          If this is an emergency, please call us directly at{" "}
+          <a
+            href="tel:4694320341"
+            className="text-text font-medium hover:text-accent transition-colors duration-200"
+          >
+            (469) 432 0341
+          </a>
+          .
+        </p>
       </div>
     );
   }
