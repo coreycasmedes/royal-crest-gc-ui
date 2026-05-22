@@ -1,10 +1,10 @@
-import { useInView } from '../hooks/useInView';
+import { useInView } from "../hooks/useInView";
 
 const stats = [
-  { num: '20+',  label: 'Years Experience'       },
-  { num: '850+', label: 'Projects Completed'      },
-  { num: '4.9★', label: 'Average Client Rating'  },
-  { num: '5yr',  label: 'Workmanship Warranty'   },
+  { num: "5+", label: "Years Experience" },
+  { num: "250+", label: "Projects Completed" },
+  { num: "4.9★", label: "Average Client Rating" },
+  { num: "5yr", label: "Workmanship Warranty" },
 ];
 
 export default function Stats() {
@@ -17,11 +17,11 @@ export default function Stats() {
           {stats.map(({ num, label }, i) => (
             <div
               key={label}
-              className={`text-center py-4 lg:border-r last:border-r-0 border-surface reveal delay-${i + 1} ${inView ? 'visible' : ''}`}
+              className={`text-center py-4 lg:border-r last:border-r-0 border-surface reveal delay-${i + 1} ${inView ? "visible" : ""}`}
             >
               <p
                 className="font-heading font-black leading-none mb-2 text-text"
-                style={{ fontSize: 'clamp(2.6rem, 5vw, 4rem)' }}
+                style={{ fontSize: "clamp(2.6rem, 5vw, 4rem)" }}
               >
                 {num}
               </p>
