@@ -16,13 +16,20 @@ const services = [
 ];
 
 const detailsPlaceholder: Record<string, string> = {
-  "Custom Home Build":       "Tell us about your lot, desired square footage, style, and timeline…",
-  "Kitchen Remodel":         "Describe your current kitchen layout and what you'd like changed (cabinets, countertops, layout, etc.)…",
-  "Bathroom Renovation":     "Full gut or cosmetic update? Any specific fixtures, tile, or layout changes in mind?",
-  "Home Addition":           "What type of addition — bedroom, garage, ADU? Approximate square footage?",
-  "Roofing & Exterior":      "New install, repair, or replacement? Any storm damage or specific materials you're considering?",
-  "Commercial Construction": "Describe the project type, scope, and any deadlines or zoning considerations…",
-  "Other":                   "Tell us what you have in mind and we'll point you in the right direction…",
+  "Custom Home Build":
+    "Tell us about your lot, desired square footage, style, and timeline…",
+  "Kitchen Remodel":
+    "Describe your current kitchen layout and what you'd like changed (cabinets, countertops, layout, etc.)…",
+  "Bathroom Renovation":
+    "Full gut or cosmetic update? Any specific fixtures, tile, or layout changes in mind?",
+  "Home Addition":
+    "What type of addition — bedroom, garage, ADU? Approximate square footage?",
+  "Roofing & Exterior":
+    "New install, repair, or replacement? Any storm damage or specific materials you're considering?",
+  "Commercial Construction":
+    "Describe the project type, scope, and any deadlines or zoning considerations…",
+  Other:
+    "Tell us what you have in mind and we'll point you in the right direction…",
 };
 
 function isValidEmail(v: string) {
@@ -31,8 +38,8 @@ function isValidEmail(v: string) {
 
 function formatPhone(raw: string) {
   const d = raw.replace(/\D/g, "").slice(0, 10);
-  if (d.length < 4)  return d;
-  if (d.length < 7)  return `(${d.slice(0, 3)}) ${d.slice(3)}`;
+  if (d.length < 4) return d;
+  if (d.length < 7) return `(${d.slice(0, 3)}) ${d.slice(3)}`;
   return `(${d.slice(0, 3)}) ${d.slice(3, 6)}-${d.slice(6)}`;
 }
 
@@ -42,9 +49,9 @@ function isValidUSPhone(v: string) {
 }
 
 export default function SignupForm() {
-  const [sent, setSent]       = useState(false);
+  const [sent, setSent] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [error, setError]     = useState("");
+  const [error, setError] = useState("");
   const [touched, setTouched] = useState({ email: false, phone: false });
   const [form, setForm] = useState({
     first: "",
@@ -55,22 +62,28 @@ export default function SignupForm() {
     message: "",
   });
 
-  const emailError = touched.email && !isValidEmail(form.email)
-    ? "Enter a valid email address."
-    : "";
-  const phoneError = touched.phone && form.phone && !isValidUSPhone(form.phone)
-    ? "Enter a valid US phone number."
-    : "";
+  const emailError =
+    touched.email && !isValidEmail(form.email)
+      ? "Enter a valid email address."
+      : "";
+  const phoneError =
+    touched.phone && form.phone && !isValidUSPhone(form.phone)
+      ? "Enter a valid US phone number."
+      : "";
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setTouched({ email: true, phone: true });
-    if (!isValidEmail(form.email) || (form.phone && !isValidUSPhone(form.phone))) return;
+    if (
+      !isValidEmail(form.email) ||
+      (form.phone && !isValidUSPhone(form.phone))
+    )
+      return;
     setLoading(true);
     setError("");
 
     const formData = new FormData(e.currentTarget);
-    const res  = await fetch("https://api.web3forms.com/submit", {
+    const res = await fetch("https://api.web3forms.com/submit", {
       method: "POST",
       body: formData,
     });
@@ -115,7 +128,11 @@ export default function SignupForm() {
       </p>
 
       <form className="my-8" onSubmit={handleSubmit}>
-        <input type="hidden" name="access_key" value="459de2ed-ea1d-4fb0-9618-ba87e8f7c47a" />
+        <input
+          type="hidden"
+          name="access_key"
+          value="459de2ed-ea1d-4fb0-9618-ba87e8f7c47a"
+        />
         <div className="mb-4 flex flex-col space-y-2 md:flex-row md:space-y-0 md:space-x-2">
           <LabelInputContainer>
             <Label htmlFor="firstname">First name</Label>
@@ -166,7 +183,9 @@ export default function SignupForm() {
               placeholder="(469) 432-0341"
               type="tel"
               value={form.phone}
-              onChange={(e) => setForm({ ...form, phone: formatPhone(e.target.value) })}
+              onChange={(e) =>
+                setForm({ ...form, phone: formatPhone(e.target.value) })
+              }
               onBlur={() => setTouched((t) => ({ ...t, phone: true }))}
             />
             <FieldError message={phoneError} />
@@ -211,7 +230,9 @@ export default function SignupForm() {
                   rows={4}
                   placeholder={detailsPlaceholder[form.service]}
                   value={form.message}
-                  onChange={(e) => setForm({ ...form, message: e.target.value })}
+                  onChange={(e) =>
+                    setForm({ ...form, message: e.target.value })
+                  }
                 />
               </LabelInputContainer>
             </motion.div>
@@ -226,9 +247,7 @@ export default function SignupForm() {
           {loading ? "Sending…" : "Send Request →"}
           <BottomGradient />
         </button>
-        {error && (
-          <p className="mt-3 text-xs text-red-600">{error}</p>
-        )}
+        {error && <p className="mt-3 text-xs text-red-600">{error}</p>}
       </form>
     </div>
   );
@@ -258,7 +277,9 @@ const BottomGradient = () => (
   </>
 );
 
-const TextareaInput = (props: React.TextareaHTMLAttributes<HTMLTextAreaElement>) => {
+const TextareaInput = (
+  props: React.TextareaHTMLAttributes<HTMLTextAreaElement>,
+) => {
   const radius = 100;
   const [visible, setVisible] = React.useState(false);
   const mouseX = useMotionValue(0);
@@ -278,11 +299,17 @@ const TextareaInput = (props: React.TextareaHTMLAttributes<HTMLTextAreaElement>)
       onMouseMove={handleMouseMove}
       onMouseEnter={() => setVisible(true)}
       onMouseLeave={() => setVisible(false)}
-      className="group/input rounded-lg p-[2px] transition duration-300 overflow-hidden"
+      className="group/input rounded-lg p-[2px] transition duration-300"
     >
       <textarea
         {...props}
-        className="shadow-input w-full rounded-md border-none bg-bg px-3 py-2 text-sm text-text placeholder:text-text/40 focus-visible:ring-[2px] focus-visible:ring-accent focus-visible:outline-none outline-none resize-none group-hover/input:shadow-none transition duration-400"
+        className={cn(
+          "shadow-input flex w-full rounded-md border-none bg-bg px-3 py-2 text-sm text-text transition duration-400 group-hover/input:shadow-none",
+          "placeholder:text-text/40",
+          "focus-visible:ring-[2px] focus-visible:ring-accent focus-visible:outline-none",
+          "disabled:cursor-not-allowed disabled:opacity-50",
+          "resize-none",
+        )}
       />
     </motion.div>
   );
