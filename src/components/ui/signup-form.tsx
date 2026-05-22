@@ -25,10 +25,27 @@ const detailsPlaceholder: Record<string, string> = {
   "Other":                   "Tell us what you have in mind and we'll point you in the right direction…",
 };
 
+function isValidEmail(v: string) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim());
+}
+
+function formatPhone(raw: string) {
+  const d = raw.replace(/\D/g, "").slice(0, 10);
+  if (d.length < 4)  return d;
+  if (d.length < 7)  return `(${d.slice(0, 3)}) ${d.slice(3)}`;
+  return `(${d.slice(0, 3)}) ${d.slice(3, 6)}-${d.slice(6)}`;
+}
+
+function isValidUSPhone(v: string) {
+  const d = v.replace(/\D/g, "");
+  return d.length === 10 && /^[2-9]/.test(d) && /^[2-9]/.test(d[3]);
+}
+
 export default function SignupForm() {
   const [sent, setSent]       = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError]     = useState("");
+  const [touched, setTouched] = useState({ email: false, phone: false });
   const [form, setForm] = useState({
     first: "",
     last: "",
@@ -38,8 +55,17 @@ export default function SignupForm() {
     message: "",
   });
 
+  const emailError = touched.email && !isValidEmail(form.email)
+    ? "Enter a valid email address."
+    : "";
+  const phoneError = touched.phone && form.phone && !isValidUSPhone(form.phone)
+    ? "Enter a valid US phone number."
+    : "";
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setTouched({ email: true, phone: true });
+    if (!isValidEmail(form.email) || (form.phone && !isValidUSPhone(form.phone))) return;
     setLoading(true);
     setError("");
 
@@ -128,7 +154,9 @@ export default function SignupForm() {
               required
               value={form.email}
               onChange={(e) => setForm({ ...form, email: e.target.value })}
+              onBlur={() => setTouched((t) => ({ ...t, email: true }))}
             />
+            <FieldError message={emailError} />
           </LabelInputContainer>
           <LabelInputContainer>
             <Label htmlFor="phone">Phone number</Label>
@@ -138,8 +166,10 @@ export default function SignupForm() {
               placeholder="(469) 432-0341"
               type="tel"
               value={form.phone}
-              onChange={(e) => setForm({ ...form, phone: e.target.value })}
+              onChange={(e) => setForm({ ...form, phone: formatPhone(e.target.value) })}
+              onBlur={() => setTouched((t) => ({ ...t, phone: true }))}
             />
+            <FieldError message={phoneError} />
           </LabelInputContainer>
         </div>
 
@@ -204,6 +234,23 @@ export default function SignupForm() {
   );
 }
 
+const FieldError = ({ message }: { message: string }) => (
+  <AnimatePresence>
+    {message && (
+      <motion.p
+        key="err"
+        initial={{ opacity: 0, y: -4 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: -4 }}
+        transition={{ duration: 0.15 }}
+        className="text-xs text-red-600"
+      >
+        {message}
+      </motion.p>
+    )}
+  </AnimatePresence>
+);
+
 const BottomGradient = () => (
   <>
     <span className="absolute inset-x-0 -bottom-px block h-px w-full bg-gradient-to-r from-transparent via-accent to-transparent opacity-0 transition duration-500 group-hover/btn:opacity-100" />
@@ -231,7 +278,7 @@ const TextareaInput = (props: React.TextareaHTMLAttributes<HTMLTextAreaElement>)
       onMouseMove={handleMouseMove}
       onMouseEnter={() => setVisible(true)}
       onMouseLeave={() => setVisible(false)}
-      className="group/input rounded-lg p-[2px] transition duration-300"
+      className="group/input rounded-lg p-[2px] transition duration-300 overflow-hidden"
     >
       <textarea
         {...props}
