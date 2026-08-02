@@ -1,8 +1,8 @@
 import { useInView } from '../hooks/useInView';
 import { AnimatedTestimonials } from './ui/animated-testimonials';
-import abcImg from '../assets/big_roof.jpg';
-import certainteedImg from '../assets/roof_birdseye.jpg';
-import gafImg from '../assets/roofing_team.jpg';
+import abcImg from '../assets/big_roof.webp';
+import certainteedImg from '../assets/roof_birdseye.webp';
+import gafImg from '../assets/roofing_team.webp';
 
 const testimonials = [
   {

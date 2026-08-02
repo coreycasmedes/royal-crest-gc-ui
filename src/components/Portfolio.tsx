@@ -1,9 +1,9 @@
 import { useInView } from '../hooks/useInView';
 import { LayoutGrid } from './ui/layout-grid';
-import bigRoofImg from '../assets/big_roof.jpg';
-import homeImg from '../assets/home.jpg';
-import roofBirdseyeImg from '../assets/roof_birdseye.jpg';
-import roofingTeamImg from '../assets/roofing_team.jpg';
+import bigRoofImg from '../assets/big_roof.webp';
+import homeImg from '../assets/home.webp';
+import roofBirdseyeImg from '../assets/roof_birdseye.webp';
+import roofingTeamImg from '../assets/roofing_team.webp';
 
 function CardContent({ tag, title, meta }: { tag: string; title: string; meta: string }) {
   return (

@@ -32,8 +32,10 @@ export default function Header() {
   return (
     <>
       <header
-        className={`fixed top-0 left-0 right-0 z-[70] bg-bg border-b border-surface transition-all duration-300 ${
-          scrolled ? 'py-3 shadow-[0_1px_24px_rgba(0,0,0,0.07)]' : 'py-5'
+        className={`fixed top-0 left-0 right-0 z-[70] border-b transition-all duration-300 ${
+          scrolled
+            ? 'bg-bg border-surface py-3 shadow-[0_1px_24px_rgba(0,0,0,0.07)]'
+            : 'bg-transparent border-transparent py-5'
         }`}
       >
         <div className="max-w-[1260px] mx-auto px-6 lg:px-10 flex items-center">

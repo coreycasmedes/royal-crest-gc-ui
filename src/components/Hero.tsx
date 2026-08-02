@@ -1,69 +1,82 @@
-import { useState, useEffect } from "react";
 import { motion } from "motion/react";
-import homeImg from "../assets/home.jpg";
-import { TextGenerateEffect } from "./ui/text-generate-effect";
+import backyardDeckImg from "../assets/backyard_deck1.webp";
+import droneRoofVideo from "../assets/drone_roof.mp4";
+// import { TextGenerateEffect } from "./ui/text-generate-effect";
+import { VideoText } from "./ui/video-text";
 
 const scrollTo = (id: string) =>
   document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
 
-const staticHeadline = "The Gold Standard of Dallas";
-const cyclingWords = [
-  "Custom Homes",
-  "Full Renovations",
-  "Kitchens & Baths",
-  "Roofs & Exteriors",
-];
-const INITIAL_DELAY = staticHeadline.split(" ").length * 0.1; // sync with last static word
+//const staticHeadlineLines = ["Royal Crest", "General", "Contracting"];
+const staticHeadlineLines = ["The Gold", "Standard of", "Construction"];
+// Single source of truth — the container height is exactly
+// lines * lineHeight * fontSize (no extra buffer), so it wraps the rendered
+// text tightly and can't drift out of sync with VideoText's mask. The 9rem
+// cap keeps the headline from growing unbounded on very large viewports.
+const HEADLINE_FONT_SIZE = "clamp(2.4rem, 16vw, 9rem)";
+const HEADLINE_LINE_HEIGHT_EM = 1.05;
+// const cyclingWords = [
+//   "Custom Homes",
+//   "Full Renovations",
+//   "Kitchens & Baths",
+//   "Roofs & Exteriors",
+// ];
+// const INITIAL_DELAY = staticHeadlineLines.join(" ").split(" ").length * 0.1; // sync with last static word
 
 export default function Hero() {
-  const [wordIndex, setWordIndex] = useState(0);
-  const [cycleDelay, setCycleDelay] = useState(INITIAL_DELAY);
+  // const [wordIndex, setWordIndex] = useState(0);
+  // const [cycleDelay, setCycleDelay] = useState(INITIAL_DELAY);
 
-  useEffect(() => {
-    let interval: ReturnType<typeof setInterval>;
-    const timeout = setTimeout(() => {
-      setCycleDelay(0);
-      interval = setInterval(() => {
-        setWordIndex((prev) => (prev + 1) % cyclingWords.length);
-      }, 2500);
-    }, 1800);
-    return () => {
-      clearTimeout(timeout);
-      clearInterval(interval);
-    };
-  }, []);
+  // useEffect(() => {
+  //   let interval: ReturnType<typeof setInterval>;
+  //   const timeout = setTimeout(() => {
+  //     setCycleDelay(0);
+  //     interval = setInterval(() => {
+  //       setWordIndex((prev) => (prev + 1) % cyclingWords.length);
+  //     }, 2500);
+  //   }, 1800);
+  //   return () => {
+  //     clearTimeout(timeout);
+  //     clearInterval(interval);
+  //   };
+  // }, []);
 
   return (
     <section
       id="hero"
-      className="relative mx-auto flex max-w-7xl flex-col items-center justify-center bg-bg"
+      className="relative flex flex-col items-center justify-center bg-bg"
       style={{ paddingTop: "88px" }}
     >
-      <div className="w-full px-8 py-10 md:py-16 lg:px-12">
+      <div className="w-full max-w-7xl mx-auto px-8 py-10 md:py-16 lg:px-12">
         <h1
           className="relative font-heading z-10 mx-auto max-w-4xl text-center font-black leading-tight tracking-tight text-text"
           style={{ fontSize: "clamp(2.4rem, 7vw, 6rem)" }}
         >
-          {staticHeadline.split(" ").map((word, index) => (
-            <motion.span
-              key={index}
-              initial={{ opacity: 0, filter: "blur(4px)", y: 10 }}
-              animate={{ opacity: 1, filter: "blur(0px)", y: 0 }}
-              transition={{
-                duration: 0.3,
-                delay: index * 0.1,
-                ease: "easeInOut",
-              }}
-              className="mr-[0.25em] inline-block"
+          <motion.div
+            initial={{ opacity: 0, filter: "blur(4px)", y: 10 }}
+            animate={{ opacity: 1, filter: "blur(0px)", y: 0 }}
+            transition={{ duration: 0.5, ease: "easeInOut" }}
+            className="mx-auto w-full"
+            style={{
+              height: `calc(${staticHeadlineLines.length} * ${HEADLINE_LINE_HEIGHT_EM} * ${HEADLINE_FONT_SIZE})`,
+            }}
+          >
+            <VideoText
+              src={droneRoofVideo}
+              playbackRate={0.5}
+              lineHeight={HEADLINE_LINE_HEIGHT_EM}
+              fontSize={HEADLINE_FONT_SIZE}
+              fontWeight={900}
+              letterSpacing="-0.04em"
+              fontFamily="Geist, ui-sans-serif, system-ui"
+              className="font-heading"
             >
-              {word}
-            </motion.span>
-          ))}
-          {/* Force new line */}
-          <br />
+              {staticHeadlineLines}
+            </VideoText>
+          </motion.div>
 
           {/* Third line (fixed) */}
-          <span className="block ">
+          {/* <span className="block ">
             <TextGenerateEffect
               key={cyclingWords[wordIndex]}
               words={cyclingWords[wordIndex]}
@@ -71,10 +84,10 @@ export default function Hero() {
               duration={0.75}
               className="text-accent"
             />
-          </span>
+          </span> */}
         </h1>
 
-        <motion.p
+        {/* <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.4, delay: 0.9 }}
@@ -83,13 +96,13 @@ export default function Hero() {
           Royal Crest General Contractors delivers luxury residential and
           commercial construction across Dallas, Plano, Frisco, and Highland
           Park.
-        </motion.p>
+        </motion.p> */}
 
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.4, delay: 1.1 }}
-          className="relative z-10 mt-8 flex flex-wrap items-center justify-center gap-4"
+          className="relative z-10 mt-3 flex flex-wrap items-center justify-center gap-2"
         >
           <button
             onClick={() => scrollTo("portfolio")}
@@ -113,8 +126,8 @@ export default function Hero() {
         >
           <div className="w-full overflow-hidden">
             <img
-              src={homeImg}
-              alt="Royal Crest luxury home — Dallas, TX"
+              src={backyardDeckImg}
+              alt="Custom backyard deck built by Royal Crest — Dallas, TX"
               width={1400}
               height={788}
               className="aspect-[16/9] h-auto w-full object-cover rounded-2xl"

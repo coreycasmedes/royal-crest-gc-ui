@@ -5,15 +5,28 @@ import {
   IconHomePlus,
   IconHammer,
   IconBuilding,
+  IconFence,
 } from '@tabler/icons-react';
 import { useInView } from '../hooks/useInView';
 import { BentoGrid, BentoGridItem } from './ui/bento-grid';
+import backyardDeckImg from '../assets/backyard_deck1.webp';
 
 const scrollTo = (id: string) =>
   document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
 
 const GridHeader = () => (
   <div className="grid-pattern flex flex-1 w-full h-full min-h-[6rem] rounded-xl" />
+);
+
+const ImageHeader = ({ src, alt }: { src: string; alt: string }) => (
+  <div className="flex flex-1 w-full h-full min-h-[6rem] rounded-xl overflow-hidden">
+    <img
+      src={src}
+      alt={alt}
+      className="h-full w-full object-cover"
+      style={{ filter: 'saturate(0.9) brightness(1.02)' }}
+    />
+  </div>
 );
 
 const items = [
@@ -48,10 +61,22 @@ const items = [
     className: 'md:col-span-1',
   },
   {
+    title: 'Decks & Outdoor Living',
+    description: 'Custom decks, patios, and outdoor spaces built for how Texans actually live.',
+    icon: <IconFence className="h-5 w-5 text-accent" />,
+    className: 'md:col-span-2',
+    header: (
+      <ImageHeader
+        src={backyardDeckImg}
+        alt="Custom backyard deck built by Royal Crest General Contractors"
+      />
+    ),
+  },
+  {
     title: 'Commercial Construction',
     description: 'Professional spaces designed to impress and perform.',
     icon: <IconBuilding className="h-5 w-5 text-accent" />,
-    className: 'md:col-span-3',
+    className: 'md:col-span-1',
   },
 ];
 
@@ -91,7 +116,7 @@ export default function Services() {
                 key={i}
                 title={<span className="text-text">{item.title}</span>}
                 description={<span className="text-text/60">{item.description}</span>}
-                header={<GridHeader />}
+                header={item.header ?? <GridHeader />}
                 icon={item.icon}
                 className={`${item.className} reveal delay-${i + 1} ${gridIn ? 'visible' : ''}`}
               />
