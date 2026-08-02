@@ -8,12 +8,14 @@ const team = [
     role: 'Founder & General Contractor',
     bio: "With over two decades in residential and commercial construction, Alan founded Royal Crest General Contractors on a simple principle: build it right, or don't build it at all. He oversees every project personally, from permitting to final walkthrough, holding each job to the same standard of craftsmanship Dallas has come to expect from the Royal Crest name.",
     src: alanImg,
+    objectPosition: 'center 22%',
   },
   {
     name: 'Daniel',
     role: 'Project Manager',
     bio: 'Daniel keeps every Royal Crest job on schedule and on budget, coordinating trades, suppliers, and inspections so clients never have to. His background in luxury home renovation means no detail — down to the trim work — goes unchecked, and every homeowner stays informed at every step.',
     src: danImg,
+    objectPosition: 'center 15%',
   },
 ];
 
@@ -46,8 +48,11 @@ export default function Team() {
               <img
                 src={member.src}
                 alt={`${member.name}, ${member.role} at Royal Crest General Contractors`}
-                className="w-32 h-40 sm:w-36 sm:h-44 flex-shrink-0 object-cover"
-                style={{ filter: 'saturate(0.9) brightness(1.02)' }}
+                className="w-32 h-32 sm:w-36 sm:h-36 flex-shrink-0 rounded-full object-cover"
+                style={{
+                  filter: 'saturate(0.9) brightness(1.02)',
+                  objectPosition: member.objectPosition ?? 'center',
+                }}
               />
               <div>
                 <h3 className="font-heading font-bold text-xl text-text">
