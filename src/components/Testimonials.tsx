@@ -1,26 +1,29 @@
-import { useInView } from '../hooks/useInView';
-import { AnimatedTestimonials } from './ui/animated-testimonials';
-import abcImg from '../assets/big_roof.webp';
-import certainteedImg from '../assets/roof_birdseye.webp';
-import gafImg from '../assets/roofing_team.webp';
+import { useInView } from "../hooks/useInView";
+import { AnimatedTestimonials } from "./ui/animated-testimonials";
+import ryanJeffreyImg from "../assets/IMG_4454.webp";
+import certainteedImg from "../assets/roof_birdseye.webp";
+import gafImg from "../assets/roofing_team.webp";
 
 const testimonials = [
   {
-    quote: 'We were thoroughly impressed with the professionalism and attention to detail exhibited by Royal Crest General Contracting. Their work truly speaks for itself.',
-    name: 'Ryan Jeffrey',
-    designation: 'Custom Home · Highland Park',
-    src: abcImg,
+    quote:
+      "We were thoroughly impressed with the professionalism and attention to detail exhibited by Royal Crest General Contracting. Their work truly speaks for itself.",
+    name: "Ryan Jeffrey",
+    designation: "Exterior · Highland Park",
+    src: ryanJeffreyImg,
   },
   {
-    quote: "Royal Crest General Contracting transformed our vision into reality with their impeccable workmanship and dedication. Highly recommended!",
-    name: 'Nima Mojahed',
-    designation: 'Commercial Office · Frisco',
+    quote:
+      "Royal Crest General Contracting transformed our vision into reality with their impeccable workmanship and dedication. Highly recommended!",
+    name: "Nima Mojahed",
+    designation: "Roof · Frisco",
     src: certainteedImg,
   },
   {
-    quote: 'From start to finish, the team at Royal Crest General Contracting demonstrated reliability, skill, and a genuine passion for their craft. They exceeded our expectations in every way.',
-    name: 'Christopher Strenger',
-    designation: 'Kitchen Renovation · Plano',
+    quote:
+      "From start to finish, the team at Royal Crest General Contracting demonstrated reliability, skill, and a genuine passion for their craft. They exceeded our expectations in every way.",
+    name: "Christopher Strenger",
+    designation: "Roof · Plano",
     src: gafImg,
   },
 ];
@@ -31,19 +34,17 @@ export default function Testimonials() {
   return (
     <section id="testimonials" className="py-24 lg:py-28 bg-bg">
       <div className="max-w-[1260px] mx-auto px-8 lg:px-12">
-
-        <div ref={headRef} className={`mb-6 reveal ${headIn ? 'visible' : ''}`}>
+        <div ref={headRef} className={`mb-6 reveal ${headIn ? "visible" : ""}`}>
           <p className="label">Client Reviews</p>
           <h2
             className="font-heading font-bold leading-tight text-text"
-            style={{ fontSize: 'clamp(2.2rem, 4vw, 3.2rem)' }}
+            style={{ fontSize: "clamp(2.2rem, 4vw, 3.2rem)" }}
           >
             What Clients Say
           </h2>
         </div>
 
         <AnimatedTestimonials testimonials={testimonials} autoplay />
-
       </div>
     </section>
   );

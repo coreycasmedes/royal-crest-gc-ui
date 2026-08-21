@@ -1,6 +1,5 @@
 import { useInView } from '../hooks/useInView';
 import { LayoutGrid } from './ui/layout-grid';
-import bigRoofImg from '../assets/big_roof.webp';
 import homeImg from '../assets/home.webp';
 import roofBirdseyeImg from '../assets/roof_birdseye.webp';
 import roofingTeamImg from '../assets/roofing_team.webp';
@@ -18,12 +17,6 @@ function CardContent({ tag, title, meta }: { tag: string; title: string; meta: s
 }
 
 const cards = [
-  {
-    id: 1,
-    content: <CardContent tag="Roofing & Exterior" title="Highland Park Residence" meta="2024 · Dallas, TX" />,
-    className: "md:col-span-2",
-    thumbnail: bigRoofImg,
-  },
   {
     id: 2,
     content: <CardContent tag="Roofing" title="Lakewood Estate" meta="2023 · Dallas, TX" />,

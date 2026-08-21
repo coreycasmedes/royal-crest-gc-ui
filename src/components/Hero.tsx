@@ -1,5 +1,5 @@
 import { motion } from "motion/react";
-import backyardDeckImg from "../assets/backyard_deck1.webp";
+import heroExteriorImg from "../assets/72959.webp";
 import droneRoofVideo from "../assets/drone_roof.mp4";
 // import { TextGenerateEffect } from "./ui/text-generate-effect";
 import { VideoText } from "./ui/video-text";
@@ -126,8 +126,8 @@ export default function Hero() {
         >
           <div className="w-full overflow-hidden">
             <img
-              src={backyardDeckImg}
-              alt="Custom backyard deck built by Royal Crest — Dallas, TX"
+              src={heroExteriorImg}
+              alt="Custom home exterior with copper roofline built by Royal Crest — Dallas, TX"
               width={1400}
               height={788}
               className="aspect-[16/9] h-auto w-full object-cover rounded-2xl"
@@ -141,7 +141,7 @@ export default function Hero() {
             Dallas · Plano · Frisco · Highland Park
           </p>
           <p className="text-[0.68rem] font-medium tracking-[0.22em] uppercase text-text/40">
-            Licensed & Insured · Est. 2004
+            Licensed & Insured
           </p>
         </div>
       </div>
