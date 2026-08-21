@@ -25,13 +25,12 @@ jobs:
 
       - run: npm ci
       - run: npm run build
-        env:
-          VITE_BASE_URL: /royal-crest-gc-ui/
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./dist
+          cname: www.royalcrestgc.com
           # Preserve pr-preview/* left behind by pr-preview.yml
           keep_files: true
