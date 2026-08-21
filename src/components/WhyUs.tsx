@@ -30,8 +30,8 @@ export default function WhyUs() {
               Aspire To
             </h2>
             <p className="text-[0.9rem] leading-[1.78] text-text/60">
-              Twenty years of craft, honesty, and delivering on our word —
-              across Dallas and beyond.
+              Real craft, honesty, and delivering on our word, across Dallas
+              and beyond.
             </p>
           </div>
 

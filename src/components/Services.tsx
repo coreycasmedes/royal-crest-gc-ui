@@ -1,22 +1,18 @@
 import {
   IconHome2,
-  IconChefHat,
-  IconBath,
-  IconHomePlus,
+  IconHomeCog,
   IconHammer,
-  IconBuilding,
   IconFence,
 } from '@tabler/icons-react';
 import { useInView } from '../hooks/useInView';
 import { BentoGrid, BentoGridItem } from './ui/bento-grid';
 import backyardDeckImg from '../assets/backyard_deck1.webp';
+import gutterImg from '../assets/IMG_4673.webp';
+import exteriorWorkImg from '../assets/IMG_3919_edited.webp';
+import bigRoofImg from '../assets/big_roof.webp';
 
 const scrollTo = (id: string) =>
   document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
-
-const GridHeader = () => (
-  <div className="grid-pattern flex flex-1 w-full h-full min-h-[6rem] rounded-xl" />
-);
 
 const ImageHeader = ({ src, alt }: { src: string; alt: string }) => (
   <div className="flex flex-1 w-full h-full min-h-[6rem] rounded-xl overflow-hidden">
@@ -31,34 +27,25 @@ const ImageHeader = ({ src, alt }: { src: string; alt: string }) => (
 
 const items = [
   {
-    title: 'Custom Home Builds',
-    description: 'Ground-up construction built to your exact vision.',
+    title: 'Exterior',
+    description: 'Painting, stucco, and exterior finish work that lasts.',
     icon: <IconHome2 className="h-5 w-5 text-accent" />,
-    className: 'md:col-span-2',
-  },
-  {
-    title: 'Kitchen Remodels',
-    description: 'Custom cabinetry, stone surfaces, premium fixtures.',
-    icon: <IconChefHat className="h-5 w-5 text-accent" />,
     className: 'md:col-span-1',
+    header: <ImageHeader src={exteriorWorkImg} alt="Exterior finish work by Royal Crest General Contractors" />,
   },
   {
-    title: 'Bathroom Renovations',
-    description: 'Spa-grade tilework, frameless glass, luxury finishes.',
-    icon: <IconBath className="h-5 w-5 text-accent" />,
+    title: 'Home Improvement',
+    description: 'Upgrades and repairs that raise the value of your home.',
+    icon: <IconHomeCog className="h-5 w-5 text-accent" />,
     className: 'md:col-span-1',
+    header: <ImageHeader src={gutterImg} alt="Copper gutter installation by Royal Crest General Contractors" />,
   },
   {
-    title: 'Home Additions',
-    description: "Seamless expansions that match your home's character.",
-    icon: <IconHomePlus className="h-5 w-5 text-accent" />,
-    className: 'md:col-span-1',
-  },
-  {
-    title: 'Roofing & Exterior',
+    title: 'Roofing',
     description: 'Premium protection built for Texas weather.',
     icon: <IconHammer className="h-5 w-5 text-accent" />,
     className: 'md:col-span-1',
+    header: <ImageHeader src={bigRoofImg} alt="Aerial view of a roofing project by Royal Crest General Contractors" />,
   },
   {
     title: 'Decks & Outdoor Living',
@@ -71,12 +58,6 @@ const items = [
         alt="Custom backyard deck built by Royal Crest General Contractors"
       />
     ),
-  },
-  {
-    title: 'Commercial Construction',
-    description: 'Professional spaces designed to impress and perform.',
-    icon: <IconBuilding className="h-5 w-5 text-accent" />,
-    className: 'md:col-span-1',
   },
 ];
 
@@ -116,7 +97,7 @@ export default function Services() {
                 key={i}
                 title={<span className="text-text">{item.title}</span>}
                 description={<span className="text-text/60">{item.description}</span>}
-                header={item.header ?? <GridHeader />}
+                header={item.header}
                 icon={item.icon}
                 className={`${item.className} reveal delay-${i + 1} ${gridIn ? 'visible' : ''}`}
               />

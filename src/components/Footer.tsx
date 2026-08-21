@@ -32,7 +32,7 @@ export default function Footer() {
               <img src={logo} alt="Royal Crest General Contractors" className="h-16 w-auto" />
             </button>
             <p className="text-[0.84rem] leading-[1.75] mb-3 text-text/60">
-              Dallas's premier general contractor since 2004.
+              Dallas's premier general contractor.
             </p>
             <p className="text-[0.76rem] font-medium text-text/40">
               (469) 432 0341
