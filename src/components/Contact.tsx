@@ -2,8 +2,8 @@ import { useInView } from "../hooks/useInView";
 import SignupForm from "./ui/signup-form";
 
 const info = [
-  { label: "Phone", value: "(469) 432 0341" },
-  { label: "Email", value: "royalcrestgeneralcontracting@outlook.com" },
+  { label: "Phone", value: "(469) 432 0341", href: "tel:+14694320341" },
+  { label: "Email", value: "royalcrestgeneralcontracting@outlook.com", href: "mailto:royalcrestgeneralcontracting@outlook.com" },
   { label: "Location", value: "Dallas, Ft. Worth & Surrounding Areas" },
   { label: "Hours", value: "Mon–Fri  7 AM – 6 PM\nSat  8 AM – 4 PM" },
 ];
@@ -51,14 +51,23 @@ export default function Contact() {
           <SignupForm />
 
           <div className="flex flex-col gap-8 lg:pt-2">
-            {info.map(({ label, value }) => (
+            {info.map(({ label, value, href }) => (
               <div key={label}>
                 <p className="text-[0.66rem] font-semibold tracking-[0.22em] uppercase mb-1.5 text-text/40">
                   {label}
                 </p>
-                <p className="text-[0.95rem] leading-relaxed whitespace-pre-line text-text">
-                  {value}
-                </p>
+                {href ? (
+                  <a
+                    href={href}
+                    className="text-[0.95rem] leading-relaxed whitespace-pre-line text-text hover:text-accent transition-colors"
+                  >
+                    {value}
+                  </a>
+                ) : (
+                  <p className="text-[0.95rem] leading-relaxed whitespace-pre-line text-text">
+                    {value}
+                  </p>
+                )}
               </div>
             ))}
 

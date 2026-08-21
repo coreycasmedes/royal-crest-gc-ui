@@ -130,7 +130,7 @@ export default function Hero() {
               alt="Custom home exterior with copper roofline built by Royal Crest — Dallas, TX"
               width={1400}
               height={788}
-              className="aspect-[16/9] h-auto w-full object-cover rounded-2xl"
+              className="aspect-[4/3] h-auto w-full object-cover rounded-2xl"
               style={{ filter: "saturate(0.82) brightness(1.02)" }}
             />
           </div>

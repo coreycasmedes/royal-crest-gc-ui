@@ -34,9 +34,12 @@ export default function Footer() {
             <p className="text-[0.84rem] leading-[1.75] mb-3 text-text/60">
               Dallas's premier general contractor.
             </p>
-            <p className="text-[0.76rem] font-medium text-text/40">
+            <a
+              href="tel:+14694320341"
+              className="text-[0.76rem] font-medium text-text/40 hover:text-accent transition-colors"
+            >
               (469) 432 0341
-            </p>
+            </a>
           </div>
 
           {/* Links */}
