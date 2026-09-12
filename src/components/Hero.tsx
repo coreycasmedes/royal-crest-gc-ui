@@ -16,7 +16,6 @@ const staticHeadlineLines = ["The Gold", "Standard of", "Construction"];
 const HEADLINE_FONT_SIZE = "clamp(2.4rem, 16vw, 9rem)";
 const HEADLINE_LINE_HEIGHT_EM = 1.05;
 // const cyclingWords = [
-//   "Custom Homes",
 //   "Full Renovations",
 //   "Kitchens & Baths",
 //   "Roofs & Exteriors",
@@ -127,7 +126,7 @@ export default function Hero() {
           <div className="w-full overflow-hidden">
             <img
               src={heroExteriorImg}
-              alt="Custom home exterior with copper roofline built by Royal Crest — Dallas, TX"
+              alt="Residential exterior with copper roofline built by Royal Crest — Dallas, TX"
               width={1400}
               height={788}
               className="aspect-[4/3] h-auto w-full object-cover rounded-2xl"

@@ -12,7 +12,6 @@ const nav = [
 ];
 
 const svcList = [
-  'Custom Home Builds',
   'Kitchen Remodels',
   'Bathroom Renovations',
   'Home Additions',

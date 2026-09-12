@@ -25,7 +25,7 @@ const cards = [
   },
   {
     id: 3,
-    content: <CardContent tag="Custom Home" title="Frisco Custom Build" meta="2024 · Frisco, TX" />,
+    content: <CardContent tag="Residential" title="Frisco Residence" meta="2024 · Frisco, TX" />,
     className: "md:col-span-1",
     thumbnail: homeImg,
   },

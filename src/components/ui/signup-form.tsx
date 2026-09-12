@@ -6,7 +6,6 @@ import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 
 const services = [
-  "Custom Home Build",
   "Kitchen Remodel",
   "Bathroom Renovation",
   "Home Addition",
@@ -16,8 +15,6 @@ const services = [
 ];
 
 const detailsPlaceholder: Record<string, string> = {
-  "Custom Home Build":
-    "Tell us about your lot, desired square footage, style, and timeline…",
   "Kitchen Remodel":
     "Describe your current kitchen layout and what you'd like changed (cabinets, countertops, layout, etc.)…",
   "Bathroom Renovation":
