@@ -14,11 +14,25 @@ import bigRoofImg from '../assets/big_roof.webp';
 const scrollTo = (id: string) =>
   document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
 
-const ImageHeader = ({ src, alt }: { src: string; alt: string }) => (
+// width/height are the file's real dimensions, so the lazy-loaded image
+// reserves its space before it arrives instead of pushing the page down.
+const ImageHeader = ({
+  src,
+  alt,
+  width,
+  height,
+}: {
+  src: string;
+  alt: string;
+  width: number;
+  height: number;
+}) => (
   <div className="flex flex-1 w-full h-full min-h-[6rem] rounded-xl overflow-hidden">
     <img
       src={src}
       alt={alt}
+      width={width}
+      height={height}
       loading="lazy"
       decoding="async"
       className="h-full w-full object-cover"
@@ -33,21 +47,21 @@ const items = [
     description: 'Painting, stucco, and exterior finish work that lasts.',
     icon: <IconHome2 className="h-5 w-5 text-accent" />,
     className: 'md:col-span-1',
-    header: <ImageHeader src={exteriorWorkImg} alt="Exterior finish work by Royal Crest General Contractors" />,
+    header: <ImageHeader src={exteriorWorkImg} width={956} height={900} alt="Exterior finish work by Royal Crest General Contractors" />,
   },
   {
     title: 'Home Improvement',
     description: 'Upgrades and repairs that raise the value of your home.',
     icon: <IconHomeCog className="h-5 w-5 text-accent" />,
     className: 'md:col-span-1',
-    header: <ImageHeader src={gutterImg} alt="Copper gutter installation by Royal Crest General Contractors" />,
+    header: <ImageHeader src={gutterImg} width={1500} height={2000} alt="Copper gutter installation by Royal Crest General Contractors" />,
   },
   {
     title: 'Roofing',
     description: 'Premium protection built for Texas weather.',
     icon: <IconHammer className="h-5 w-5 text-accent" />,
     className: 'md:col-span-1',
-    header: <ImageHeader src={bigRoofImg} alt="Aerial view of a roofing project by Royal Crest General Contractors" />,
+    header: <ImageHeader src={bigRoofImg} width={2000} height={1500} alt="Aerial view of a roofing project by Royal Crest General Contractors" />,
   },
   {
     title: 'Decks & Outdoor Living',
@@ -57,6 +71,8 @@ const items = [
     header: (
       <ImageHeader
         src={backyardDeckImg}
+        width={2000}
+        height={1125}
         alt="Custom backyard deck built by Royal Crest General Contractors"
       />
     ),
