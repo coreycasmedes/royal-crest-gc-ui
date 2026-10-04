@@ -51,6 +51,8 @@ export default function Team() {
               <img
                 src={member.src}
                 alt={`${member.name}, ${member.role} at Royal Crest General Contractors`}
+                loading="lazy"
+                decoding="async"
                 className="w-32 h-32 sm:w-36 sm:h-36 flex-shrink-0 rounded-full object-cover"
                 style={{
                   filter: "saturate(0.9) brightness(1.02)",

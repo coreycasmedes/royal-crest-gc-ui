@@ -28,6 +28,17 @@ export interface VideoTextProps {
    */
   preload?: "auto" | "metadata" | "none"
   /**
+   * Image shown inside the text until the video has a frame to paint
+   */
+  poster?: string
+  /**
+   * Don't fetch the video until the page has finished loading, so it never
+   * competes with critical resources. The poster fills the text meanwhile,
+   * and stays for users who prefer reduced motion. Overrides autoPlay/preload.
+   * @default false
+   */
+  startOnLoad?: boolean
+  /**
    * Playback speed multiplier (1 = normal, 0.5 = half speed)
    * @default 1
    */
@@ -88,6 +99,8 @@ export function VideoText({
   muted = true,
   loop = true,
   preload = "auto",
+  poster,
+  startOnLoad = false,
   playbackRate = 1,
   lineHeight = 1.05,
   fontSize = 20,
@@ -107,6 +120,32 @@ export function VideoText({
   useEffect(() => {
     if (videoRef.current) videoRef.current.playbackRate = playbackRate
   }, [playbackRate])
+
+  // React only sets `muted` as a property. Safari's autoplay policy checks the
+  // attribute, so without this the video never starts on iOS.
+  useEffect(() => {
+    const video = videoRef.current
+    if (!video) return
+    video.defaultMuted = muted
+    video.muted = muted
+  }, [muted])
+
+  useEffect(() => {
+    const video = videoRef.current
+    if (!startOnLoad || !video) return
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return
+
+    const start = () => {
+      video.playbackRate = playbackRate
+      video.play().catch(() => {})
+    }
+    if (document.readyState === "complete") {
+      start()
+      return
+    }
+    window.addEventListener("load", start, { once: true })
+    return () => window.removeEventListener("load", start)
+  }, [startOnLoad, playbackRate])
 
   useEffect(() => {
     const updateSvgMask = () => {
@@ -164,10 +203,11 @@ export function VideoText({
         <video
           ref={videoRef}
           className="h-full w-full object-cover"
-          autoPlay={autoPlay}
+          autoPlay={autoPlay && !startOnLoad}
           muted={muted}
           loop={loop}
-          preload={preload}
+          preload={startOnLoad ? "none" : preload}
+          poster={poster}
           playsInline
         >
           <source src={src} />

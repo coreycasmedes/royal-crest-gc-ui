@@ -24,6 +24,10 @@ export default function Badges() {
               key={alt}
               src={src}
               alt={alt}
+              width={258}
+              height={258}
+              loading="lazy"
+              decoding="async"
               className="h-24 w-auto object-contain transition-all duration-300 grayscale opacity-55 hover:grayscale-0 hover:opacity-100"
             />
           ))}

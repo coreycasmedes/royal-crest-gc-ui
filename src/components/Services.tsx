@@ -19,6 +19,8 @@ const ImageHeader = ({ src, alt }: { src: string; alt: string }) => (
     <img
       src={src}
       alt={alt}
+      loading="lazy"
+      decoding="async"
       className="h-full w-full object-cover"
       style={{ filter: 'saturate(0.9) brightness(1.02)' }}
     />
