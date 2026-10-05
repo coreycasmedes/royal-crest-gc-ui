@@ -60,23 +60,32 @@ export default function Hero() {
           </motion.div>
         </h1>
 
+        {/* Placeholder wording — restates the service list and service area
+            already on the page; owners still need to confirm it. */}
+        <p className="relative z-10 mx-auto mt-5 max-w-xl text-center text-base leading-relaxed text-pretty text-text/70 md:text-lg">
+          Roofing, exteriors and home improvement across Dallas, Plano, Frisco
+          and Highland Park.
+        </p>
+
+        {/* id is read by MobileActionBar, which stays hidden while these are on screen */}
         <motion.div
+          id="hero-actions"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.4, delay: 0.3 }}
-          className="relative z-10 mt-3 flex flex-wrap items-center justify-center gap-2"
+          className="relative z-10 mt-6 flex flex-wrap items-center justify-center gap-2"
         >
           <a
-            href="#portfolio"
+            href="#contact"
             className="rounded-2xl w-52 text-center transform px-6 py-3 text-[0.78rem] font-semibold tracking-[0.08em] uppercase bg-deep text-bg hover:bg-accent-ink transition-colors duration-300 hover:-translate-y-0.5"
           >
-            View Our Work
+            Get a Quote
           </a>
           <a
-            href="#contact"
+            href="#portfolio"
             className="rounded-2xl w-52 text-center transform border border-text/20 text-text px-6 py-3 text-[0.78rem] font-semibold tracking-[0.08em] uppercase hover:border-text transition-all duration-300 hover:-translate-y-0.5"
           >
-            Get a Quote
+            View Our Work
           </a>
         </motion.div>
 
@@ -92,7 +101,7 @@ export default function Hero() {
               height={1125}
               fetchPriority="high"
               decoding="async"
-              className="aspect-[4/3] h-auto w-full object-cover rounded-2xl"
+              className="aspect-[4/3] lg:aspect-[2/1] h-auto w-full object-cover rounded-2xl"
               style={{ filter: "saturate(0.82) brightness(1.02)" }}
             />
           </div>
