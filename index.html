@@ -29,10 +29,19 @@
     <meta name="twitter:description" content="Dallas's premier general contractor, delivering luxury residential and commercial construction in Dallas, Plano, Frisco &amp; Highland Park since 2004." />
     <meta name="twitter:image" content="https://www.royalcrestgc.com/og-image.jpg" />
 
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400&display=swap" rel="stylesheet" />
     <link rel="preload" href="/assets/Geist-Variable-CrgPqtmy.woff2" as="font" type="font/woff2" crossorigin />
+    <!-- Headline poster + hero image are the LCP candidates; both are rendered by JS, so preload them here -->
+    <link rel="preload" as="image" type="image/webp" fetchpriority="high" href="/assets/drone_roof_poster-orm1uGrR.webp" />
+    <!-- Keep imagesrcset/imagesizes in sync with Hero.tsx -->
+    <link
+      rel="preload"
+      as="image"
+      type="image/webp"
+      fetchpriority="high"
+      href="/assets/hero-1200-Cv8L9SPC.webp"
+      imagesrcset="/assets/hero-800-BGV2LUre.webp 800w, /assets/hero-1200-Cv8L9SPC.webp 1200w, /assets/hero-1500-CvZHJfF6.webp 1500w"
+      imagesizes="(min-width: 1280px) 1160px, (min-width: 1024px) calc(100vw - 120px), calc(100vw - 88px)"
+    />
 
     <script type="application/ld+json">
       {
@@ -58,8 +67,8 @@
         }
       }
     </script>
-    <script type="module" crossorigin src="/assets/index-D-uxAjMg.js"></script>
-    <link rel="stylesheet" crossorigin href="/assets/index-BVcgYE7b.css">
+    <script type="module" crossorigin src="/assets/index-Bb68BiuV.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-Cex_h_tt.css">
   </head>
   <body>
     <div id="root"></div>
