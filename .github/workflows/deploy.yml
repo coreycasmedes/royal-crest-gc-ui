@@ -27,11 +27,28 @@ jobs:
       - run: npm run lint
       - run: npm run build
 
+      # GitHub Pages reads the custom domain from CNAME at the root of gh-pages,
+      # and .nojekyll stops it running Jekyll. Put both in every production
+      # build so the deploy below can never drop them.
+      # They are added here rather than in public/ on purpose: PR previews
+      # publish dist/ to pr-preview/pr-N/, and pr-preview-action leaves these
+      # two files behind when it removes a preview.
+      - name: Add CNAME and .nojekyll
+        run: |
+          echo "www.royalcrestgc.com" > dist/CNAME
+          touch dist/.nojekyll
+
       - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v4
+        uses: JamesIves/github-pages-deploy-action@v4
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist
-          cname: www.royalcrestgc.com
-          # Preserve pr-preview/* left behind by pr-preview.yml
-          keep_files: true
+          folder: dist
+          branch: gh-pages
+          # Delete files on gh-pages that are no longer part of the build
+          # (old hashed bundles, renamed or removed images)...
+          clean: true
+          # ...but never the PR previews published by pr-preview.yml.
+          # Must match `umbrella-dir` there.
+          clean-exclude: pr-preview/
+          # Rebase onto gh-pages instead of force-pushing, so a preview
+          # deployed or removed while this job runs is not overwritten.
+          force: false
