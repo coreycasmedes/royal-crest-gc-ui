@@ -1,10 +1,12 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { ReactNode } from "react";
 import { motion } from "motion/react";
 import { cn } from "@/lib/utils";
 
 type Card = {
   id: number;
+  /** Describes the photo; also names the card for keyboard and screen-reader users */
+  alt: string;
   content: ReactNode;
   className: string;
   thumbnail: string;
@@ -24,15 +26,35 @@ export const LayoutGrid = ({ cards }: { cards: Card[] }) => {
     setSelected(null);
   };
 
+  useEffect(() => {
+    if (!selected) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== "Escape") return;
+      setLastSelected(selected);
+      setSelected(null);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [selected]);
+
   return (
     <div className="w-full h-full p-10 grid grid-cols-1 md:grid-cols-2 auto-rows-fr max-w-7xl mx-auto gap-6 relative">
       {cards.map((card, i) => (
         <div key={i} className={cn(card.className, "")}>
           <motion.div
             onClick={() => handleClick(card)}
+            onKeyDown={(e) => {
+              if (e.key !== "Enter" && e.key !== " ") return;
+              e.preventDefault();
+              handleClick(card);
+            }}
+            role="button"
+            tabIndex={0}
+            aria-expanded={selected?.id === card.id}
+            aria-label={`Show details: ${card.alt}`}
             className={cn(
               card.className,
-              "relative overflow-hidden",
+              "relative overflow-hidden cursor-pointer",
               selected?.id === card.id
                 ? "rounded-lg cursor-pointer absolute inset-0 h-1/2 w-full md:w-1/2 m-auto z-50 flex justify-center items-center flex-wrap flex-col"
                 : lastSelected?.id === card.id
@@ -67,7 +89,7 @@ const ImageComponent = ({ card }: { card: Card }) => (
     loading="lazy"
     decoding="async"
     className="object-cover object-top absolute inset-0 h-full w-full transition duration-200"
-    alt="thumbnail"
+    alt={card.alt}
   />
 );
 

@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import { motion } from "motion/react";
+import { motion, useReducedMotion } from "motion/react";
 import { useState, useEffect } from "react";
 
 type LoadingState = { text: string };
@@ -55,7 +55,7 @@ const LoaderCore = ({
             </div>
             <span
               className={cn(
-                "text-base text-text/40 leading-snug",
+                "text-base text-text/65 leading-snug",
                 value === index && "text-text font-medium"
               )}
             >
@@ -78,8 +78,10 @@ export const MultiStepLoader = ({
   loop?: boolean;
 }) => {
   const [currentState, setCurrentState] = useState(0);
+  const reduceMotion = useReducedMotion();
 
   useEffect(() => {
+    if (reduceMotion) return;
     const timeout = setTimeout(() => {
       setCurrentState(prev =>
         loop
@@ -88,7 +90,21 @@ export const MultiStepLoader = ({
       );
     }, duration);
     return () => clearTimeout(timeout);
-  }, [currentState, loop, loadingStates.length, duration]);
+  }, [currentState, loop, loadingStates.length, duration, reduceMotion]);
+
+  // Reduced motion: show every step at once instead of cycling through them
+  if (reduceMotion) {
+    return (
+      <ul className="flex flex-col gap-4">
+        {loadingStates.map((state) => (
+          <li key={state.text} className="flex items-start gap-3">
+            <CheckFilled className="flex-shrink-0 mt-0.5 text-accent" />
+            <span className="text-base text-text leading-snug">{state.text}</span>
+          </li>
+        ))}
+      </ul>
+    );
+  }
 
   return (
     <div className="relative h-52 overflow-hidden">

@@ -85,6 +85,12 @@ export interface VideoTextProps {
    */
   fontFamily?: string
   /**
+   * URL of a woff2 file for the first family in `fontFamily`. The mask is an
+   * SVG image, which can't see fonts loaded by the page, so the file is
+   * inlined into it. Without this the text falls back to a system font.
+   */
+  fontSrc?: string
+  /**
    * The element type to render for the text
    * @default "div"
    */
@@ -109,13 +115,18 @@ export function VideoText({
   textAnchor = "middle",
   dominantBaseline = "middle",
   fontFamily = "sans-serif",
+  fontSrc,
   as: Component = "div",
 }: VideoTextProps) {
   const [svgMask, setSvgMask] = useState("")
+  // undefined = still loading, null = unavailable (mask uses the fallback font)
+  const [fontDataUrl, setFontDataUrl] = useState<string | null | undefined>(
+    fontSrc ? undefined : null,
+  )
   const videoRef = useRef<HTMLVideoElement>(null)
   const lines = Array.isArray(children) ? children : [children]
   const content = lines.join(" ")
-  const linesKey = lines.join(" ")
+  const linesKey = lines.join("\n")
 
   useEffect(() => {
     if (videoRef.current) videoRef.current.playbackRate = playbackRate
@@ -148,7 +159,32 @@ export function VideoText({
   }, [startOnLoad, playbackRate])
 
   useEffect(() => {
+    if (!fontSrc) return
+    let cancelled = false
+    fetch(fontSrc)
+      .then((res) => (res.ok ? res.blob() : Promise.reject(res.status)))
+      .then(
+        (blob) =>
+          new Promise<string>((resolve, reject) => {
+            const reader = new FileReader()
+            reader.onload = () => resolve(reader.result as string)
+            reader.onerror = reject
+            reader.readAsDataURL(blob)
+          }),
+      )
+      .then((url) => !cancelled && setFontDataUrl(url))
+      .catch(() => !cancelled && setFontDataUrl(null))
+    return () => {
+      cancelled = true
+    }
+  }, [fontSrc])
+
+  useEffect(() => {
+    // Wait for the font so the text doesn't flash in the fallback first
+    if (fontDataUrl === undefined) return
+
     const updateSvgMask = () => {
+      const lines = linesKey.split("\n")
       const responsiveFontSize =
         typeof fontSize === "number" ? `${fontSize}vw` : fontSize
       const letterSpacingAttr = letterSpacing
@@ -164,7 +200,11 @@ export function VideoText({
           return `<tspan x='50%' dy='${dy}em'>${line}</tspan>`
         })
         .join("")
-      const newSvgMask = `<svg xmlns='http://www.w3.org/2000/svg' width='100%' height='100%'><text x='50%' y='50%' font-size='${responsiveFontSize}' font-weight='${fontWeight}' text-anchor='${textAnchor}' dominant-baseline='${dominantBaseline}' font-family='${fontFamily}'${letterSpacingAttr}>${tspans}</text></svg>`
+      const embeddedFamily = fontFamily.split(",")[0].trim().replace(/['"]/g, "")
+      const fontFace = fontDataUrl
+        ? `<defs><style>@font-face{font-family:'${embeddedFamily}';src:url(${fontDataUrl}) format('woff2');font-weight:100 900;}</style></defs>`
+        : ""
+      const newSvgMask = `<svg xmlns='http://www.w3.org/2000/svg' width='100%' height='100%'>${fontFace}<text x='50%' y='50%' font-size='${responsiveFontSize}' font-weight='${fontWeight}' text-anchor='${textAnchor}' dominant-baseline='${dominantBaseline}' font-family='${fontFamily}'${letterSpacingAttr}>${tspans}</text></svg>`
       setSvgMask(newSvgMask)
     }
 
@@ -180,6 +220,7 @@ export function VideoText({
     textAnchor,
     dominantBaseline,
     fontFamily,
+    fontDataUrl,
   ])
 
   const dataUrlMask = `url("data:image/svg+xml,${encodeURIComponent(svgMask)}")`

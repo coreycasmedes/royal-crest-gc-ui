@@ -1,5 +1,5 @@
 import { IconArrowLeft, IconArrowRight } from "@tabler/icons-react";
-import { motion, AnimatePresence } from "motion/react";
+import { motion, AnimatePresence, useReducedMotion } from "motion/react";
 import { useEffect, useState } from "react";
 
 type Testimonial = {
@@ -17,29 +17,44 @@ export const AnimatedTestimonials = ({
   autoplay?: boolean;
 }) => {
   const [active, setActive] = useState(0);
+  // Autoplay pauses while hovered or focused, and stops for good once the
+  // visitor picks a review themselves.
+  const [paused, setPaused] = useState(false);
+  const [stopped, setStopped] = useState(false);
+  const reduceMotion = useReducedMotion();
+  // Resting tilt for the cards behind the active one, fixed per card
+  const [rotations] = useState(() =>
+    testimonials.map(() => Math.floor(Math.random() * 21) - 10),
+  );
 
   const handleNext = () => {
+    setStopped(true);
     setActive((prev) => (prev + 1) % testimonials.length);
   };
 
   const handlePrev = () => {
+    setStopped(true);
     setActive((prev) => (prev - 1 + testimonials.length) % testimonials.length);
   };
 
   const isActive = (index: number) => index === active;
 
   useEffect(() => {
-    if (!autoplay) return;
+    if (!autoplay || paused || stopped || reduceMotion) return;
     const interval = setInterval(() => {
       setActive((prev) => (prev + 1) % testimonials.length);
     }, 5000);
     return () => clearInterval(interval);
-  }, [autoplay, testimonials.length]);
-
-  const randomRotateY = () => Math.floor(Math.random() * 21) - 10;
+  }, [autoplay, paused, stopped, reduceMotion, testimonials.length]);
 
   return (
-    <div className="mx-auto max-w-sm px-4 font-sans antialiased md:max-w-4xl md:px-8 lg:px-12">
+    <div
+      className="mx-auto max-w-sm px-4 font-sans antialiased md:max-w-4xl md:px-8 lg:px-12"
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+      onFocus={() => setPaused(true)}
+      onBlur={() => setPaused(false)}
+    >
       <div className="relative grid grid-cols-1 gap-20 md:grid-cols-2">
         <div>
           <div className="relative h-80 w-full">
@@ -51,13 +66,13 @@ export const AnimatedTestimonials = ({
                     opacity: 0,
                     scale: 0.9,
                     z: -100,
-                    rotate: randomRotateY(),
+                    rotate: rotations[index],
                   }}
                   animate={{
                     opacity: isActive(index) ? 1 : 0.7,
                     scale: isActive(index) ? 1 : 0.95,
                     z: isActive(index) ? 0 : -100,
-                    rotate: isActive(index) ? 0 : randomRotateY(),
+                    rotate: isActive(index) ? 0 : rotations[index],
                     zIndex: isActive(index)
                       ? 40
                       : testimonials.length + 2 - index,
@@ -67,7 +82,7 @@ export const AnimatedTestimonials = ({
                     opacity: 0,
                     scale: 0.9,
                     z: 100,
-                    rotate: randomRotateY(),
+                    rotate: rotations[index],
                   }}
                   transition={{ duration: 0.4, ease: "easeInOut" }}
                   className="absolute inset-0 origin-bottom"
@@ -99,10 +114,10 @@ export const AnimatedTestimonials = ({
             <h3 className="text-2xl font-bold text-text">
               {testimonials[active].name}
             </h3>
-            <p className="text-sm text-text/60">
+            <p className="text-sm text-text/70">
               {testimonials[active].designation}
             </p>
-            <motion.p className="mt-8 text-lg text-text/60">
+            <motion.p className="mt-8 text-lg text-text/70">
               {testimonials[active].quote.split(" ").map((word, index) => (
                 <motion.span
                   key={index}
@@ -123,13 +138,17 @@ export const AnimatedTestimonials = ({
 
           <div className="flex gap-4 pt-12 md:pt-0">
             <button
+              type="button"
               onClick={handlePrev}
+              aria-label="Previous review"
               className="group/button flex h-7 w-7 items-center justify-center rounded-full bg-surface"
             >
               <IconArrowLeft className="h-5 w-5 text-text transition-transform duration-300 group-hover/button:rotate-12" />
             </button>
             <button
+              type="button"
               onClick={handleNext}
+              aria-label="Next review"
               className="group/button flex h-7 w-7 items-center justify-center rounded-full bg-surface"
             >
               <IconArrowRight className="h-5 w-5 text-text transition-transform duration-300 group-hover/button:-rotate-12" />

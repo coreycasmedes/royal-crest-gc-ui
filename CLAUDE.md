@@ -33,6 +33,7 @@ Tailwind v4 uses **no `tailwind.config.js`**. Configuration lives entirely in `s
   --color-bg:      #f7f7f2;
   --color-surface: #e4e6c3;
   --color-accent:  #899878;
+  --color-accent-ink: #5f6e51;
   --color-text:    #222725;
   --color-deep:    #121113;
 
@@ -60,14 +61,15 @@ plugins: [react(), tailwindcss()]
 |-------------------|-------------|------------------|--------------------------------|
 | `--color-bg`      | `#f7f7f2`   | `bg-bg`          | Page background (porcelain)    |
 | `--color-surface` | `#e4e6c3`   | `bg-surface`     | Cards, borders, gap fills      |
-| `--color-accent`  | `#899878`   | `text-accent`    | Brand accent (palm leaf green) |
+| `--color-accent`  | `#899878`   | `text-accent`    | Brand accent — decoration only (icons, fills); 2.9:1 on bg, too light for text |
+| `--color-accent-ink` | `#5f6e51` | `text-accent-ink` | Accent for text, hover states and focus rings (5.1:1 on bg) |
 | `--color-text`    | `#222725`   | `text-text`      | Primary text (carbon black)    |
 | `--color-deep`    | `#121113`   | `bg-deep`        | CTAs, dark fills (onyx)        |
 
 ### Opacity modifier syntax (Tailwind v4)
 Use `/` modifiers for opacity variants — no inline styles needed:
-- `text-text/60` — secondary text
-- `text-text/40` — meta / placeholder text
+- `text-text/70` — secondary text (lowest opacity that passes 4.5:1 comfortably)
+- `text-text/65` — meta / placeholder text (4.7:1; don't go lower for readable text)
 - `bg-accent/20` — subtle accent tint
 - `border-text/10` — hairline borders
 
@@ -75,9 +77,9 @@ Use `/` modifiers for opacity variants — no inline styles needed:
 | Old pattern                          | New class                        |
 |--------------------------------------|----------------------------------|
 | `style={{ color: 'var(--color-ink)' }}` | `text-text`                   |
-| `style={{ color: 'var(--color-muted)' }}` | `text-text/60`              |
-| `style={{ color: 'var(--color-faint)' }}` | `text-text/40`              |
-| `style={{ color: 'var(--color-gold)' }}` | `text-accent`                |
+| `style={{ color: 'var(--color-muted)' }}` | `text-text/70`              |
+| `style={{ color: 'var(--color-faint)' }}` | `text-text/65`              |
+| `style={{ color: 'var(--color-gold)' }}` | `text-accent-ink` (text) / `text-accent` (icons) |
 | `style={{ background: '#fafaf8' }}`  | `bg-bg`                          |
 | `style={{ background: 'var(--color-ink)' }}` | `bg-deep`               |
 | `rgba(26,23,20,0.09)` border/gap     | `bg-surface` / `border-surface`  |
@@ -138,15 +140,17 @@ For staggered children, apply `delay-1` through `delay-6` alongside `reveal`. Th
 
 ## Button Patterns
 
+In-page navigation uses real links (`<a href="#contact">`), not buttons with `scrollIntoView`; smooth scrolling comes from CSS. Use `<button>` only for actions.
+
 ```tsx
 // Primary CTA
-className="bg-deep text-bg hover:bg-accent transition-colors duration-200"
+className="bg-deep text-bg hover:bg-accent-ink transition-colors duration-200"
 
 // Outline underline link
-className="border-b border-text text-text hover:text-accent hover:border-accent transition-colors duration-200"
+className="border-b border-text text-text hover:text-accent-ink hover:border-accent-ink transition-colors duration-200"
 
 // Nav link
-className="text-text/60 hover:text-text transition-colors"
+className="text-text/70 hover:text-text transition-colors"
 ```
 
 ## Images

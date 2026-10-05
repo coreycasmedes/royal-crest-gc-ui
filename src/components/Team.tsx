@@ -63,10 +63,10 @@ export default function Team() {
                 <h3 className="font-heading font-bold text-xl text-text">
                   {member.name}
                 </h3>
-                <p className="text-[0.72rem] font-semibold tracking-[0.14em] uppercase text-accent mt-1 mb-4">
+                <p className="text-[0.72rem] font-semibold tracking-[0.14em] uppercase text-accent-ink mt-1 mb-4">
                   {member.role}
                 </p>
-                <p className="text-[0.88rem] leading-[1.78] text-text/60">
+                <p className="text-[0.88rem] leading-[1.78] text-text/70">
                   {member.bio}
                 </p>
               </div>

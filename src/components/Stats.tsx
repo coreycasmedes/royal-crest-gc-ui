@@ -24,7 +24,7 @@ export default function Stats() {
               >
                 {num}
               </p>
-              <p className="text-[0.6rem] sm:text-[0.7rem] font-medium tracking-[0.1em] sm:tracking-[0.18em] uppercase text-text/60">
+              <p className="text-[0.6rem] sm:text-[0.7rem] font-medium tracking-[0.1em] sm:tracking-[0.18em] uppercase text-text/70">
                 {label}
               </p>
             </div>

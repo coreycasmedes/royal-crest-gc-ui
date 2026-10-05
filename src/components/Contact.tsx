@@ -53,13 +53,13 @@ export default function Contact() {
           <div className="flex flex-col gap-8 lg:pt-2">
             {info.map(({ label, value, href }) => (
               <div key={label}>
-                <p className="text-[0.66rem] font-semibold tracking-[0.22em] uppercase mb-1.5 text-text/40">
+                <p className="text-[0.66rem] font-semibold tracking-[0.22em] uppercase mb-1.5 text-text/65">
                   {label}
                 </p>
                 {href ? (
                   <a
                     href={href}
-                    className="text-[0.95rem] leading-relaxed whitespace-pre-line text-text hover:text-accent transition-colors"
+                    className="text-[0.95rem] leading-relaxed whitespace-pre-line text-text hover:text-accent-ink transition-colors"
                   >
                     {value}
                   </a>

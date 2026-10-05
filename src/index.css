@@ -20,12 +20,14 @@
   --color-bg:      #f7f7f2;
   --color-surface: #e4e6c3;
   --color-accent:  #899878;
+  --color-accent-ink: #5f6e51;
   --color-text:    #222725;
   --color-deep:    #121113;
 
   --font-heading: "Geist", ui-sans-serif, system-ui;
   --font-body:    "Geist", ui-sans-serif, system-ui;
   --font-geist:   "Geist", ui-sans-serif, system-ui;
+  --font-sans:    "Geist", ui-sans-serif, system-ui;
 }
 
 @layer base {
@@ -50,7 +52,7 @@
     font-weight: 600;
     letter-spacing: 0.22em;
     text-transform: uppercase;
-    color: var(--color-accent);
+    color: var(--color-accent-ink);
     margin-bottom: 0.75rem;
   }
 
@@ -79,6 +81,12 @@
       0px 2px 3px -1px rgba(0,0,0,0.10),
       0px 1px 0px 0px rgba(18,17,19,0.02),
       0px 0px 0px 1px rgba(18,17,19,0.08);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .reveal { opacity: 1; transform: none; transition: none; }
+    .animate-scroll-bob { animation: none; }
   }
 
   /* Blueprint-grid header for bento cards */

@@ -127,14 +127,14 @@ export default function SignupForm() {
     return (
       <div className="rounded-2xl shadow-input mx-auto w-full bg-bg p-4 md:rounded-2xl md:p-8">
         <h2 className="text-xl font-bold text-text">Request Received</h2>
-        <p className="mt-2 text-sm text-text/60">
+        <p className="mt-2 text-sm text-text/70">
           We received your request and will get back to you within one business day.
         </p>
-        <p className="mt-3 text-sm text-text/60">
+        <p className="mt-3 text-sm text-text/70">
           If this is an emergency, please call us directly at{" "}
           <a
             href="tel:4694320341"
-            className="text-text font-medium hover:text-accent transition-colors duration-200"
+            className="text-text font-medium hover:text-accent-ink transition-colors duration-200"
           >
             (469) 432 0341
           </a>
@@ -148,12 +148,12 @@ export default function SignupForm() {
     <div className="shadow-input mx-auto w-full rounded-2xl bg-bg p-4 md:p-8">
       <h2 className="flex flex-wrap items-center gap-2.5 text-xl font-bold text-text">
         Request a Free Estimate
-        <div className="flex-shrink-0 inline-flex items-center gap-1.5 border border-surface rounded-2xl px-2 py-0.5 font-light text-xs text-text/60">
+        <div className="flex-shrink-0 inline-flex items-center gap-1.5 border border-surface rounded-2xl px-2 py-0.5 font-light text-xs text-text/70">
           <IconVideo className="h-4 w-4 text-accent flex-shrink-0" />
           <span className="whitespace-nowrap">Online Available</span>
         </div>
       </h2>
-      <p className="mt-2 max-w-sm text-sm text-text/60">
+      <p className="mt-2 max-w-sm text-sm text-text/70">
         Fill out the form and we'll get back to you within one business day.
       </p>
 
@@ -229,7 +229,7 @@ export default function SignupForm() {
             name="service"
             value={form.service}
             onChange={(e) => setForm({ ...form, service: e.target.value })}
-            className="shadow-input flex h-10 w-full rounded-md border-none bg-bg px-3 py-2 text-sm text-text placeholder:text-text/40 focus-visible:ring-[2px] focus-visible:ring-text/20 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
+            className="shadow-input flex h-10 w-full rounded-md border-none bg-bg px-3 py-2 text-sm text-text placeholder:text-text/65 focus-visible:ring-[2px] focus-visible:ring-text/20 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
           >
             <option value="" disabled>
               Select a service…
@@ -272,7 +272,7 @@ export default function SignupForm() {
         <button
           type="submit"
           disabled={loading}
-          className="group/btn relative block h-10 w-full rounded-md bg-deep font-medium text-bg hover:bg-accent transition-colors duration-200 disabled:opacity-60 disabled:cursor-not-allowed"
+          className="group/btn relative block h-10 w-full rounded-md bg-deep font-medium text-bg hover:bg-accent-ink transition-colors duration-200 disabled:opacity-60 disabled:cursor-not-allowed"
         >
           {loading ? "Sending…" : "Send Request →"}
           <BottomGradient />
@@ -335,8 +335,8 @@ const TextareaInput = (
         {...props}
         className={cn(
           "shadow-input flex w-full rounded-md border-none bg-bg px-3 py-2 text-sm text-text transition duration-400 group-hover/input:shadow-none",
-          "placeholder:text-text/40",
-          "focus-visible:ring-[2px] focus-visible:ring-accent focus-visible:outline-none",
+          "placeholder:text-text/65",
+          "focus-visible:ring-[2px] focus-visible:ring-accent-ink focus-visible:outline-none",
           "disabled:cursor-not-allowed disabled:opacity-50",
           "resize-none",
         )}

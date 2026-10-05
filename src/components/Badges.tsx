@@ -14,7 +14,7 @@ export default function Badges() {
   return (
     <section className="py-14  bg-bg">
       <div className="max-w-[1260px] mx-auto px-8 lg:px-12">
-        <p className="text-center text-[0.66rem] font-semibold tracking-[0.26em] uppercase mb-14 text-text/40">
+        <p className="text-center text-[0.66rem] font-semibold tracking-[0.26em] uppercase mb-14 text-text/65">
           Partners &amp; Certifications
         </p>
 
