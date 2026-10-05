@@ -4,6 +4,11 @@ import danImg from "../assets/dan.webp";
 
 // width/height are the files' real dimensions so the lazy-loaded portraits
 // reserve their space before they arrive.
+//
+// The portraits always sit side by side as a pair. On phones each bio runs
+// full width underneath the pair; from sm up it sits under its own portrait.
+// The second portrait is dropped 4rem from sm up, so the first bio is pulled
+// back up by the same amount to stay tight under its portrait.
 const owners = [
   {
     name: "Alan",
@@ -14,6 +19,8 @@ const owners = [
     height: 2000,
     objectPosition: "center 10%",
     zoom: 1,
+    figureClass: "col-start-1 row-start-1",
+    bioClass: "col-span-2 row-start-2 sm:col-span-1 sm:col-start-1 sm:-mt-16",
   },
   {
     name: "Daniel",
@@ -25,6 +32,8 @@ const owners = [
     objectPosition: "center top",
     // The file has a dark strip along its bottom edge; zoom from the top to crop it out.
     zoom: 1.05,
+    figureClass: "col-start-2 row-start-1 sm:mt-16",
+    bioClass: "col-span-2 row-start-3 sm:col-span-1 sm:col-start-2 sm:row-start-2",
   },
 ];
 
@@ -37,15 +46,16 @@ const promises = [
 
 export default function WhyUs() {
   const { ref: headRef, inView: headIn } = useInView();
-  const { ref: ownersRef, inView: ownersIn } = useInView(0.08);
   const { ref: promiseRef, inView: promiseIn } = useInView();
+  const { ref: ownersRef, inView: ownersIn } = useInView(0.08);
 
   return (
     <section id="why" className="py-24 lg:py-28 bg-bg">
       <div className="max-w-[1260px] mx-auto px-8 lg:px-12">
-        {/* Source order is heading, owners, promises so phones end on the
-            call to action; from lg up the promises sit under the heading. */}
-        <div className="grid grid-cols-1 gap-y-12 lg:grid-cols-12 lg:grid-rows-[auto_1fr] lg:gap-x-16 lg:gap-y-10">
+        {/* Reads top to bottom on phones: claim, promises, the two people who
+            answer for them, then the call to action. From lg up the owners
+            move to the right-hand column beside the rest. */}
+        <div className="grid grid-cols-1 gap-y-10 lg:grid-cols-12 lg:grid-rows-[auto_auto_1fr] lg:gap-x-16">
           <div
             ref={headRef}
             className={`lg:col-span-5 lg:row-start-1 reveal ${headIn ? "visible" : ""}`}
@@ -62,51 +72,9 @@ export default function WhyUs() {
             </p>
           </div>
 
-          {/* The people who answer for it */}
-          <div
-            ref={ownersRef}
-            className="lg:col-span-7 lg:col-start-6 lg:row-start-1 lg:row-span-2 grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-12"
-          >
-            {owners.map((owner, i) => (
-              <figure
-                key={owner.name}
-                className={`reveal delay-${i + 1} ${ownersIn ? "visible" : ""} ${
-                  i === 1 ? "sm:mt-16" : ""
-                }`}
-              >
-                <div className="overflow-hidden rounded-xl">
-                  <img
-                    src={owner.src}
-                    alt={`${owner.name}, ${owner.role} at Royal Crest General Contractors`}
-                    width={owner.width}
-                    height={owner.height}
-                    loading="lazy"
-                    decoding="async"
-                    className="aspect-[5/6] sm:aspect-[4/5] w-full object-cover"
-                    style={{
-                      filter: "saturate(0.9) brightness(1.02)",
-                      objectPosition: owner.objectPosition,
-                      transform: `scale(${owner.zoom})`,
-                      transformOrigin: "center top",
-                    }}
-                  />
-                </div>
-                <figcaption className="mt-5">
-                  <h3 className="font-heading font-bold text-xl text-text">
-                    {owner.name}
-                  </h3>
-                  <p className="mt-0.5 text-sm text-text/65">{owner.role}</p>
-                  <p className="mt-3 text-[0.88rem] leading-[1.78] text-text/70">
-                    {owner.bio}
-                  </p>
-                </figcaption>
-              </figure>
-            ))}
-          </div>
-
           <div
             ref={promiseRef}
-            className={`lg:col-span-5 lg:row-start-2 reveal ${promiseIn ? "visible" : ""}`}
+            className={`lg:col-span-5 lg:row-start-2 reveal delay-1 ${promiseIn ? "visible" : ""}`}
           >
             <ul className="border-t border-surface">
               {promises.map((promise) => (
@@ -118,10 +86,53 @@ export default function WhyUs() {
                 </li>
               ))}
             </ul>
+          </div>
 
+          <div
+            ref={ownersRef}
+            className={`lg:col-span-7 lg:col-start-6 lg:row-start-1 lg:row-span-3 grid grid-cols-2 content-start gap-x-4 gap-y-5 sm:gap-x-6 reveal ${ownersIn ? "visible" : ""}`}
+          >
+            {owners.map((owner) => (
+              <figure key={owner.name} className={owner.figureClass}>
+                <div className="overflow-hidden rounded-xl">
+                  <img
+                    src={owner.src}
+                    alt={`${owner.name}, ${owner.role} at Royal Crest General Contractors`}
+                    width={owner.width}
+                    height={owner.height}
+                    loading="lazy"
+                    decoding="async"
+                    className="aspect-[4/5] w-full object-cover"
+                    style={{
+                      filter: "saturate(0.9) brightness(1.02)",
+                      objectPosition: owner.objectPosition,
+                      transform: `scale(${owner.zoom})`,
+                      transformOrigin: "center top",
+                    }}
+                  />
+                </div>
+                <figcaption className="mt-4">
+                  <h3 className="font-heading font-bold text-lg sm:text-xl text-text">
+                    {owner.name}
+                  </h3>
+                  <p className="mt-0.5 text-sm text-text/65">{owner.role}</p>
+                </figcaption>
+              </figure>
+            ))}
+            {owners.map((owner) => (
+              <p
+                key={owner.name}
+                className={`text-[0.88rem] leading-[1.78] text-text/70 ${owner.bioClass}`}
+              >
+                {owner.bio}
+              </p>
+            ))}
+          </div>
+
+          <div className="lg:col-span-5 lg:row-start-3">
             <a
               href="#contact"
-              className="mt-10 inline-block rounded-2xl px-6 py-3 text-[0.78rem] font-semibold tracking-[0.08em] uppercase bg-deep text-bg hover:bg-accent-ink transition-colors duration-200"
+              className="inline-block rounded-2xl px-6 py-3 text-[0.78rem] font-semibold tracking-[0.08em] uppercase bg-deep text-bg hover:bg-accent-ink transition-colors duration-200"
             >
               Get a Quote
             </a>
