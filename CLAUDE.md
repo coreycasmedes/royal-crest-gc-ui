@@ -97,8 +97,6 @@ Components are listed in the order `App.tsx` renders them.
 index.html              — Meta/Open Graph tags, JSON-LD, font and hero image preloads
 vite.config.ts          — Plugins, `@` alias, `base` from VITE_BASE_URL (PR previews)
 public/                 — Copied to the site root unchanged
-  CNAME                 — Custom domain for GitHub Pages (do not remove)
-  .nojekyll             — Stops GitHub Pages running Jekyll (do not remove)
   404.html              — Standalone not-found page (inline CSS, no JS)
   robots.txt, sitemap.xml
   favicon.png, favicon-32.png, apple-touch-icon.png, og-image.jpg
@@ -214,7 +212,7 @@ GitHub Pages serves the `gh-pages` branch at `www.royalcrestgc.com`. Never commi
 
 - **Production** (`deploy.yml`): every push to `main` runs lint and build, then publishes `dist/` to the root of `gh-pages`. Files that are no longer in the build are deleted; `pr-preview/` is excluded from that clean-up.
 - **PR previews** (`pr-preview.yml`): each pull request is built with `VITE_BASE_URL=/pr-preview/pr-<number>/` and published to that directory on `gh-pages`, then removed when the PR closes.
-- `public/CNAME` and `public/.nojekyll` are part of every build on purpose: GitHub Pages reads the custom domain from `CNAME` at the root of `gh-pages`. `deploy.yml` checks for both and refuses to deploy without them.
+- GitHub Pages reads the custom domain from `CNAME` at the root of `gh-pages`, and `.nojekyll` there stops it running Jekyll. `deploy.yml` writes both into `dist/` before every production deploy. Do not move them to `public/`: they would be copied into every PR preview, and the preview action does not delete them when a preview is removed.
 - The site is served from a sub-path in previews, so reference assets by import (or `import.meta.env.BASE_URL`), never by a hard-coded `/assets/...` path.
 
 ## Brand

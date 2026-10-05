@@ -39,13 +39,10 @@ comments the link on the PR and removes the preview when the PR is closed. Previ
 built with `VITE_BASE_URL` set to that sub-path, and `robots.txt` asks crawlers to skip
 them. Previews only work for branches in this repository, not forks.
 
-Two files in `public/` exist only for GitHub Pages and must not be removed:
-
-- `CNAME` holds the custom domain. Pages reads it from the root of `gh-pages`.
-- `.nojekyll` tells Pages to serve the files as they are instead of running Jekyll.
-
-The production workflow checks that both are in `dist/` and stops before deploying if
-they are not.
+Two files at the root of `gh-pages` exist only for GitHub Pages: `CNAME` holds the
+custom domain, and `.nojekyll` tells Pages to serve the files as they are instead of
+running Jekyll. The production workflow writes both into `dist/` before every deploy.
+They are deliberately not in `public/`, so they stay out of PR previews.
 
 To roll back a bad deploy, revert the offending commit on `main`; the push redeploys
 the previous version.
