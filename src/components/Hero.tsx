@@ -1,6 +1,9 @@
 import { motion } from "motion/react";
-import heroExteriorImg from "../assets/72959.webp";
-import droneRoofVideo from "../assets/drone_roof.mp4";
+import heroImg800 from "../assets/hero-800.webp";
+import heroImg1200 from "../assets/hero-1200.webp";
+import heroImg1500 from "../assets/hero-1500.webp";
+import droneRoofVideo from "../assets/drone_roof_540.mp4";
+import droneRoofPoster from "../assets/drone_roof_poster.webp";
 // import { TextGenerateEffect } from "./ui/text-generate-effect";
 import { VideoText } from "./ui/video-text";
 
@@ -15,6 +18,10 @@ const staticHeadlineLines = ["The Gold", "Standard of", "Construction"];
 // cap keeps the headline from growing unbounded on very large viewports.
 const HEADLINE_FONT_SIZE = "clamp(2.4rem, 16vw, 9rem)";
 const HEADLINE_LINE_HEIGHT_EM = 1.05;
+// Keep in sync with the <link rel="preload" as="image"> in index.html.
+const HERO_SRCSET = `${heroImg800} 800w, ${heroImg1200} 1200w, ${heroImg1500} 1500w`;
+const HERO_SIZES =
+  "(min-width: 1280px) 1160px, (min-width: 1024px) calc(100vw - 120px), calc(100vw - 88px)";
 // const cyclingWords = [
 //   "Full Renovations",
 //   "Kitchens & Baths",
@@ -62,6 +69,8 @@ export default function Hero() {
           >
             <VideoText
               src={droneRoofVideo}
+              poster={droneRoofPoster}
+              startOnLoad
               playbackRate={0.5}
               lineHeight={HEADLINE_LINE_HEIGHT_EM}
               fontSize={HEADLINE_FONT_SIZE}
@@ -100,7 +109,7 @@ export default function Hero() {
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 0.4, delay: 1.1 }}
+          transition={{ duration: 0.4, delay: 0.3 }}
           className="relative z-10 mt-3 flex flex-wrap items-center justify-center gap-2"
         >
           <button
@@ -117,23 +126,23 @@ export default function Hero() {
           </button>
         </motion.div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4, delay: 1.3 }}
-          className="relative z-10 mt-16 p-3"
-        >
+        {/* LCP element — rendered without an entrance animation on purpose */}
+        <div className="relative z-10 mt-16 p-3">
           <div className="w-full overflow-hidden">
             <img
-              src={heroExteriorImg}
+              src={heroImg1200}
+              srcSet={HERO_SRCSET}
+              sizes={HERO_SIZES}
               alt="Residential exterior with copper roofline built by Royal Crest — Dallas, TX"
-              width={1400}
-              height={788}
+              width={1500}
+              height={1125}
+              fetchPriority="high"
+              decoding="async"
               className="aspect-[4/3] h-auto w-full object-cover rounded-2xl"
               style={{ filter: "saturate(0.82) brightness(1.02)" }}
             />
           </div>
-        </motion.div>
+        </div>
 
         <div className="relative z-10 mt-8 pt-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 border-t border-surface">
           <p className="text-[0.68rem] font-medium tracking-[0.22em] uppercase text-text/40">
