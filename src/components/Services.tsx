@@ -11,9 +11,6 @@ import gutterImg from '../assets/IMG_4673.webp';
 import exteriorWorkImg from '../assets/IMG_3919_edited.webp';
 import bigRoofImg from '../assets/big_roof.webp';
 
-const scrollTo = (id: string) =>
-  document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
-
 // width/height are the file's real dimensions, so the lazy-loaded image
 // reserves its space before it arrives instead of pushing the page down.
 const ImageHeader = ({
@@ -100,12 +97,12 @@ export default function Services() {
               Our Services
             </h2>
           </div>
-          <button
-            onClick={() => scrollTo('contact')}
-            className="self-start sm:self-auto text-[0.76rem] font-semibold tracking-[0.1em] uppercase pb-0.5 border-b border-text text-text hover:text-accent hover:border-accent transition-colors duration-200"
+          <a
+            href="#contact"
+            className="self-start sm:self-auto text-[0.76rem] font-semibold tracking-[0.1em] uppercase pb-0.5 border-b border-text text-text hover:text-accent-ink hover:border-accent-ink transition-colors duration-200"
           >
             Request a Service →
-          </button>
+          </a>
         </div>
 
         <div ref={gridRef}>
@@ -114,7 +111,7 @@ export default function Services() {
               <BentoGridItem
                 key={i}
                 title={<span className="text-text">{item.title}</span>}
-                description={<span className="text-text/60">{item.description}</span>}
+                description={<span className="text-text/70">{item.description}</span>}
                 header={item.header}
                 icon={item.icon}
                 className={`${item.className} reveal delay-${i + 1} ${gridIn ? 'visible' : ''}`}

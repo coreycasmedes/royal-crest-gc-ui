@@ -1,4 +1,4 @@
-import './App.css'
+import { MotionConfig } from 'motion/react'
 import Header from './components/Header'
 import Hero from './components/Hero'
 import Services from './components/Services'
@@ -13,7 +13,7 @@ import Footer from './components/Footer'
 
 export default function App() {
   return (
-    <>
+    <MotionConfig reducedMotion="user">
       <Header />
       <main>
         <Hero />
@@ -27,6 +27,6 @@ export default function App() {
         <Contact />
       </main>
       <Footer />
-    </>
+    </MotionConfig>
   )
 }

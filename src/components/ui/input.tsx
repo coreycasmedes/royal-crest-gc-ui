@@ -2,8 +2,7 @@ import * as React from "react";
 import { cn } from "@/lib/utils";
 import { useMotionTemplate, useMotionValue, motion } from "motion/react";
 
-export interface InputProps
-  extends React.InputHTMLAttributes<HTMLInputElement> {}
+export type InputProps = React.InputHTMLAttributes<HTMLInputElement>;
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
   ({ className, type, ...props }, ref) => {
@@ -39,8 +38,8 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           type={type}
           className={cn(
             "shadow-input flex h-10 w-full rounded-md border-none bg-bg px-3 py-2 text-sm text-text transition duration-400 group-hover/input:shadow-none",
-            "placeholder:text-text/40",
-            "focus-visible:ring-[2px] focus-visible:ring-accent focus-visible:outline-none",
+            "placeholder:text-text/65",
+            "focus-visible:ring-[2px] focus-visible:ring-accent-ink focus-visible:outline-none",
             "disabled:cursor-not-allowed disabled:opacity-50",
             "file:border-0 file:bg-transparent file:text-sm file:font-medium",
             className,

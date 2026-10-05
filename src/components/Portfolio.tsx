@@ -11,7 +11,7 @@ function CardContent({ tag, title, meta }: { tag: string; title: string; meta: s
         {tag}
       </p>
       <h3 className="font-bold text-white text-2xl mb-1">{title}</h3>
-      <p className="text-sm text-white/45">{meta}</p>
+      <p className="text-sm text-white/75">{meta}</p>
     </div>
   );
 }
@@ -19,18 +19,21 @@ function CardContent({ tag, title, meta }: { tag: string; title: string; meta: s
 const cards = [
   {
     id: 2,
+    alt: "Aerial view of a completed roof, Lakewood Estate, Dallas",
     content: <CardContent tag="Roofing" title="Lakewood Estate" meta="2023 · Dallas, TX" />,
     className: "md:col-span-1",
     thumbnail: roofBirdseyeImg,
   },
   {
     id: 3,
+    alt: "Front of a home with a new roof, Frisco Residence",
     content: <CardContent tag="Residential" title="Frisco Residence" meta="2024 · Frisco, TX" />,
     className: "md:col-span-1",
     thumbnail: homeImg,
   },
   {
     id: 4,
+    alt: "Crew installing a roof, Prestonwood, Dallas",
     content: <CardContent tag="Roofing" title="Prestonwood Installation" meta="2024 · Dallas, TX" />,
     className: "md:col-span-2",
     thumbnail: roofingTeamImg,
@@ -58,7 +61,7 @@ export default function Portfolio() {
             </h2>
           </div>
           <button
-            className="hidden sm:block text-[0.76rem] font-semibold tracking-[0.1em] uppercase pb-0.5 border-b border-text text-text hover:text-accent hover:border-accent transition-colors duration-200 flex-shrink-0"
+            className="hidden sm:block text-[0.76rem] font-semibold tracking-[0.1em] uppercase pb-0.5 border-b border-text text-text hover:text-accent-ink hover:border-accent-ink transition-colors duration-200 flex-shrink-0"
           >
             View All →
           </button>
