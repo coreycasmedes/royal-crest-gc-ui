@@ -56,6 +56,10 @@ function recordSubmission() {
   localStorage.setItem(RL_KEY, JSON.stringify([...logs, now]));
 }
 
+const SUBMIT_URL     = "https://api.web3forms.com/submit";
+const SUBMIT_TIMEOUT = 20 * 1000;    // give up on a request that never answers
+const SEND_FAILED    = "We couldn't send your request.";
+
 function isValidEmail(v: string) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim());
 }
@@ -98,28 +102,62 @@ export default function SignupForm() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setTouched({ email: true, phone: true });
-    if (
-      !isValidEmail(form.email) ||
-      (form.phone && !isValidUSPhone(form.phone))
-    )
+    const invalidField = !isValidEmail(form.email)
+      ? "email"
+      : form.phone && !isValidUSPhone(form.phone)
+        ? "phone"
+        : "";
+    if (invalidField) {
+      // Move focus to the field so its error (aria-describedby) is read out.
+      const field = e.currentTarget.elements.namedItem(invalidField);
+      if (field instanceof HTMLElement) field.focus();
       return;
+    }
 
     setLoading(true);
     setError("");
 
     const formData = new FormData(e.currentTarget);
-    const res = await fetch("https://api.web3forms.com/submit", {
-      method: "POST",
-      body: formData,
-    });
-    const data = await res.json();
+    const controller = new AbortController();
+    const timer = window.setTimeout(() => controller.abort(), SUBMIT_TIMEOUT);
 
-    setLoading(false);
-    if (data.success) {
-      recordSubmission();
-      setSent(true);
-    } else {
-      setError(data.message ?? "Something went wrong. Please try again.");
+    try {
+      const res = await fetch(SUBMIT_URL, {
+        method: "POST",
+        body: formData,
+        signal: controller.signal,
+      });
+      // A proxy or outage page answers with HTML; treat that as a failure.
+      const data: unknown = await res.json().catch(() => null);
+      const body =
+        typeof data === "object" && data !== null
+          ? (data as { success?: unknown; message?: unknown })
+          : {};
+
+      if (res.ok && body.success === true) {
+        try {
+          recordSubmission();
+        } catch {
+          // Storage is unavailable (private mode); the request was still sent.
+        }
+        setSent(true);
+      } else {
+        // Web3Forms explains a rejected submission in `message`; anything
+        // else (server error, unexpected body) gets the generic wording.
+        const reason =
+          res.status < 500 && typeof body.message === "string"
+            ? body.message.trim()
+            : "";
+        setError(
+          reason ? (/[.!?]$/.test(reason) ? reason : `${reason}.`) : SEND_FAILED,
+        );
+      }
+    } catch {
+      // Offline, blocked, DNS failure or timeout.
+      setError(SEND_FAILED);
+    } finally {
+      window.clearTimeout(timer);
+      setLoading(false);
     }
   };
 
@@ -133,7 +171,7 @@ export default function SignupForm() {
         <p className="mt-3 text-sm text-text/70">
           If this is an emergency, please call us directly at{" "}
           <a
-            href="tel:4694320341"
+            href="tel:+14694320341"
             className="text-text font-medium hover:text-accent-ink transition-colors duration-200"
           >
             (469) 432 0341
@@ -163,6 +201,22 @@ export default function SignupForm() {
           name="access_key"
           value="459de2ed-ea1d-4fb0-9618-ba87e8f7c47a"
         />
+        <input
+          type="hidden"
+          name="subject"
+          value="New estimate request from royalcrestgc.com"
+        />
+        <input type="hidden" name="from_name" value="Royal Crest website" />
+        {/* Web3Forms honeypot: people never see or reach it, and submissions
+            where it is checked are discarded. */}
+        <input
+          type="checkbox"
+          name="botcheck"
+          tabIndex={-1}
+          autoComplete="off"
+          aria-hidden="true"
+          className="sr-only"
+        />
         <div className="mb-4 flex flex-col space-y-2 md:flex-row md:space-y-0 md:space-x-2">
           <LabelInputContainer>
             <Label htmlFor="firstname">First name</Label>
@@ -171,6 +225,7 @@ export default function SignupForm() {
               name="first_name"
               placeholder="James"
               type="text"
+              autoComplete="given-name"
               required
               value={form.first}
               onChange={(e) => setForm({ ...form, first: e.target.value })}
@@ -183,6 +238,7 @@ export default function SignupForm() {
               name="last_name"
               placeholder="Anderson"
               type="text"
+              autoComplete="family-name"
               required
               value={form.last}
               onChange={(e) => setForm({ ...form, last: e.target.value })}
@@ -198,27 +254,33 @@ export default function SignupForm() {
               name="email"
               placeholder="james@example.com"
               type="email"
+              autoComplete="email"
               required
+              aria-invalid={emailError ? true : undefined}
+              aria-describedby={emailError ? "email-error" : undefined}
               value={form.email}
               onChange={(e) => setForm({ ...form, email: e.target.value })}
               onBlur={() => setTouched((t) => ({ ...t, email: true }))}
             />
-            <FieldError message={emailError} />
+            <FieldError id="email-error" message={emailError} />
           </LabelInputContainer>
           <LabelInputContainer>
             <Label htmlFor="phone">Phone number</Label>
             <Input
               id="phone"
               name="phone"
-              placeholder="(469) 432-0341"
+              placeholder="(214) 555-0123"
               type="tel"
+              autoComplete="tel"
+              aria-invalid={phoneError ? true : undefined}
+              aria-describedby={phoneError ? "phone-error" : undefined}
               value={form.phone}
               onChange={(e) =>
                 setForm({ ...form, phone: formatPhone(e.target.value) })
               }
               onBlur={() => setTouched((t) => ({ ...t, phone: true }))}
             />
-            <FieldError message={phoneError} />
+            <FieldError id="phone-error" message={phoneError} />
           </LabelInputContainer>
         </div>
 
@@ -229,7 +291,7 @@ export default function SignupForm() {
             name="service"
             value={form.service}
             onChange={(e) => setForm({ ...form, service: e.target.value })}
-            className="shadow-input flex h-10 w-full rounded-md border-none bg-bg px-3 py-2 text-sm text-text placeholder:text-text/65 focus-visible:ring-[2px] focus-visible:ring-text/20 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
+            className="shadow-input flex h-10 w-full rounded-md border-none bg-bg px-3 py-2 text-sm text-text placeholder:text-text/65 focus-visible:ring-[2px] focus-visible:ring-accent-ink focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
           >
             <option value="" disabled>
               Select a service…
@@ -277,17 +339,32 @@ export default function SignupForm() {
           {loading ? "Sending…" : "Send Request →"}
           <BottomGradient />
         </button>
-        {error && <p className="mt-3 text-xs text-red-600">{error}</p>}
+        {/* Always in the DOM so the alert is announced when the text arrives. */}
+        <div role="alert">
+          {error && (
+            <p className="mt-3 text-sm text-red-600">
+              {error} Please try again, or call us at{" "}
+              <a
+                href="tel:+14694320341"
+                className="font-medium whitespace-nowrap text-text underline underline-offset-2 hover:text-accent-ink transition-colors duration-200"
+              >
+                (469) 432 0341
+              </a>
+              .
+            </p>
+          )}
+        </div>
       </form>
     </div>
   );
 }
 
-const FieldError = ({ message }: { message: string }) => (
+const FieldError = ({ id, message }: { id: string; message: string }) => (
   <AnimatePresence>
     {message && (
       <motion.p
         key="err"
+        id={id}
         initial={{ opacity: 0, y: -4 }}
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: -4 }}
