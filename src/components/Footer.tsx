@@ -3,7 +3,7 @@ import logo from '../assets/images/royal_crest_logo.svg';
 const nav = [
   { label: 'Services',  id: 'services'     },
   { label: 'Portfolio', id: 'portfolio'    },
-  { label: 'About',     id: 'why'          },
+  { label: 'About',     id: 'about'        },
   { label: 'Reviews',   id: 'testimonials' },
   { label: 'Contact',   id: 'contact'      },
 ];
