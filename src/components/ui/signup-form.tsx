@@ -20,7 +20,7 @@ const detailsPlaceholder: Record<string, string> = {
   "Bathroom Renovation":
     "Full gut or cosmetic update? Any specific fixtures, tile, or layout changes in mind?",
   "Home Addition":
-    "What type of addition — bedroom, garage, ADU? Approximate square footage?",
+    "What type of addition (bedroom, garage, ADU)? Approximate square footage?",
   "Roofing & Exterior":
     "New install, repair, or replacement? Any storm damage or specific materials you're considering?",
   "Commercial Construction":
