@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 
 export type Card = {
   id: number;
-  /** Describes the photo; also names the card's button for keyboard and screen-reader users */
+  /** Describes the photo; also names the photo's button for keyboard and screen-reader users */
   alt: string;
   tag: string;
   title: string;
@@ -64,77 +64,71 @@ export const LayoutGrid = ({ cards }: { cards: Card[] }) => {
           const Icon = isSelected ? IconArrowsMinimize : IconArrowsMaximize;
 
           return (
-            // The wrapper keeps the card's grid cell while the card itself is lifted out to expand
-            <div key={card.id} className={card.className}>
-              <motion.div
-                data-expanded={isSelected ? "" : undefined}
-                layoutId={`card-${card.id}`}
-                className={cn(
-                  "group isolate overflow-hidden bg-surface",
-                  isSelected
-                    ? "rounded-lg absolute inset-0 m-auto h-1/2 w-full md:h-2/3 md:w-3/4 max-h-[calc(100svh-7.5rem)] md:max-w-[60rem] z-50 shadow-2xl"
-                    : "rounded-xl relative h-full w-full",
-                  !isSelected && lastSelectedId === card.id && "z-40"
-                )}
-              >
-                <motion.img
-                  layoutId={`image-${card.id}-image`}
-                  src={card.thumbnail}
-                  height={500}
-                  width={500}
-                  loading="lazy"
-                  decoding="async"
-                  className="object-cover object-top absolute inset-0 h-full w-full"
-                  alt={card.alt}
-                />
-
-                {/* Caption: always in the page, on a scrim that is at least black/70 behind every line of text */}
+            // The figure keeps the card's grid cell while the photo is lifted out to expand.
+            // Neither it nor the photo frame is positioned, so an expanded photo is placed
+            // against the stage and centred in it.
+            <figure key={card.id} className={cn(card.className, "flex min-h-0 flex-col")}>
+              <div className="min-h-0 flex-1">
                 <motion.div
-                  layout
-                  className="absolute inset-x-0 bottom-0 bg-linear-to-t from-black/85 via-black/70 via-[calc(100%-6rem)] to-transparent pt-24"
-                >
-                  <motion.div layout="position" className="px-6 pb-5 md:px-8 md:pb-6">
-                    <p className="flex items-center gap-2.5 text-[0.65rem] font-semibold tracking-[0.24em] uppercase mb-1.5 text-surface">
-                      <span aria-hidden="true" className="h-px w-5 bg-accent" />
-                      {card.tag}
-                    </p>
-                    <h3 className="font-heading font-bold text-white text-2xl leading-tight mb-1">
-                      {card.title}
-                    </h3>
-                    <p className="text-sm text-white/85">{card.meta}</p>
-                  </motion.div>
-                </motion.div>
-
-                {/* Hint that the photo can be enlarged (or put back) */}
-                <motion.span
-                  layout="position"
-                  aria-hidden="true"
-                  className="absolute top-3 right-3 flex h-9 w-9 items-center justify-center rounded-md bg-black/60 text-white transition-colors duration-200 group-hover:bg-deep group-focus-within:bg-deep"
-                >
-                  <Icon size={18} stroke={1.75} />
-                </motion.span>
-
-                {/* The control sits over the whole card as a sibling of the caption, so the h3 stays a real heading */}
-                <button
-                  type="button"
-                  onClick={() => select(isSelected ? null : card.id)}
-                  aria-expanded={isSelected}
-                  aria-label={`Enlarge photo: ${card.alt}`}
+                  data-expanded={isSelected ? "" : undefined}
+                  layoutId={`card-${card.id}`}
                   className={cn(
-                    "absolute inset-0 h-full w-full cursor-pointer",
-                    isSelected ? "rounded-lg" : "rounded-xl",
-                    "focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-white focus-visible:ring-4 focus-visible:ring-inset focus-visible:ring-deep"
+                    // z-50 / z-40 follow the layer scale in src/lib/layers.ts: an enlarged
+                    // photo sits above the mobile action bar, under the header
+                    "group isolate overflow-hidden rounded-xl bg-surface",
+                    isSelected
+                      ? "absolute inset-0 m-auto h-1/2 w-[calc(100%-2rem)] md:h-2/3 md:w-3/4 max-h-[calc(100svh-7.5rem)] md:max-w-[60rem] z-50 shadow-2xl shadow-deep/30"
+                      : "relative h-full w-full",
+                    !isSelected && lastSelectedId === card.id && "z-40"
                   )}
-                />
-              </motion.div>
-            </div>
+                >
+                  <motion.img
+                    layoutId={`image-${card.id}-image`}
+                    src={card.thumbnail}
+                    height={500}
+                    width={500}
+                    loading="lazy"
+                    decoding="async"
+                    className="object-cover object-top absolute inset-0 h-full w-full"
+                    alt={card.alt}
+                  />
+
+                  {/* Hint that the photo can be enlarged (or put back) */}
+                  <motion.span
+                    layout="position"
+                    aria-hidden="true"
+                    className="absolute top-3 right-3 flex h-9 w-9 items-center justify-center rounded-lg bg-deep/70 text-bg transition-colors duration-200 group-hover:bg-deep group-focus-within:bg-deep"
+                  >
+                    <Icon size={18} />
+                  </motion.span>
+
+                  <button
+                    type="button"
+                    onClick={() => select(isSelected ? null : card.id)}
+                    aria-expanded={isSelected}
+                    aria-label={`${isSelected ? "Shrink" : "Enlarge"} photo: ${card.alt}`}
+                    className="absolute inset-0 h-full w-full cursor-pointer rounded-xl focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-bg focus-visible:ring-4 focus-visible:ring-inset focus-visible:ring-deep"
+                  />
+                </motion.div>
+              </div>
+
+              {/* Caption below the photo, never on top of it */}
+              <figcaption className="pt-4">
+                <h3 className="font-heading font-bold text-lg leading-snug text-text">
+                  {card.title}
+                </h3>
+                <p className="mt-0.5 text-sm text-text/70">
+                  {card.tag} · {card.meta}
+                </p>
+              </figcaption>
+            </figure>
           );
         })}
       </div>
       <motion.div
         onClick={() => select(null)}
         className={cn(
-          "absolute h-full w-full left-0 top-0 bg-black opacity-0 z-10",
+          "absolute h-full w-full left-0 top-0 bg-deep opacity-0 z-10",
           selectedId !== null ? "pointer-events-auto" : "pointer-events-none"
         )}
         animate={{ opacity: selectedId !== null ? 0.3 : 0 }}

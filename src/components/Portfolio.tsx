@@ -11,7 +11,7 @@ const cards: Card[] = [
     alt: "Aerial view of a completed roof, Lakewood Estate, Dallas",
     tag: "Roofing",
     title: "Lakewood Estate",
-    meta: "2023 · Dallas, TX",
+    meta: "Dallas, TX, 2023",
     className: "md:col-span-1",
     thumbnail: roofBirdseyeImg,
   },
@@ -20,7 +20,7 @@ const cards: Card[] = [
     alt: "Front of a home with a new roof, Frisco Residence",
     tag: "Residential",
     title: "Frisco Residence",
-    meta: "2024 · Frisco, TX",
+    meta: "Frisco, TX, 2024",
     className: "md:col-span-1",
     thumbnail: homeImg,
   },
@@ -29,7 +29,7 @@ const cards: Card[] = [
     alt: "Crew installing a roof, Prestonwood, Dallas",
     tag: "Roofing",
     title: "Prestonwood Installation",
-    meta: "2024 · Dallas, TX",
+    meta: "Dallas, TX, 2024",
     className: "md:col-span-2",
     thumbnail: roofingTeamImg,
   },
@@ -43,7 +43,6 @@ export default function Portfolio() {
 
       <div className="max-w-[1260px] mx-auto px-8 lg:px-12 mb-12">
         <div ref={headRef} className={`reveal ${headIn ? 'visible' : ''}`}>
-          <p className="label">Our Work</p>
           <h2
             className="font-heading font-bold leading-tight text-text"
             style={{ fontSize: 'clamp(2.2rem, 4vw, 3.2rem)' }}
