@@ -57,8 +57,17 @@ plugins: [react(), tailwindcss()]
 ## Design Guardrails
 - **Avoid:** "AI-default" aesthetics (Inter font, heavy drop shadows, dark navy backgrounds).
 - **Embrace:** Light, minimal construction aesthetic. Off-white base, muted sage accent, hairline border dividers.
-- **Rounded corners are deliberate.** Buttons and CTAs use `rounded-2xl`, cards use `rounded-xl`, form fields `rounded-md`, avatars `rounded-full`. The owner has decided to keep them; do not "fix" them to sharp edges, and match these radii when adding new elements.
+- **Rounded corners are deliberate.** Buttons and CTAs use `rounded-2xl`, as does the full-width hero photo. Cards and photos in a grid use `rounded-xl`; a photo or control nested inside a card or photo uses `rounded-lg`. Form fields use `rounded-md`, avatars `rounded-full`. The owner has decided to keep them; do not "fix" them to sharp edges, and match these radii when adding new elements.
 - **Reference:** The structural layout of uniqueconstruction.com.
+- **Design-taste rules** (from the `design-taste-frontend` skill, applied 2026-10-21):
+  - No em dash or en dash in visible text, alt text included. Use a hyphen, comma or parentheses.
+  - At most one section eyebrow per three sections, with two sections between eyebrows (currently Badges and Contact).
+  - One label per action: quote buttons say "Get a Quote" everywhere.
+  - No text over photos. Captions go below the image.
+  - No pure black or white: use `deep` and `bg`, and tint shadows (`shadow-deep/30`).
+  - Hero: headline, one subhead, buttons. Nothing else.
+  - No `window.addEventListener('scroll')`. Use an IntersectionObserver or Motion's `useScroll`.
+  - Stacking order comes from `src/lib/layers.ts`; do not add new z-index values without adding them there.
 
 ## Design Tokens (CSS custom properties)
 
@@ -131,6 +140,7 @@ src/
   hooks/
     useInView.ts        — IntersectionObserver hook; fires once, then disconnects
   lib/
+    layers.ts           — z-index scale (LAYER class strings)
     utils.ts            — cn() utility (clsx + tailwind-merge)
   assets/               — Photos, video, logos and fonts (see Images)
 ```
@@ -152,7 +162,7 @@ For staggered children, apply `delay-1` through `delay-6` alongside `reveal`. Th
 - **Inline `style` only for layout values** — `fontSize: 'clamp(...)'`, `paddingTop`, etc. Never for colors.
 - **No `onMouseEnter`/`onMouseLeave` for color changes** — use Tailwind `hover:` variants instead.
 - `font-heading` utility class maps to the Geist variable font.
-- Section heading: `<p className="label">` eyebrow above an `<h2 className="font-heading font-bold ...">` sized with `clamp(2.2rem, 4vw, 3.2rem)`.
+- Section heading: an `<h2 className="font-heading font-bold ...">` sized with `clamp(2.2rem, 4vw, 3.2rem)`. A `<p className="label">` eyebrow above it only within the eyebrow limit in Design Guardrails.
 - Section padding: `py-24 lg:py-28` for the main sections.
 - Max content width: `max-w-[1260px] mx-auto px-8 lg:px-12`.
 - Gap-px grid pattern: set `gap-px bg-surface` on the grid, `bg-bg` on each cell — the surface color bleeds through as hairline dividers.
