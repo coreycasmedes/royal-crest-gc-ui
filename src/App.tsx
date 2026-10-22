@@ -10,6 +10,7 @@ import Team from './components/Team'
 import Testimonials from './components/Testimonials'
 import Contact from './components/Contact'
 import Footer from './components/Footer'
+import MobileActionBar from './components/MobileActionBar'
 
 export default function App() {
   return (
@@ -27,6 +28,7 @@ export default function App() {
         <Contact />
       </main>
       <Footer />
+      <MobileActionBar />
     </MotionConfig>
   )
 }
