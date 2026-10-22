@@ -1,21 +1,24 @@
 import { useInView } from "../hooks/useInView";
 
+// Quotes are word-for-word excerpts of the full reviews (see git history),
+// cut to fit three lines in the three-across layout. [Brackets] mark the one
+// substituted word.
 const testimonials = [
   {
     quote:
-      "We were thoroughly impressed with the professionalism and attention to detail exhibited by Royal Crest General Contracting. Their work truly speaks for itself.",
+      "We were thoroughly impressed with the professionalism and attention to detail.",
     name: "Ryan Jeffrey",
     designation: "Exterior · Highland Park",
   },
   {
     quote:
-      "Royal Crest General Contracting transformed our vision into reality with their impeccable workmanship and dedication. Highly recommended!",
+      "[They] transformed our vision into reality with their impeccable workmanship.",
     name: "Nima Mojahed",
     designation: "Roof · Frisco",
   },
   {
     quote:
-      "From start to finish, the team at Royal Crest General Contracting demonstrated reliability, skill, and a genuine passion for their craft. They exceeded our expectations in every way.",
+      "They exceeded our expectations in every way.",
     name: "Christopher Strenger",
     designation: "Roof · Plano",
   },
@@ -32,7 +35,6 @@ export default function Testimonials() {
           ref={headRef}
           className={`mb-12 lg:mb-16 reveal ${headIn ? "visible" : ""}`}
         >
-          <p className="label">Client Reviews</p>
           <h2
             className="font-heading font-bold leading-tight text-text"
             style={{ fontSize: "clamp(2.2rem, 4vw, 3.2rem)" }}
