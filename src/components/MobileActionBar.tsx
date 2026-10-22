@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { IconPhone } from '@tabler/icons-react';
+import { LAYER } from '../lib/layers';
 
 // The bar stays out of the way while either of these is on screen:
 // the hero's own buttons (it would only repeat them) and the contact section
@@ -47,7 +48,7 @@ export default function MobileActionBar() {
       <nav
         aria-label="Quick contact"
         inert={!visible}
-        className={`md:hidden print:hidden fixed inset-x-0 bottom-0 z-50 border-t border-surface bg-bg px-4 pt-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] transition-[opacity,translate] duration-200 ease-out motion-reduce:transition-none ${
+        className={`md:hidden print:hidden fixed inset-x-0 bottom-0 ${LAYER.actionBar} border-t border-surface bg-bg px-4 pt-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] transition-[opacity,translate] duration-200 ease-out motion-reduce:transition-none ${
           visible
             ? 'opacity-100 translate-y-0'
             : 'opacity-0 translate-y-full pointer-events-none'

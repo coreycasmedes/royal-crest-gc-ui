@@ -96,7 +96,7 @@ export default function Hero() {
               src={heroImg1200}
               srcSet={HERO_SRCSET}
               sizes={HERO_SIZES}
-              alt="Residential exterior with copper roofline built by Royal Crest — Dallas, TX"
+              alt="Residential exterior with copper roofline built by Royal Crest in Dallas, TX"
               width={1500}
               height={1125}
               fetchPriority="high"
@@ -105,15 +105,6 @@ export default function Hero() {
               style={{ filter: "saturate(0.82) brightness(1.02)" }}
             />
           </div>
-        </div>
-
-        <div className="relative z-10 mt-8 pt-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 border-t border-surface">
-          <p className="text-[0.68rem] font-medium tracking-[0.22em] uppercase text-text/65">
-            Dallas · Plano · Frisco · Highland Park
-          </p>
-          <p className="text-[0.68rem] font-medium tracking-[0.22em] uppercase text-text/65">
-            Licensed & Insured
-          </p>
         </div>
       </div>
     </section>

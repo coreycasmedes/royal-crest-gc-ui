@@ -1,6 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { IconPhone } from '@tabler/icons-react';
 import logo from '../assets/images/royal_crest_logo.svg';
+import { LAYER } from '../lib/layers';
 
 const links = [
   { label: 'Services',  id: 'services'     },
@@ -13,11 +14,20 @@ const links = [
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const topRef = useRef<HTMLDivElement>(null);
 
+  // The header turns solid once the page has scrolled 40px: that is exactly
+  // when the 40px-tall marker at the top of the page leaves the viewport.
+  // An IntersectionObserver instead of a scroll listener, so nothing runs on
+  // every scroll frame.
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 40);
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
+    const marker = topRef.current;
+    if (!marker) return;
+    const observer = new IntersectionObserver(([entry]) =>
+      setScrolled(!entry.isIntersecting),
+    );
+    observer.observe(marker);
+    return () => observer.disconnect();
   }, []);
 
   useEffect(() => {
@@ -36,10 +46,15 @@ export default function Header() {
 
   return (
     <>
+      <div
+        ref={topRef}
+        aria-hidden="true"
+        className="pointer-events-none absolute top-0 left-0 h-10 w-px"
+      />
       <header
         // Solid while the mobile menu is open too: on short phones the menu
         // scrolls, and its links must pass behind the header, not through it.
-        className={`fixed top-0 left-0 right-0 z-[70] border-b transition-all duration-300 ${
+        className={`fixed top-0 left-0 right-0 ${LAYER.header} border-b transition-all duration-300 ${
           scrolled ? 'py-3 shadow-[0_1px_24px_rgba(0,0,0,0.07)]' : 'py-5'
         } ${
           scrolled || open
@@ -104,7 +119,7 @@ export default function Header() {
         id="mobile-menu"
         aria-label="Mobile"
         inert={!open}
-        className={`md:hidden fixed inset-0 z-[60] bg-bg flex flex-col overflow-y-auto px-8 pt-24 pb-12 transition-all duration-300 ${
+        className={`md:hidden fixed inset-0 ${LAYER.mobileMenu} bg-bg flex flex-col overflow-y-auto px-8 pt-24 pb-12 transition-all duration-300 ${
           open ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
         }`}
       >
@@ -123,7 +138,7 @@ export default function Header() {
           onClick={close}
           className="rounded-2xl mt-10 w-full py-4 text-center text-[0.85rem] font-semibold tracking-widest uppercase bg-deep text-bg hover:bg-accent-ink transition-colors duration-200"
         >
-          Get a Free Quote
+          Get a Quote
         </a>
         <a
           href="tel:+14694320341"
