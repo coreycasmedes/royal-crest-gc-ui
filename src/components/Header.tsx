@@ -6,7 +6,7 @@ import { LAYER } from '../lib/layers';
 const links = [
   { label: 'Services',  id: 'services'     },
   { label: 'Portfolio', id: 'portfolio'    },
-  { label: 'About',     id: 'why'          },
+  { label: 'About',     id: 'about'        },
   { label: 'Reviews',   id: 'testimonials' },
   { label: 'Contact',   id: 'contact'      },
 ];

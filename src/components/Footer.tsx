@@ -3,7 +3,7 @@ import logo from '../assets/images/royal_crest_logo.svg';
 const nav = [
   { label: 'Services',  id: 'services'     },
   { label: 'Portfolio', id: 'portfolio'    },
-  { label: 'About',     id: 'why'          },
+  { label: 'About',     id: 'about'        },
   { label: 'Reviews',   id: 'testimonials' },
   { label: 'Contact',   id: 'contact'      },
 ];
@@ -74,7 +74,7 @@ export default function Footer() {
               href="#contact"
               className="inline-block rounded-2xl px-6 py-3 text-[0.75rem] font-semibold tracking-[0.1em] uppercase bg-deep text-bg hover:bg-accent-ink transition-colors duration-200"
             >
-              Get a Free Quote
+              Get a Quote
             </a>
           </div>
 
