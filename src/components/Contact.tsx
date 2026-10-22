@@ -5,7 +5,7 @@ const info = [
   { label: "Phone", value: "(469) 432 0341", href: "tel:+14694320341" },
   { label: "Email", value: "royalcrestgeneralcontracting@outlook.com", href: "mailto:royalcrestgeneralcontracting@outlook.com" },
   { label: "Location", value: "Dallas, Ft. Worth & Surrounding Areas" },
-  { label: "Hours", value: "Mon–Fri  7 AM – 6 PM\nSat  8 AM – 4 PM" },
+  { label: "Hours", value: "Mon-Fri  7 AM - 6 PM\nSat  8 AM - 4 PM" },
 ];
 
 function MapFrame() {
