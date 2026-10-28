@@ -1,0 +1,63 @@
+---
+import SignupForm from './ui/signup-form'
+import { BUSINESS, telHref } from '@/lib/business'
+
+const info = [
+  { label: 'Phone', value: BUSINESS.phone.display, href: telHref },
+  { label: 'Email', value: BUSINESS.email, href: `mailto:${BUSINESS.email}` },
+  { label: 'Location', value: BUSINESS.serviceArea },
+  { label: 'Hours', value: BUSINESS.hours },
+]
+---
+
+<section id="contact" class="py-24 lg:py-28 bg-bg">
+  <div class="max-w-[1260px] mx-auto px-8 lg:px-12">
+    <div data-reveal class="mb-14 reveal">
+      <p class="label">Get In Touch</p>
+      <h2
+        class="font-heading font-bold leading-tight text-text"
+        style="font-size: clamp(2.2rem, 4vw, 3.2rem)"
+      >
+        Start Your Project
+      </h2>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-[3fr_2fr] gap-16 lg:gap-24 items-start">
+      <SignupForm client:visible />
+
+      <div class="flex flex-col gap-8 lg:pt-2">
+        {info.map(({ label, value, href }) => (
+          <div>
+            <p class="text-[0.66rem] font-semibold tracking-[0.22em] uppercase mb-1.5 text-text/65">{label}</p>
+            {href ? (
+              <a
+                href={href}
+                class="text-[0.95rem] leading-relaxed whitespace-pre-line text-text hover:text-accent-ink transition-colors"
+              >
+                {value}
+              </a>
+            ) : (
+              <p class="text-[0.95rem] leading-relaxed whitespace-pre-line text-text">{value}</p>
+            )}
+          </div>
+        ))}
+
+        <div class="rounded-lg ring-1 ring-text/8 hover:ring-2 hover:ring-accent transition duration-300">
+          <div class="m-0.5">
+            <iframe
+              title="Service Area"
+              src="https://maps.google.com/maps?ll=32.8,-97.0&z=9&output=embed"
+              width="100%"
+              height="320"
+              style="border: 0"
+              allowfullscreen
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+              class="w-full grayscale block"
+            ></iframe>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

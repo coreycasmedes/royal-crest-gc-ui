@@ -1,0 +1,35 @@
+---
+import gaf from '@/assets/images/gaf.avif'
+import brava from '@/assets/images/brava.avif'
+import certainteed from '@/assets/images/certainteed.avif'
+import abc from '@/assets/images/abc.avif'
+
+const badges = [
+  { img: gaf, alt: 'GAF American Owned' },
+  { img: brava, alt: 'Brava Authorized Contractor' },
+  { img: certainteed, alt: 'CertainTeed Saint-Gobain' },
+  { img: abc, alt: 'ABC Supply Co.' },
+]
+---
+
+<section class="py-14 bg-bg">
+  <div class="max-w-[1260px] mx-auto px-8 lg:px-12">
+    <p class="text-center text-[0.66rem] font-semibold tracking-[0.26em] uppercase mb-14 text-text/65">
+      Partners &amp; Certifications
+    </p>
+
+    <div class="flex flex-wrap items-center justify-center gap-10 lg:gap-16">
+      {badges.map(({ img, alt }) => (
+        <img
+          src={img.src}
+          alt={alt}
+          width={img.width}
+          height={img.height}
+          loading="lazy"
+          decoding="async"
+          class="h-24 w-auto object-contain transition-all duration-300 grayscale opacity-55 hover:grayscale-0 hover:opacity-100"
+        />
+      ))}
+    </div>
+  </div>
+</section>

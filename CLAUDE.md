@@ -1,12 +1,12 @@
 # Royal Crest GC — UI
 
-Single-page marketing website for **Royal Crest General Contractors** (Dallas, TX). Built with Vite + React 19 + TypeScript + Tailwind CSS v4. Hosted on GitHub Pages at `www.royalcrestgc.com`.
+Marketing website for **Royal Crest General Contractors** (Dallas, TX). Built with Astro 7 (static output, React 19 islands) + TypeScript + Tailwind CSS v4. Every page is pre-rendered to HTML at build time. Hosted on GitHub Pages at `www.royalcrestgc.com`.
 
 ## Commands
 
 ```bash
-npm run dev      # dev server (http://localhost:5173)
-npm run build    # tsc + vite build → dist/
+npm run dev      # dev server (http://localhost:4321)
+npm run build    # astro check + astro build → dist/
 npm run preview  # preview the production build
 npm run lint     # eslint
 ```
@@ -15,18 +15,19 @@ npm run lint     # eslint
 
 | Layer      | Choice                                      |
 |------------|---------------------------------------------|
-| Bundler    | Vite 8 (`@tailwindcss/vite` plugin)         |
-| Framework  | React 19 + TypeScript 6                     |
+| Framework  | Astro 7, `output: static` (Vite 8 under it) |
+| Islands    | React 19 + TypeScript 6 via `@astrojs/react` |
+| Images     | `astro:assets` (`<Image>`, `getImage`)      |
 | Styling    | Tailwind CSS v4 (no config file)            |
 | Fonts      | Geist Variable (headings + body) via local woff2 |
 | Animation  | `motion/react` (Motion v12)                 |
 | Icons      | `@tabler/icons-react`                       |
 
-`@/` is an alias for `src/` (set in `vite.config.ts` and `tsconfig.app.json`).
+`@/` is an alias for `src/` (set in `tsconfig.json`).
 
 ## Tailwind Setup
 
-Tailwind v4 uses **no `tailwind.config.js`**. Configuration lives entirely in `src/index.css`, which also declares the two Geist `@font-face` rules. The `@theme` block:
+Tailwind v4 uses **no `tailwind.config.js`**. Configuration lives entirely in `src/styles/global.css` (imported by `src/layouts/Base.astro`), which also declares the two Geist `@font-face` rules. The `@theme` block:
 
 ```css
 @import "tailwindcss";
@@ -46,12 +47,12 @@ Tailwind v4 uses **no `tailwind.config.js`**. Configuration lives entirely in `s
 }
 ```
 
-Custom utilities (`label`, `reveal`, stagger delays `delay-1`…`delay-6`, `shadow-input`, `grid-pattern`, `animate-scroll-bob`) are defined in `@layer utilities` inside the same file, along with the `prefers-reduced-motion` block. Do **not** create a separate config file.
+Custom utilities (`label`, `reveal`, stagger delays `delay-1`…`delay-6`, `shadow-input`, `grid-pattern`, `animate-scroll-bob`, `animate-hero-headline`, `animate-hero-actions`) are defined in `@layer utilities` inside the same file, along with the `prefers-reduced-motion` block. Do **not** create a separate config file.
 
-The Vite plugin is wired in `vite.config.ts`:
-```ts
+The Vite plugin is wired in `astro.config.mjs`:
+```js
 import tailwindcss from '@tailwindcss/vite'
-plugins: [react(), tailwindcss()]
+vite: { plugins: [tailwindcss()] }
 ```
 
 ## Design Guardrails
@@ -100,61 +101,78 @@ Use `/` modifiers for opacity variants — no inline styles needed:
 
 ## Project Structure
 
-Components are listed in the order `App.tsx` renders them.
+Sections are listed in the order `src/pages/index.astro` renders them. `.astro` components render to plain HTML with no JavaScript. `.tsx` components are React islands, hydrated in the browser with the `client:*` directive shown.
 
 ```
-index.html              — Meta/Open Graph tags, JSON-LD, font and hero image preloads
-vite.config.ts          — Plugins, `@` alias, `base` from VITE_BASE_URL (PR previews)
+astro.config.mjs        — site URL, `base` from VITE_BASE_URL (PR previews), trailingSlash 'always', React + Tailwind
 public/                 — Copied to the site root unchanged
-  404.html              — Standalone not-found page (inline CSS, no JS)
-  robots.txt, sitemap.xml
+  robots.txt
   favicon.png, favicon-32.png, apple-touch-icon.png, og-image.jpg
 .github/workflows/
   deploy.yml            — Production deploy on push to main
   pr-preview.yml        — Per-pull-request preview deploy
 src/
-  main.tsx              — React root
-  App.tsx               — <MotionConfig reducedMotion="user"> + all sections in order
-  index.css             — Tailwind entry, @font-face, @theme tokens, @layer utilities
+  pages/
+    index.astro         — Home page: sections in order, hero preloads
+    404.astro           — Standalone not-found page (inline CSS, no JS) → dist/404.html
+    sitemap.xml.ts      — /sitemap.xml, built from the .astro files in pages/
+  layouts/
+    Base.astro          — <html>, <head> (Seo, favicons, font preload), scroll-reveal script
+  styles/
+    global.css          — Tailwind entry, @font-face, @theme tokens, @layer utilities
   components/
-    Header.tsx          — Fixed nav, scroll-aware background, mobile overlay menu
-    Hero.tsx            — Video-masked headline (VideoText), CTAs, responsive hero image
-    Stats.tsx           — Three-metric stats band
-    Badges.tsx          — Partner/certification logos (grayscale → color on hover)
-    Services.tsx        — Bento grid of service cards with photos (BentoGrid)
-    Portfolio.tsx       — Project photo grid with click-to-expand cards (LayoutGrid)
-    WhyUs.tsx           — "Why choose us" section
-    Team.tsx            — Co-owner profiles in a gap-px grid
-    Testimonials.tsx    — Client reviews (AnimatedTestimonials)
-    Contact.tsx         — Quote form (SignupForm), contact details, service-area map
-    Footer.tsx          — Logo, nav, services list, CTA
+    Seo.astro           — title, description, canonical, Open Graph, JSON-LD (from business.ts)
+    Header.tsx          — client:load. Fixed nav, scroll-aware background, mobile overlay menu
+    Hero.astro          — Video-masked headline (VideoText, client:load), CTAs, hero image
+    Stats.astro         — Three-metric stats band
+    Badges.astro        — Partner/certification logos (grayscale → color on hover)
+    Services.astro      — Wide/narrow grid of service cards (ServiceCard)
+    Portfolio.astro     — Project photos (LayoutGrid, client:visible) with click-to-expand
+    Team.astro          — Co-owner profiles
+    Testimonials.astro  — Client review excerpts
+    Contact.astro       — Quote form (SignupForm, client:visible), contact details, map
+    Footer.astro        — Logo, nav, services list, CTA
+    MobileActionBar.tsx — client:idle. Call / Get a Quote bar on phones
     ui/
+      ServiceCard.astro         — Service card with a responsive photo; whole card is a link
       video-text.tsx            — Video clipped to text by an SVG mask, with poster fallback
-      bento-grid.tsx            — BentoGrid + BentoGridItem (Aceternity)
       layout-grid.tsx           — LayoutGrid with click-to-expand (Aceternity)
-      animated-testimonials.tsx — Stacked photo + quote carousel (Aceternity)
-      multi-step-loader.tsx     — Auto-advancing checklist (Aceternity)
       input.tsx                 — Text input with a pointer-following gradient border
       label.tsx                 — Radix UI label wrapper
       signup-form.tsx           — Quote request form; submits to Web3Forms
-  hooks/
-    useInView.ts        — IntersectionObserver hook; fires once, then disconnects
   lib/
+    business.ts         — Every business fact: name, phone, email, hours, areas, stats
+    links.ts            — page() and section() hrefs that respect the PR-preview base path
+    hero.ts             — Hero image src/srcset/sizes, shared by Hero.astro and the preload
     layers.ts           — z-index scale (LAYER class strings)
     utils.ts            — cn() utility (clsx + tailwind-merge)
   assets/               — Photos, video, logos and fonts (see Images)
 ```
 
+## Business facts
+
+Name, phone, email, hours, service area and the stats band come from `src/lib/business.ts`. Components, the JSON-LD and the 404 page all read it, so never write a phone number or the business name into a component. The 2026-10-28 SEO audit found conflicting phone numbers, names and founding dates in outside listings. Change a value only after the owner approves it.
+
+## Islands
+
+Only interactive parts are React islands. Everything else is `.astro`. An island:
+- is a `.tsx` file used from an `.astro` file with a `client:*` directive (`client:load` above the fold, `client:visible` below it, `client:idle` for chrome like the action bar).
+- is rendered to HTML at build time too, so it must not touch `window`, `document` or `localStorage` during render. Read browser state in effects, or through `useSyncExternalStore` with a server snapshot (see `signup-form.tsx`).
+- is hydrated on its own. If it uses `motion`, wrap it in `<MotionConfig reducedMotion="user">`.
+- gets strings and arrays as props, not as children: Astro passes children to islands as rendered HTML.
+- links to home-page sections with `section('contact')` from `src/lib/links.ts`, so the link also works from other pages and in PR previews.
+
 ## Scroll Animation Pattern
 
-Most sections use `useInView` to trigger a CSS reveal animation (the hero, badges and footer do not):
+Most sections reveal on scroll (the hero, badges and footer do not). Put `data-reveal` on the observed element and `reveal` on whatever should animate. The script in `Base.astro` adds `visible` once the element is in view:
 
-```tsx
-const { ref, inView } = useInView(0.08); // 8% visibility threshold; default is 0.12
-<div ref={ref} className={`reveal ${inView ? 'visible' : ''}`} />
+```astro
+<div data-reveal="0.08" class="grid ...">   <!-- threshold; default 0.12 -->
+  <div class="reveal delay-1">...</div>
+</div>
 ```
 
-For staggered children, apply `delay-1` through `delay-6` alongside `reveal`. The grid container is the observed element.
+`data-reveal` and `reveal` can sit on the same element. For staggered children, apply `delay-1` through `delay-6` alongside `reveal`. Do not nest `data-reveal` elements. Without JavaScript, a `<noscript>` style shows every `.reveal`.
 
 ## Styling Conventions
 
@@ -187,17 +205,17 @@ className="text-text/70 hover:text-text transition-colors"
 
 These decisions are easy to undo by accident. Keep them when editing nearby code.
 
-- **The hero image is the LCP element.** It must render immediately: no entrance animation, no `motion` wrapper, no `loading="lazy"`. It keeps `fetchPriority="high"`.
-- **Hero `srcSet`/`sizes` must match the preload in `index.html`.** `HERO_SRCSET` and `HERO_SIZES` in `Hero.tsx` mirror the `imagesrcset`/`imagesizes` on `<link rel="preload" as="image">`. Change both together, or the browser downloads the hero twice.
+- **The hero image is the LCP element.** It must render immediately: no entrance animation, no island, no `loading="lazy"`. It keeps `fetchpriority="high"`.
+- **Hero `srcset`/`sizes` must match its preload.** Both `Hero.astro` and the `<link rel="preload" as="image">` in `index.astro` read `HERO` from `src/lib/hero.ts`. Keep it that way, or the browser downloads the hero twice. The three hero files are hand-encoded and served as they are, not through `<Image>`.
 - **The headline video must not compete with the first paint.** Its poster is preloaded and shown first; the video itself is only fetched after the page has loaded, and not at all under reduced motion.
-- **Below-the-fold images need `loading="lazy"` and real `width`/`height`** (the file's actual pixel dimensions), so they reserve their space and do not shift the page when they arrive. `Services.tsx` shows the pattern.
-- **Reduced motion is respected in two places.** `App.tsx` wraps everything in `<MotionConfig reducedMotion="user">` for `motion/react` animations, and `index.css` has a `prefers-reduced-motion` block that disables smooth scrolling and the `reveal` transition. Timers and autoplay are not covered by either: guard them with `useReducedMotion()`.
+- **Below-the-fold photos use `<Image>` from `astro:assets`** with `widths` and a `sizes` that matches the layout, so each is downloaded at the size it is shown. `<Image>` sets `loading="lazy"` and the real `width`/`height`, so the photo reserves its space. `ServiceCard.astro` shows the pattern; an island gets the same from `getImage()` (see `Portfolio.astro`).
+- **Reduced motion is respected in two places.** Every island that uses `motion/react` wraps itself in `<MotionConfig reducedMotion="user">`, and `global.css` has a `prefers-reduced-motion` block that disables smooth scrolling, the hero entrance and the `reveal` transition. Timers and autoplay are not covered by either: guard them with `useReducedMotion()`.
 - **Nothing should animate endlessly without a way to pause it.** Anything that autoplays, loops or cycles must stop under reduced motion and either pause on hover and focus or offer a control.
 - **Text contrast:** use `text-accent-ink`, not `text-accent`, for text; do not go below `text-text/65`.
 
 ## Images
 
-Media lives in `src/assets/` and is imported from components, so Vite fingerprints it and the paths work under the PR-preview base path. Photos are `.webp`.
+Media lives in `src/assets/` and is imported from components, so it is fingerprinted into `dist/_astro/` and the paths work under the PR-preview base path. Photos rendered through `<Image>`/`getImage()` ship only as resized copies, never as the original file. Photos are `.webp`.
 
 - `hero-800.webp`, `hero-1200.webp`, `hero-1500.webp` — the hero image at three widths (4:3), served through `srcSet`
 - `drone_roof_540.mp4` — headline video (960×540)
@@ -223,7 +241,8 @@ GitHub Pages serves the `gh-pages` branch at `www.royalcrestgc.com`. Never commi
 - **Production** (`deploy.yml`): every push to `main` runs lint and build, then publishes `dist/` to the root of `gh-pages`. Files that are no longer in the build are deleted; `pr-preview/` is excluded from that clean-up.
 - **PR previews** (`pr-preview.yml`): each pull request is built with `VITE_BASE_URL=/pr-preview/pr-<number>/` and published to that directory on `gh-pages`, then removed when the PR closes.
 - GitHub Pages reads the custom domain from `CNAME` at the root of `gh-pages`, and `.nojekyll` there stops it running Jekyll. `deploy.yml` writes both into `dist/` before every production deploy. Do not move them to `public/`: they would be copied into every PR preview, and the preview action does not delete them when a preview is removed.
-- The site is served from a sub-path in previews, so reference assets by import (or `import.meta.env.BASE_URL`), never by a hard-coded `/assets/...` path.
+- The site is served from a sub-path in previews, so reference assets by import and pages with `page()`/`section()` from `src/lib/links.ts`, never by a hard-coded `/...` path.
+- Pages build to `<name>/index.html` (`trailingSlash: 'always'`), which GitHub Pages serves at `/<name>/`. Unknown URLs get `404.html` with a real 404 status. Do not add a catch-all redirect to the home page.
 
 ## Brand
 

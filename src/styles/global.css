@@ -2,7 +2,7 @@
 
 @font-face {
   font-family: 'Geist';
-  src: url('./assets/fonts/Geist-Variable.woff2') format('woff2');
+  src: url('../assets/fonts/Geist-Variable.woff2') format('woff2');
   font-weight: 100 900;
   font-style: normal;
   font-display: swap;
@@ -10,7 +10,7 @@
 
 @font-face {
   font-family: 'Geist';
-  src: url('./assets/fonts/Geist-Italic[wght].woff2') format('woff2');
+  src: url('../assets/fonts/Geist-Italic[wght].woff2') format('woff2');
   font-weight: 100 900;
   font-style: italic;
   font-display: swap;
@@ -76,6 +76,17 @@
   }
   .animate-scroll-bob { animation: scrollBob 2.2s ease-in-out infinite; }
 
+  /* Hero entrance: the headline sharpens into place, then the buttons fade in.
+     The hero photo below them never animates (it is the LCP element). */
+  @keyframes heroHeadline {
+    from { opacity: 0; filter: blur(4px); transform: translateY(10px); }
+  }
+  @keyframes heroFadeIn {
+    from { opacity: 0; }
+  }
+  .animate-hero-headline { animation: heroHeadline 0.5s ease-in-out both; }
+  .animate-hero-actions { animation: heroFadeIn 0.4s ease-out 0.3s both; }
+
   .shadow-input {
     box-shadow:
       0px 2px 3px -1px rgba(0,0,0,0.10),
@@ -86,7 +97,9 @@
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
     .reveal { opacity: 1; transform: none; transition: none; }
-    .animate-scroll-bob { animation: none; }
+    .animate-scroll-bob,
+    .animate-hero-headline,
+    .animate-hero-actions { animation: none; }
   }
 
   /* Blueprint-grid header for bento cards */

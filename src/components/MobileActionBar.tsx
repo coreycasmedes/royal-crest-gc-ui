@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { IconPhone } from '@tabler/icons-react';
-import { LAYER } from '../lib/layers';
+import { LAYER } from '@/lib/layers';
+import { callLabel, telHref } from '@/lib/business';
+import { section } from '@/lib/links';
 
 // The bar stays out of the way while either of these is on screen:
 // the hero's own buttons (it would only repeat them) and the contact section
@@ -56,15 +58,15 @@ export default function MobileActionBar() {
       >
         <div className="grid grid-cols-2 gap-3">
           <a
-            href="tel:+14694320341"
-            aria-label="Call (469) 432 0341"
+            href={telHref}
+            aria-label={callLabel}
             className="rounded-2xl flex min-h-12 items-center justify-center gap-2 border border-text/20 px-4 text-[0.78rem] font-semibold tracking-[0.08em] uppercase text-text hover:border-text transition-colors duration-200"
           >
             <IconPhone aria-hidden="true" className="h-4 w-4 flex-shrink-0 text-accent" />
             Call
           </a>
           <a
-            href="#contact"
+            href={section('contact')}
             className="rounded-2xl flex min-h-12 items-center justify-center px-4 text-[0.78rem] font-semibold tracking-[0.08em] uppercase bg-deep text-bg hover:bg-accent-ink transition-colors duration-200"
           >
             Get a Quote

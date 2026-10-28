@@ -1,9 +1,16 @@
-import React, { useState } from "react";
-import { AnimatePresence, motion, useMotionTemplate, useMotionValue } from "motion/react";
+import React, { useState, useSyncExternalStore } from "react";
+import {
+  AnimatePresence,
+  MotionConfig,
+  motion,
+  useMotionTemplate,
+  useMotionValue,
+} from "motion/react";
 import { IconVideo } from "@tabler/icons-react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
+import { BUSINESS, telHref } from "@/lib/business";
 
 const services = [
   "Kitchen Remodel",
@@ -50,6 +57,13 @@ function hasRecentSubmission(): boolean {
   return !!(last && now - last < COOLDOWN);
 }
 
+// The form is rendered to HTML at build time, where there is no
+// localStorage. Reading it through useSyncExternalStore makes hydration use
+// the server value first, then switch to the stored one, instead of
+// mismatching the server HTML.
+const noSubscription = () => () => {};
+const serverHasRecentSubmission = () => false;
+
 function recordSubmission() {
   const now  = Date.now();
   const logs = getTimestamps().filter((t) => now - t < DAY);
@@ -76,8 +90,23 @@ function isValidUSPhone(v: string) {
   return d.length === 10 && /^[2-9]/.test(d) && /^[2-9]/.test(d[3]);
 }
 
+// Hydrated on its own as an Astro island, so it sets the reduced-motion policy itself
 export default function SignupForm() {
-  const [sent, setSent] = useState(() => hasRecentSubmission());
+  return (
+    <MotionConfig reducedMotion="user">
+      <QuoteForm />
+    </MotionConfig>
+  );
+}
+
+function QuoteForm() {
+  const sentEarlier = useSyncExternalStore(
+    noSubscription,
+    hasRecentSubmission,
+    serverHasRecentSubmission,
+  );
+  const [sentNow, setSentNow] = useState(false);
+  const sent = sentEarlier || sentNow;
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [touched, setTouched] = useState({ email: false, phone: false });
@@ -140,7 +169,7 @@ export default function SignupForm() {
         } catch {
           // Storage is unavailable (private mode); the request was still sent.
         }
-        setSent(true);
+        setSentNow(true);
       } else {
         // Web3Forms explains a rejected submission in `message`; anything
         // else (server error, unexpected body) gets the generic wording.
@@ -171,10 +200,10 @@ export default function SignupForm() {
         <p className="mt-3 text-sm text-text/70">
           If this is an emergency, please call us directly at{" "}
           <a
-            href="tel:+14694320341"
+            href={telHref}
             className="text-text font-medium hover:text-accent-ink transition-colors duration-200"
           >
-            (469) 432 0341
+            {BUSINESS.phone.display}
           </a>
           .
         </p>
@@ -345,10 +374,10 @@ export default function SignupForm() {
             <p className="mt-3 text-sm text-red-600">
               {error} Please try again, or call us at{" "}
               <a
-                href="tel:+14694320341"
+                href={telHref}
                 className="font-medium whitespace-nowrap text-text underline underline-offset-2 hover:text-accent-ink transition-colors duration-200"
               >
-                (469) 432 0341
+                {BUSINESS.phone.display}
               </a>
               .
             </p>

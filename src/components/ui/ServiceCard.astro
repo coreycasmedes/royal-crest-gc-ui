@@ -1,0 +1,78 @@
+---
+import { Image } from 'astro:assets'
+import type { ImageMetadata } from 'astro'
+
+// A service card: photo, icon, title, description, and an optional link that
+// makes the whole card clickable. Replaces the Aceternity BentoGridItem.
+interface Props {
+  title: string
+  description: string
+  image: {
+    src: ImageMetadata
+    alt: string
+    /** Ratio classes for the photo frame, so the card height never depends on the image having loaded */
+    aspect: string
+    /** object-position class that keeps the photo's subject inside the crop */
+    position?: string
+    sizes: string
+  }
+  /** When set, the whole card renders as a link to this target */
+  href?: string
+  /** Accessible name for the card link, e.g. "Roofing: get a quote" */
+  linkLabel?: string
+  /** Visible call to action at the foot of a linked card */
+  cta?: string
+  class?: string
+}
+
+const { title, description, image, href, linkLabel, cta, class: className = '' } = Astro.props
+const descriptionId = `svc-${title.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`
+
+const Tag = href ? 'a' : 'div'
+const cardClass = [
+  'group/bento shadow-input flex flex-col gap-4 rounded-xl border border-surface bg-bg p-4',
+  href &&
+    'transition-colors duration-200 hover:border-accent-ink focus-visible:border-accent-ink focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent-ink',
+  className,
+]
+---
+
+<Tag
+  class:list={cardClass}
+  href={href}
+  aria-label={href ? linkLabel : undefined}
+  aria-describedby={href ? descriptionId : undefined}
+>
+  <div class={`relative w-full shrink-0 overflow-hidden rounded-lg bg-surface ${image.aspect}`}>
+    <Image
+      src={image.src}
+      alt={image.alt}
+      widths={[480, 800, 1200, 1600]}
+      sizes={image.sizes}
+      class={`absolute inset-0 h-full w-full object-cover motion-safe:transition-transform motion-safe:duration-500 motion-safe:group-hover/bento:scale-[1.03] ${image.position ?? 'object-center'}`}
+      style="filter: saturate(0.9) brightness(1.02)"
+    />
+  </div>
+  <div class="flex flex-1 flex-col px-1 pb-1">
+    <div class="flex items-center gap-2.5">
+      <slot name="icon" />
+      <h3 class="font-sans text-lg font-bold leading-snug text-text">{title}</h3>
+    </div>
+    <p id={descriptionId} class="mt-2 font-sans text-sm leading-relaxed font-normal text-text/70">
+      {description}
+    </p>
+    {href && cta && (
+      <span class="mt-auto flex items-center gap-2 pt-5 text-[0.76rem] font-semibold tracking-[0.1em] uppercase text-text transition-colors duration-200 group-hover/bento:text-accent-ink group-focus-visible/bento:text-accent-ink">
+        <span class="border-b border-text pb-0.5 transition-colors duration-200 group-hover/bento:border-accent-ink group-focus-visible/bento:border-accent-ink">
+          {cta}
+        </span>
+        <span
+          aria-hidden="true"
+          class="motion-safe:transition-transform motion-safe:duration-200 motion-safe:group-hover/bento:translate-x-1 motion-safe:group-focus-visible/bento:translate-x-1"
+        >
+          →
+        </span>
+      </span>
+    )}
+  </div>
+</Tag>

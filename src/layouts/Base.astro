@@ -1,0 +1,52 @@
+---
+import '@/styles/global.css'
+import Seo from '@/components/Seo.astro'
+import geistFont from '@/assets/fonts/Geist-Variable.woff2?url'
+import { page } from '@/lib/links'
+
+interface Props {
+  title: string
+  description: string
+}
+
+const { title, description } = Astro.props
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" href={page('favicon.png')} />
+    <link rel="icon" type="image/png" sizes="32x32" href={page('favicon-32.png')} />
+    <link rel="apple-touch-icon" sizes="180x180" href={page('apple-touch-icon.png')} />
+    <meta name="theme-color" content="#899878" />
+    <Seo title={title} description={description} />
+    <link rel="preload" href={geistFont} as="font" type="font/woff2" crossorigin />
+    <slot name="head" />
+    <!-- Without JavaScript nothing would reveal the sections -->
+    <noscript><style>.reveal { opacity: 1; transform: none; }</style></noscript>
+  </head>
+  <body>
+    <slot />
+
+    <script>
+      // Scroll reveal. An element with data-reveal is observed once; when it
+      // comes into view, it and every .reveal inside it get .visible.
+      // data-reveal="0.06" sets the visibility threshold (default 0.12).
+      document.querySelectorAll<HTMLElement>('[data-reveal]').forEach((root) => {
+        const threshold = Number(root.dataset.reveal) || 0.12
+        const observer = new IntersectionObserver(
+          ([entry]) => {
+            if (!entry.isIntersecting) return
+            observer.disconnect()
+            if (root.classList.contains('reveal')) root.classList.add('visible')
+            root.querySelectorAll('.reveal').forEach((el) => el.classList.add('visible'))
+          },
+          { threshold },
+        )
+        observer.observe(root)
+      })
+    </script>
+  </body>
+</html>

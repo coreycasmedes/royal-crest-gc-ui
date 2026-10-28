@@ -1,0 +1,57 @@
+---
+import { BUSINESS } from '@/lib/business'
+
+interface Props {
+  title: string
+  description: string
+  /** Pages that must stay out of search results, e.g. the 404 page */
+  noindex?: boolean
+}
+
+const { title, description, noindex = false } = Astro.props
+const canonical = new URL(Astro.url.pathname, Astro.site).href
+const ogImage = new URL('og-image.jpg', Astro.site).href
+
+// One business entity for every page; its @id lets later page-level markup
+// refer to it instead of repeating it.
+const business = {
+  '@context': 'https://schema.org',
+  '@type': 'GeneralContractor',
+  '@id': `${BUSINESS.url}#business`,
+  name: BUSINESS.name,
+  image: ogImage,
+  url: BUSINESS.url,
+  telephone: BUSINESS.phone.tel,
+  email: BUSINESS.email,
+  priceRange: '$$$',
+  areaServed: BUSINESS.areaServed.map((name) => ({ '@type': 'City', name })),
+  address: {
+    '@type': 'PostalAddress',
+    addressLocality: BUSINESS.locality.city,
+    addressRegion: BUSINESS.locality.region,
+    addressCountry: BUSINESS.locality.country,
+  },
+}
+---
+
+<title>{title}</title>
+<meta name="description" content={description} />
+<meta name="robots" content={noindex ? 'noindex' : 'index, follow'} />
+{!noindex && <link rel="canonical" href={canonical} />}
+
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content={BUSINESS.name} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonical} />
+<meta property="og:image" content={ogImage} />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:locale" content="en_US" />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={ogImage} />
+
+{!noindex && <script type="application/ld+json" is:inline set:html={JSON.stringify(business)} />}

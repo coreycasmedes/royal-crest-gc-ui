@@ -1,0 +1,88 @@
+---
+import { VideoText } from './ui/video-text'
+import droneRoofVideo from '@/assets/drone_roof_540.mp4'
+import droneRoofPoster from '@/assets/drone_roof_poster.webp'
+import geistFont from '@/assets/fonts/Geist-Variable.woff2?url'
+import { HERO } from '@/lib/hero'
+
+const staticHeadlineLines = ['The Gold', 'Standard of', 'Construction']
+// Single source of truth — the container height is exactly
+// lines * lineHeight * fontSize (no extra buffer), so it wraps the rendered
+// text tightly and can't drift out of sync with VideoText's mask. The 9rem
+// cap keeps the headline from growing unbounded on very large viewports.
+// 15vw keeps the widest line ("Construction" in Geist Black) just inside the
+// mask box; at 16vw it touches both edges and clips.
+const HEADLINE_FONT_SIZE = 'clamp(2.4rem, 15vw, 9rem)'
+const HEADLINE_LINE_HEIGHT_EM = 1.05
+---
+
+<section id="hero" class="relative flex flex-col items-center justify-center bg-bg" style="padding-top: 88px">
+  <div class="w-full max-w-7xl mx-auto px-8 py-10 md:py-16 lg:px-12">
+    <h1
+      class="relative font-heading z-10 mx-auto max-w-4xl text-center font-black leading-tight tracking-tight text-text"
+      style="font-size: clamp(2.4rem, 7vw, 6rem)"
+    >
+      <div
+        class="animate-hero-headline mx-auto w-full"
+        style={`height: calc(${staticHeadlineLines.length} * ${HEADLINE_LINE_HEIGHT_EM} * ${HEADLINE_FONT_SIZE})`}
+      >
+        <VideoText
+          client:load
+          src={droneRoofVideo}
+          poster={droneRoofPoster.src}
+          startOnLoad
+          playbackRate={0.5}
+          lineHeight={HEADLINE_LINE_HEIGHT_EM}
+          fontSize={HEADLINE_FONT_SIZE}
+          fontWeight={900}
+          letterSpacing="-0.04em"
+          fontFamily="Geist, ui-sans-serif, system-ui"
+          fontSrc={geistFont}
+          className="font-heading"
+          text={staticHeadlineLines}
+        />
+      </div>
+    </h1>
+
+    {/* Placeholder wording — restates the service list and service area
+        already on the page; owners still need to confirm it. */}
+    <p class="relative z-10 mx-auto mt-5 max-w-xl text-center text-base leading-relaxed text-pretty text-text/70 md:text-lg">
+      Roofing, exteriors and home improvement across Dallas, Plano, Frisco
+      and Highland Park.
+    </p>
+
+    {/* id is read by MobileActionBar, which stays hidden while these are on screen */}
+    <div id="hero-actions" class="animate-hero-actions relative z-10 mt-6 flex flex-wrap items-center justify-center gap-2">
+      <a
+        href="#contact"
+        class="rounded-2xl w-52 text-center transform px-6 py-3 text-[0.78rem] font-semibold tracking-[0.08em] uppercase bg-deep text-bg hover:bg-accent-ink transition-colors duration-300 hover:-translate-y-0.5"
+      >
+        Get a Quote
+      </a>
+      <a
+        href="#portfolio"
+        class="rounded-2xl w-52 text-center transform border border-text/20 text-text px-6 py-3 text-[0.78rem] font-semibold tracking-[0.08em] uppercase hover:border-text transition-all duration-300 hover:-translate-y-0.5"
+      >
+        View Our Work
+      </a>
+    </div>
+
+    {/* LCP element — rendered without an entrance animation on purpose */}
+    <div class="relative z-10 mt-16 p-3">
+      <div class="w-full overflow-hidden">
+        <img
+          src={HERO.src}
+          srcset={HERO.srcset}
+          sizes={HERO.sizes}
+          alt="Residential exterior with copper roofline built by Royal Crest in Dallas, TX"
+          width={HERO.width}
+          height={HERO.height}
+          fetchpriority="high"
+          decoding="async"
+          class="aspect-[4/3] lg:aspect-[2/1] h-auto w-full object-cover rounded-2xl"
+          style="filter: saturate(0.82) brightness(1.02)"
+        />
+      </div>
+    </div>
+  </div>
+</section>

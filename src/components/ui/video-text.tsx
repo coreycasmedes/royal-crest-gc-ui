@@ -47,9 +47,10 @@ export interface VideoTextProps {
    * The content to display (will have the video "inside" it).
    * Pass an array to render multiple lines that share a single video
    * element, each line revealing a different horizontal band of the
-   * same continuously-playing footage.
+   * same continuously-playing footage. A prop rather than children: an
+   * Astro island receives children as rendered HTML, not as strings.
    */
-  children: string | string[]
+  text: string | string[]
   /**
    * Line height for multi-line content, in em units relative to fontSize.
    * @default 1.05
@@ -99,7 +100,7 @@ export interface VideoTextProps {
 
 export function VideoText({
   src,
-  children,
+  text,
   className = "",
   autoPlay = true,
   muted = true,
@@ -124,7 +125,7 @@ export function VideoText({
     fontSrc ? undefined : null,
   )
   const videoRef = useRef<HTMLVideoElement>(null)
-  const lines = Array.isArray(children) ? children : [children]
+  const lines = Array.isArray(text) ? text : [text]
   const content = lines.join(" ")
   const linesKey = lines.join("\n")
 

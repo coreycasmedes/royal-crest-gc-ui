@@ -1,7 +1,9 @@
 import { useState, useEffect, useRef } from 'react';
 import { IconPhone } from '@tabler/icons-react';
-import logo from '../assets/images/royal_crest_logo.svg';
-import { LAYER } from '../lib/layers';
+import logo from '@/assets/images/royal_crest_logo.svg';
+import { LAYER } from '@/lib/layers';
+import { BUSINESS, callLabel, telHref } from '@/lib/business';
+import { section } from '@/lib/links';
 
 const links = [
   { label: 'Services',  id: 'services'     },
@@ -63,15 +65,15 @@ export default function Header() {
         }`}
       >
         <div className="max-w-[1260px] mx-auto px-6 lg:px-10 flex items-center">
-          <a href="#hero" onClick={close} className="flex items-center flex-shrink-0">
-            <img src={logo} alt="Royal Crest General Contractors" className="h-16 w-auto" />
+          <a href={section('hero')} onClick={close} className="flex items-center flex-shrink-0">
+            <img src={logo.src} alt={BUSINESS.name} width={logo.width} height={logo.height} className="h-16 w-auto" />
           </a>
 
           <nav aria-label="Main" className="hidden md:flex items-center gap-5 lg:gap-8 ml-auto">
             {links.map(({ label, id }) => (
               <a
                 key={id}
-                href={`#${id}`}
+                href={section(id)}
                 // Between md and lg there isn't room for every link plus the
                 // phone number; "Contact" goes first because the "Get a Quote"
                 // button beside it leads to the same section.
@@ -85,16 +87,16 @@ export default function Header() {
           </nav>
 
           <a
-            href="tel:+14694320341"
-            aria-label="Call (469) 432 0341"
+            href={telHref}
+            aria-label={callLabel}
             className="hidden md:inline-flex ml-5 lg:ml-8 items-center gap-1.5 whitespace-nowrap text-[0.82rem] font-semibold tabular-nums text-text hover:text-accent-ink transition-colors"
           >
             <IconPhone aria-hidden="true" className="h-4 w-4 flex-shrink-0 text-accent" />
-            (469) 432 0341
+            {BUSINESS.phone.display}
           </a>
 
           <a
-            href="#contact"
+            href={section('contact')}
             className="rounded-2xl hidden md:inline-flex ml-4 lg:ml-6 items-center whitespace-nowrap px-5 py-2.5 text-[0.76rem] font-semibold tracking-[0.07em] uppercase bg-deep text-bg hover:bg-accent-ink transition-colors duration-200"
           >
             Get a Quote
@@ -126,7 +128,7 @@ export default function Header() {
         {links.map(({ label, id }) => (
           <a
             key={id}
-            href={`#${id}`}
+            href={section(id)}
             onClick={close}
             className="font-heading text-[2.2rem] font-semibold text-left py-4 border-b border-surface text-text"
           >
@@ -134,20 +136,20 @@ export default function Header() {
           </a>
         ))}
         <a
-          href="#contact"
+          href={section('contact')}
           onClick={close}
           className="rounded-2xl mt-10 w-full py-4 text-center text-[0.85rem] font-semibold tracking-widest uppercase bg-deep text-bg hover:bg-accent-ink transition-colors duration-200"
         >
           Get a Quote
         </a>
         <a
-          href="tel:+14694320341"
+          href={telHref}
           onClick={close}
-          aria-label="Call (469) 432 0341"
+          aria-label={callLabel}
           className="rounded-2xl mt-3 w-full py-4 flex flex-shrink-0 items-center justify-center gap-2 border border-text/20 text-[0.95rem] font-semibold tabular-nums text-text hover:border-text transition-colors duration-200"
         >
           <IconPhone aria-hidden="true" className="h-[1.125rem] w-[1.125rem] flex-shrink-0 text-accent" />
-          (469) 432 0341
+          {BUSINESS.phone.display}
         </a>
       </nav>
     </>

@@ -1,0 +1,75 @@
+---
+import logo from '@/assets/images/royal_crest_logo.svg'
+import { BUSINESS, telHref } from '@/lib/business'
+import { section } from '@/lib/links'
+
+const nav = [
+  { label: 'Services', id: 'services' },
+  { label: 'Portfolio', id: 'portfolio' },
+  { label: 'About', id: 'about' },
+  { label: 'Reviews', id: 'testimonials' },
+  { label: 'Contact', id: 'contact' },
+]
+
+const svcList = ['Kitchen Remodels', 'Bathroom Renovations', 'Home Additions', 'Roofing & Exterior']
+---
+
+<footer class="bg-bg border-t border-surface">
+  <div class="max-w-[1260px] mx-auto px-8 lg:px-12 pt-16 pb-8">
+
+    <div class="flex flex-col lg:flex-row lg:justify-between gap-12 mb-14">
+
+      {/* Brand */}
+      <div class="max-w-[240px]">
+        <a href={section('hero')} class="flex items-center mb-4">
+          <img src={logo.src} alt={BUSINESS.name} width={logo.width} height={logo.height} class="h-16 w-auto" />
+        </a>
+        <p class="text-[0.84rem] leading-[1.75] mb-3 text-text/70">Dallas's premier general contractor.</p>
+        <a href={telHref} class="text-[0.76rem] font-medium text-text/65 hover:text-accent-ink transition-colors">
+          {BUSINESS.phone.display}
+        </a>
+      </div>
+
+      {/* Links */}
+      <div class="flex flex-wrap gap-12 lg:gap-16">
+        <div class="flex flex-col gap-2.5">
+          <p class="text-[0.66rem] font-bold tracking-[0.22em] uppercase mb-1 text-text">Navigate</p>
+          {nav.map(({ label, id }) => (
+            <a href={section(id)} class="text-left text-[0.84rem] text-text/70 hover:text-text transition-colors">
+              {label}
+            </a>
+          ))}
+        </div>
+
+        <div class="flex flex-col gap-2.5">
+          <p class="text-[0.66rem] font-bold tracking-[0.22em] uppercase mb-1 text-text">Services</p>
+          {svcList.map((s) => (
+            <a href={section('services')} class="text-left text-[0.84rem] text-text/70 hover:text-text transition-colors">
+              {s}
+            </a>
+          ))}
+        </div>
+      </div>
+
+      {/* CTA */}
+      <div class="flex-shrink-0">
+        <p class="text-[0.66rem] font-bold tracking-[0.22em] uppercase mb-4 text-text">Ready to Build?</p>
+        <a
+          href={section('contact')}
+          class="inline-block rounded-2xl px-6 py-3 text-[0.75rem] font-semibold tracking-[0.1em] uppercase bg-deep text-bg hover:bg-accent-ink transition-colors duration-200"
+        >
+          Get a Quote
+        </a>
+      </div>
+
+    </div>
+
+    {/* Bottom. Privacy, Terms and Accessibility links return once those pages exist. */}
+    <div class="pt-6 border-t border-surface">
+      <p class="text-[0.74rem] text-text/65">
+        © {new Date().getFullYear()} {BUSINESS.legalName}
+      </p>
+    </div>
+
+  </div>
+</footer>
