@@ -151,7 +151,7 @@ src/
 
 ## Business facts
 
-Name, phone, email, hours, service area and the stats band come from `src/lib/business.ts`. Components, the JSON-LD and the 404 page all read it, so never write a phone number or the business name into a component. The 2026-10-28 SEO audit found conflicting phone numbers, names and founding dates in outside listings. Change a value only after the owner approves it.
+Name, phone, email, hours, service area and the stats band come from `src/lib/business.ts`. Components, the JSON-LD and the 404 page all read it, so never write a phone number or the business name into a component. Change a value only after the owner approves it.
 
 ## Islands
 
