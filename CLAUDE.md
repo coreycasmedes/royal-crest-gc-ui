@@ -115,6 +115,7 @@ src/
   pages/
     index.astro         — Home page: sections in order, hero preloads
     404.astro           — Standalone not-found page (inline CSS, no JS) → dist/404.html
+    privacy.astro       — Privacy policy, linked from the footer and the quote form
     sitemap.xml.ts      — /sitemap.xml, built from the .astro files in pages/
   layouts/
     Base.astro          — <html>, <head> (Seo, favicons, font preload), scroll-reveal script
