@@ -6,13 +6,13 @@ import homeImg from '@/assets/home.webp'
 import roofBirdseyeImg from '@/assets/roof_birdseye.webp'
 import roofingTeamImg from '@/assets/roofing_team.webp'
 
-// A photo can be enlarged to at most 60rem wide, so every card offers
-// sources up to that size at 2x.
-const SIZES = '(min-width: 1024px) 960px, 100vw'
+// Sized for the enlarged photo (at most 60rem wide), up to 2x.
+const ENLARGED_PHOTO_SIZES = '(min-width: 1024px) 960px, 100vw'
+const PHOTO_WIDTHS = [640, 960, 1280, 1920]
 
 async function photo(src: ImageMetadata) {
-  const img = await getImage({ src, widths: [640, 960, 1280, 1920], sizes: SIZES })
-  return { thumbnail: img.src, srcSet: img.srcSet.attribute, sizes: SIZES }
+  const img = await getImage({ src, widths: PHOTO_WIDTHS, sizes: ENLARGED_PHOTO_SIZES })
+  return { thumbnail: img.src, srcSet: img.srcSet.attribute, sizes: ENLARGED_PHOTO_SIZES }
 }
 
 const cards: Card[] = [

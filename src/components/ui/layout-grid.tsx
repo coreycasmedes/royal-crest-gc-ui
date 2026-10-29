@@ -5,22 +5,34 @@ import { cn } from "@/lib/utils";
 
 export type Card = {
   id: number;
-  /** Describes the photo; also names the photo's button for keyboard and screen-reader users */
   alt: string;
   tag: string;
   title: string;
   meta: string;
-  /** Grid placement of the card, e.g. `md:col-span-2` */
   className: string;
   thumbnail: string;
-  /** Responsive sources for the photo (Portfolio.astro builds them with getImage) */
   srcSet?: string;
   sizes?: string;
 };
 
-/** Room left for the fixed site header above an expanded card, and a small margin below it (px) */
-const VIEWPORT_TOP_CLEARANCE = 104;
-const VIEWPORT_BOTTOM_CLEARANCE = 16;
+const FIXED_HEADER_CLEARANCE_PX = 104;
+const VIEWPORT_BOTTOM_MARGIN_PX = 16;
+
+function scrollFullyIntoView(stage: HTMLElement, expandedCard: HTMLElement) {
+  // offsetTop / offsetHeight give the card's final place, not the transform it is animating through
+  const top = stage.getBoundingClientRect().top + expandedCard.offsetTop;
+  const bottom = top + expandedCard.offsetHeight;
+  const overflowAbove = top - FIXED_HEADER_CLEARANCE_PX;
+  const overflowBelow = bottom - (window.innerHeight - VIEWPORT_BOTTOM_MARGIN_PX);
+  const delta =
+    overflowAbove < 0
+      ? overflowAbove
+      : overflowBelow > 0
+        ? Math.min(overflowBelow, overflowAbove)
+        : 0;
+  // No `behavior`: follows the page's scroll-behavior, which is instant under reduced motion
+  if (delta !== 0) window.scrollBy({ top: delta });
+}
 
 export const LayoutGrid = ({ cards }: { cards: Card[] }) => {
   const [selectedId, setSelectedId] = useState<number | null>(null);
@@ -34,34 +46,26 @@ export const LayoutGrid = ({ cards }: { cards: Card[] }) => {
 
   useEffect(() => {
     if (selectedId === null) return;
-    const onKey = (e: KeyboardEvent) => {
+    const closeOnEscape = (e: KeyboardEvent) => {
       if (e.key !== "Escape") return;
       setLastSelectedId(selectedId);
       setSelectedId(null);
     };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
+    window.addEventListener("keydown", closeOnEscape);
+    return () => window.removeEventListener("keydown", closeOnEscape);
   }, [selectedId]);
 
-  // An expanded card is centred in the stage, which is taller than most screens: bring it fully into view.
   useEffect(() => {
     const stage = stageRef.current;
-    const el = stage?.querySelector<HTMLElement>("[data-expanded]");
-    if (selectedId === null || !stage || !el) return;
-    // offsetTop / offsetHeight describe where the card ends up in the stage, not the transform it is animating through
-    const top = stage.getBoundingClientRect().top + el.offsetTop;
-    const bottom = top + el.offsetHeight;
-    const above = top - VIEWPORT_TOP_CLEARANCE;
-    const below = bottom - (window.innerHeight - VIEWPORT_BOTTOM_CLEARANCE);
-    const delta = above < 0 ? above : below > 0 ? Math.min(below, above) : 0;
-    // No explicit behavior: follows the page's scroll-behavior, which is instant under reduced motion
-    if (delta !== 0) window.scrollBy({ top: delta });
+    const expandedCard = stage?.querySelector<HTMLElement>("[data-expanded]");
+    if (selectedId === null || !stage || !expandedCard) return;
+    scrollFullyIntoView(stage, expandedCard);
   }, [selectedId]);
 
   return (
-    // Hydrated on its own as an Astro island, so it sets the reduced-motion policy itself
+    // An Astro island hydrates alone, so it sets its own reduced-motion policy.
     <MotionConfig reducedMotion="user">
-      {/* Stage: full width, so the dimming backdrop reaches both edges of the screen; expanded cards are centred in it */}
+      {/* Full width, so the backdrop dims the whole screen; expanded cards centre in it */}
       <div ref={stageRef} className="relative h-full w-full">
         <div className="h-full py-10 px-8 lg:px-12 grid grid-cols-1 md:grid-cols-2 auto-rows-fr max-w-[1260px] mx-auto gap-6">
           {cards.map((card) => {
@@ -69,17 +73,14 @@ export const LayoutGrid = ({ cards }: { cards: Card[] }) => {
             const Icon = isSelected ? IconArrowsMinimize : IconArrowsMaximize;
 
             return (
-              // The figure keeps the card's grid cell while the photo is lifted out to expand.
-              // Neither it nor the photo frame is positioned, so an expanded photo is placed
-              // against the stage and centred in it.
+              // Figure and frame stay unpositioned, so an expanded photo is placed against the stage.
               <figure key={card.id} className={cn(card.className, "flex min-h-0 flex-col")}>
                 <div className="min-h-0 flex-1">
                   <motion.div
                     data-expanded={isSelected ? "" : undefined}
                     layoutId={`card-${card.id}`}
                     className={cn(
-                      // z-50 / z-40 follow the layer scale in src/lib/layers.ts: an enlarged
-                      // photo sits above the mobile action bar, under the header
+                      // z-50 / z-40 from src/lib/layers.ts: above the mobile action bar, under the header
                       "group isolate overflow-hidden rounded-xl bg-surface",
                       isSelected
                         ? "absolute inset-0 m-auto h-1/2 w-[calc(100%-2rem)] md:h-2/3 md:w-3/4 max-h-[calc(100svh-7.5rem)] md:max-w-[60rem] z-50 shadow-2xl shadow-deep/30"
@@ -100,7 +101,6 @@ export const LayoutGrid = ({ cards }: { cards: Card[] }) => {
                       alt={card.alt}
                     />
 
-                    {/* Hint that the photo can be enlarged (or put back) */}
                     <motion.span
                       layout="position"
                       aria-hidden="true"
@@ -119,7 +119,7 @@ export const LayoutGrid = ({ cards }: { cards: Card[] }) => {
                   </motion.div>
                 </div>
 
-                {/* Caption below the photo, never on top of it */}
+                {/* Design rule: captions go below photos, never on them */}
                 <figcaption className="pt-4">
                   <h3 className="font-heading font-bold text-lg leading-snug text-text">
                     {card.title}

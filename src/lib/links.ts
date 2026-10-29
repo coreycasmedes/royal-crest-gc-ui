@@ -1,9 +1,5 @@
-// Site paths that respect the base path PR previews are built under.
-// BASE_URL always ends in a slash (trailingSlash: 'always').
-const BASE = import.meta.env.BASE_URL
+const PREVIEW_AWARE_BASE_WITH_SLASH = import.meta.env.BASE_URL
 
-/** A page on this site, e.g. `page('roofing-dallas/')`; `page()` is the home page. */
-export const page = (path = '') => `${BASE}${path}`
+export const page = (pathFromBase = '') => `${PREVIEW_AWARE_BASE_WITH_SLASH}${pathFromBase}`
 
-/** A section of the home page, e.g. `section('contact')`. Works from any page. */
-export const section = (id: string) => `${BASE}#${id}`
+export const section = (homeSectionId: string) => `${PREVIEW_AWARE_BASE_WITH_SLASH}#${homeSectionId}`

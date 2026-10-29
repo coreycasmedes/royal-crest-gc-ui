@@ -16,14 +16,11 @@ const links = [
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
-  const topRef = useRef<HTMLDivElement>(null);
+  const scrollMarkerRef = useRef<HTMLDivElement>(null);
 
-  // The header turns solid once the page has scrolled 40px: that is exactly
-  // when the 40px-tall marker at the top of the page leaves the viewport.
-  // An IntersectionObserver instead of a scroll listener, so nothing runs on
-  // every scroll frame.
+  // Observes a 40px marker instead of listening to scroll, so nothing runs per scroll frame.
   useEffect(() => {
-    const marker = topRef.current;
+    const marker = scrollMarkerRef.current;
     if (!marker) return;
     const observer = new IntersectionObserver(([entry]) =>
       setScrolled(!entry.isIntersecting),
@@ -49,13 +46,12 @@ export default function Header() {
   return (
     <>
       <div
-        ref={topRef}
+        ref={scrollMarkerRef}
         aria-hidden="true"
         className="pointer-events-none absolute top-0 left-0 h-10 w-px"
       />
       <header
-        // Solid while the mobile menu is open too: on short phones the menu
-        // scrolls, and its links must pass behind the header, not through it.
+        // Solid while the menu is open: on short phones its links scroll behind the header.
         className={`fixed top-0 left-0 right-0 ${LAYER.header} border-b transition-all duration-300 ${
           scrolled ? 'py-3 shadow-[0_1px_24px_rgba(0,0,0,0.07)]' : 'py-5'
         } ${
@@ -74,9 +70,7 @@ export default function Header() {
               <a
                 key={id}
                 href={section(id)}
-                // Between md and lg there isn't room for every link plus the
-                // phone number; "Contact" goes first because the "Get a Quote"
-                // button beside it leads to the same section.
+                // No room for every link below lg; "Get a Quote" already leads to Contact.
                 className={`text-[0.82rem] font-medium text-text/70 hover:text-text transition-colors ${
                   id === 'contact' ? 'hidden lg:inline' : ''
                 }`}
@@ -116,7 +110,6 @@ export default function Header() {
         </div>
       </header>
 
-      {/* Mobile overlay — inert while closed so its links can't take focus */}
       <nav
         id="mobile-menu"
         aria-label="Mobile"

@@ -6,12 +6,7 @@ import geistFont from '@/assets/fonts/Geist-Variable.woff2?url'
 import { HERO } from '@/lib/hero'
 
 const staticHeadlineLines = ['The Gold', 'Standard of', 'Construction']
-// Single source of truth — the container height is exactly
-// lines * lineHeight * fontSize (no extra buffer), so it wraps the rendered
-// text tightly and can't drift out of sync with VideoText's mask. The 9rem
-// cap keeps the headline from growing unbounded on very large viewports.
-// 15vw keeps the widest line ("Construction" in Geist Black) just inside the
-// mask box; at 16vw it touches both edges and clips.
+// 15vw keeps "Construction" inside the mask box; at 16vw it clips.
 const HEADLINE_FONT_SIZE = 'clamp(2.4rem, 15vw, 9rem)'
 const HEADLINE_LINE_HEIGHT_EM = 1.05
 ---
@@ -49,7 +44,7 @@ const HEADLINE_LINE_HEIGHT_EM = 1.05
       and Highland Park.
     </p>
 
-    {/* id is read by MobileActionBar, which stays hidden while these are on screen */}
+    {/* MobileActionBar hides while #hero-actions is on screen */}
     <div id="hero-actions" class="animate-hero-actions relative z-10 mt-6 flex flex-wrap items-center justify-center gap-2">
       <a
         href="#contact"
@@ -65,7 +60,7 @@ const HEADLINE_LINE_HEIGHT_EM = 1.05
       </a>
     </div>
 
-    {/* LCP element — rendered without an entrance animation on purpose */}
+    {/* LCP element: no entrance animation, no lazy loading */}
     <div class="relative z-10 mt-16 p-3">
       <div class="w-full overflow-hidden">
         <img

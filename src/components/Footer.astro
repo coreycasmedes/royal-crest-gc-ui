@@ -3,7 +3,7 @@ import logo from '@/assets/images/royal_crest_logo.svg'
 import { BUSINESS, telHref } from '@/lib/business'
 import { section } from '@/lib/links'
 
-const nav = [
+const navLinks = [
   { label: 'Services', id: 'services' },
   { label: 'Portfolio', id: 'portfolio' },
   { label: 'About', id: 'about' },
@@ -11,7 +11,7 @@ const nav = [
   { label: 'Contact', id: 'contact' },
 ]
 
-const svcList = ['Kitchen Remodels', 'Bathroom Renovations', 'Home Additions', 'Roofing & Exterior']
+const serviceNames = ['Kitchen Remodels', 'Bathroom Renovations', 'Home Additions', 'Roofing & Exterior']
 ---
 
 <footer class="bg-bg border-t border-surface">
@@ -19,7 +19,6 @@ const svcList = ['Kitchen Remodels', 'Bathroom Renovations', 'Home Additions', '
 
     <div class="flex flex-col lg:flex-row lg:justify-between gap-12 mb-14">
 
-      {/* Brand */}
       <div class="max-w-[240px]">
         <a href={section('hero')} class="flex items-center mb-4">
           <img src={logo.src} alt={BUSINESS.name} width={logo.width} height={logo.height} class="h-16 w-auto" />
@@ -30,11 +29,10 @@ const svcList = ['Kitchen Remodels', 'Bathroom Renovations', 'Home Additions', '
         </a>
       </div>
 
-      {/* Links */}
       <div class="flex flex-wrap gap-12 lg:gap-16">
         <div class="flex flex-col gap-2.5">
           <p class="text-[0.66rem] font-bold tracking-[0.22em] uppercase mb-1 text-text">Navigate</p>
-          {nav.map(({ label, id }) => (
+          {navLinks.map(({ label, id }) => (
             <a href={section(id)} class="text-left text-[0.84rem] text-text/70 hover:text-text transition-colors">
               {label}
             </a>
@@ -43,15 +41,14 @@ const svcList = ['Kitchen Remodels', 'Bathroom Renovations', 'Home Additions', '
 
         <div class="flex flex-col gap-2.5">
           <p class="text-[0.66rem] font-bold tracking-[0.22em] uppercase mb-1 text-text">Services</p>
-          {svcList.map((s) => (
+          {serviceNames.map((service) => (
             <a href={section('services')} class="text-left text-[0.84rem] text-text/70 hover:text-text transition-colors">
-              {s}
+              {service}
             </a>
           ))}
         </div>
       </div>
 
-      {/* CTA */}
       <div class="flex-shrink-0">
         <p class="text-[0.66rem] font-bold tracking-[0.22em] uppercase mb-4 text-text">Ready to Build?</p>
         <a
@@ -64,7 +61,6 @@ const svcList = ['Kitchen Remodels', 'Bathroom Renovations', 'Home Additions', '
 
     </div>
 
-    {/* Bottom. Privacy, Terms and Accessibility links return once those pages exist. */}
     <div class="pt-6 border-t border-surface">
       <p class="text-[0.74rem] text-text/65">
         © {new Date().getFullYear()} {BUSINESS.legalName}

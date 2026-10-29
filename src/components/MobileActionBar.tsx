@@ -4,23 +4,19 @@ import { LAYER } from '@/lib/layers';
 import { callLabel, telHref } from '@/lib/business';
 import { section } from '@/lib/links';
 
-// The bar stays out of the way while either of these is on screen:
-// the hero's own buttons (it would only repeat them) and the contact section
-// (it must never sit on top of the form or its submit button).
+// The bar would only repeat the hero's buttons, and must never cover the contact form.
 const HIDE_WHILE_VISIBLE = ['hero-actions', 'contact'];
-// Height of the fixed header once scrolled. Anything tucked under it counts
-// as off screen.
-const HEADER_HEIGHT_PX = 88;
+const SCROLLED_HEADER_HEIGHT_PX = 88;
 
 export default function MobileActionBar() {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    const targets = HIDE_WHILE_VISIBLE
+    const landmarks = HIDE_WHILE_VISIBLE
       .map((id) => document.getElementById(id))
       .filter((el): el is HTMLElement => el !== null);
-    // Without both landmarks we can't tell when the bar is safe to show.
-    if (targets.length !== HIDE_WHILE_VISIBLE.length) return;
+    const allLandmarksFound = landmarks.length === HIDE_WHILE_VISIBLE.length;
+    if (!allLandmarksFound) return;
 
     const onScreen = new Set<Element>();
     const observer = new IntersectionObserver(
@@ -31,22 +27,20 @@ export default function MobileActionBar() {
         }
         setVisible(onScreen.size === 0);
       },
-      { rootMargin: `-${HEADER_HEIGHT_PX}px 0px 0px 0px` },
+      { rootMargin: `-${SCROLLED_HEADER_HEIGHT_PX}px 0px 0px 0px` },
     );
-    targets.forEach((el) => observer.observe(el));
+    landmarks.forEach((el) => observer.observe(el));
     return () => observer.disconnect();
   }, []);
 
   return (
     <>
-      {/* Reserves the bar's height at the end of the page so the footer's
-          last line can scroll clear of it. Keep in step with the bar below. */}
+      {/* Lets the footer scroll clear of the bar; keep its height in step with the bar's. */}
       <div
         aria-hidden="true"
         className="md:hidden print:hidden h-[calc(4rem+max(0.75rem,env(safe-area-inset-bottom)))]"
       />
 
-      {/* inert while hidden so its links can't take focus or be read out */}
       <nav
         aria-label="Quick contact"
         inert={!visible}

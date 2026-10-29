@@ -20,7 +20,7 @@ import { HERO } from '@/lib/hero'
   description="Royal Crest General Contractors is Dallas's premier general contractor, delivering luxury residential and commercial construction in Dallas, Plano, Frisco & Highland Park."
 >
   <Fragment slot="head">
-    <!-- The headline poster and the hero photo are the LCP candidates -->
+    <!-- LCP candidates; the hero preload reads HERO so it matches Hero.astro's srcset -->
     <link rel="preload" as="image" type="image/webp" fetchpriority="high" href={droneRoofPoster.src} />
     <link
       rel="preload"

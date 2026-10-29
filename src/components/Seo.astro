@@ -4,7 +4,6 @@ import { BUSINESS } from '@/lib/business'
 interface Props {
   title: string
   description: string
-  /** Pages that must stay out of search results, e.g. the 404 page */
   noindex?: boolean
 }
 
@@ -12,9 +11,8 @@ const { title, description, noindex = false } = Astro.props
 const canonical = new URL(Astro.url.pathname, Astro.site).href
 const ogImage = new URL('og-image.jpg', Astro.site).href
 
-// One business entity for every page; its @id lets later page-level markup
-// refer to it instead of repeating it.
-const business = {
+// The @id lets page-level markup refer to this entity instead of repeating it.
+const businessJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'GeneralContractor',
   '@id': `${BUSINESS.url}#business`,
@@ -55,4 +53,4 @@ const business = {
 <meta name="twitter:description" content={description} />
 <meta name="twitter:image" content={ogImage} />
 
-{!noindex && <script type="application/ld+json" is:inline set:html={JSON.stringify(business)} />}
+{!noindex && <script type="application/ld+json" is:inline set:html={JSON.stringify(businessJsonLd)} />}

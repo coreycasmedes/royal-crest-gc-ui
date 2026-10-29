@@ -2,25 +2,22 @@
 import { Image } from 'astro:assets'
 import type { ImageMetadata } from 'astro'
 
-// A service card: photo, icon, title, description, and an optional link that
-// makes the whole card clickable. Replaces the Aceternity BentoGridItem.
+type AspectRatioClasses = string
+type ObjectPositionClass = string
+
 interface Props {
   title: string
   description: string
   image: {
     src: ImageMetadata
     alt: string
-    /** Ratio classes for the photo frame, so the card height never depends on the image having loaded */
-    aspect: string
-    /** object-position class that keeps the photo's subject inside the crop */
-    position?: string
+    /** Sizes the photo frame up front, so the card height never depends on the image having loaded */
+    aspect: AspectRatioClasses
+    position?: ObjectPositionClass
     sizes: string
   }
-  /** When set, the whole card renders as a link to this target */
   href?: string
-  /** Accessible name for the card link, e.g. "Roofing: get a quote" */
   linkLabel?: string
-  /** Visible call to action at the foot of a linked card */
   cta?: string
   class?: string
 }

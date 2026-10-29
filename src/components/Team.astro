@@ -4,10 +4,7 @@ import alanImg from '@/assets/alan.webp'
 import danImg from '@/assets/dan.webp'
 import { BUSINESS } from '@/lib/business'
 
-// The portraits always sit side by side as a pair. On phones each bio runs
-// full width underneath the pair; from sm up it sits under its own portrait.
-// The second portrait is dropped 4rem from sm up, so the first bio is pulled
-// back up by the same amount to stay tight under its portrait.
+// From sm the second portrait drops 4rem (sm:mt-16), so the first bio pulls up by the same (sm:-mt-16).
 const team = [
   {
     name: 'Alan',
@@ -25,7 +22,7 @@ const team = [
     bio: 'Daniel co-founded Royal Crest and keeps every job on schedule and on budget, coordinating trades and inspections so clients never have to. His background in luxury renovation means no detail goes unchecked.',
     src: danImg,
     objectPosition: 'center top',
-    // The file has a dark strip along its bottom edge; zoom from the top to crop it out.
+    // The zoom crops out a dark strip along the bottom edge of the file.
     zoom: 1.05,
     figureClass: 'col-start-2 row-start-1 sm:mt-16',
     bioClass: 'col-span-2 row-start-3 sm:col-span-1 sm:col-start-2 sm:row-start-2',

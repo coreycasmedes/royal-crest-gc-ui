@@ -1,11 +1,13 @@
 import type { APIRoute } from 'astro'
 
-// One sitemap at the URL robots.txt and Search Console already use. Every
-// .astro page is listed except the 404 page and dynamic routes; when those
-// are added, their getStaticPaths entries belong here too.
+const isDynamicRoute = (file: string) => file.includes('[')
+const toUrlPath = (file: string) =>
+  file.replace(/^\.\//, '').replace(/(^|\/)index\.astro$/, '$1').replace(/\.astro$/, '/')
+
+// robots.txt and Search Console point at this URL; dynamic routes must add their getStaticPaths entries here.
 const pages = Object.keys(import.meta.glob('./**/*.astro'))
-  .filter((file) => !file.includes('[') && file !== './404.astro')
-  .map((file) => file.replace(/^\.\//, '').replace(/(^|\/)index\.astro$/, '$1').replace(/\.astro$/, '/'))
+  .filter((file) => !isDynamicRoute(file) && file !== './404.astro')
+  .map(toUrlPath)
   .sort()
 
 export const GET: APIRoute = ({ site }) => {

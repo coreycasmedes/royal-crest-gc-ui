@@ -1,7 +1,5 @@
 ---
-// Quotes are word-for-word excerpts of the full reviews (see git history),
-// cut to fit three lines in the three-across layout. [Brackets] mark the one
-// substituted word.
+// Word-for-word review excerpts cut to fit three lines; [brackets] mark a substituted word.
 const testimonials = [
   {
     quote: 'We were thoroughly impressed with the professionalism and attention to detail.',
@@ -32,8 +30,6 @@ const testimonials = [
       </h2>
     </div>
 
-    {/* One framed block, hairline dividers between reviews. Stacked on
-        mobile, quote-beside-name rows on tablets, three across on desktop. */}
     <div
       data-reveal="0.08"
       class="grid grid-cols-1 lg:grid-cols-3 border border-surface divide-y divide-surface lg:divide-y-0 lg:divide-x"
