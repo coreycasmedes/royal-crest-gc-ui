@@ -1,5 +1,0 @@
-User-agent: *
-Allow: /
-Disallow: /pr-preview/
-
-Sitemap: https://www.royalcrestgc.com/sitemap.xml

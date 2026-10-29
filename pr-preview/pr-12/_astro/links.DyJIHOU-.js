@@ -1,1 +1,0 @@
-import{t as e}from"./createReactComponent.B6p4ct5S.js";var t=e(`outline`,`phone`,`Phone`,[[`path`,{d:`M5 4h4l2 5l-2.5 1.5a11 11 0 0 0 5 5l1.5 -2.5l5 2v4a2 2 0 0 1 -2 2a16 16 0 0 1 -15 -15a2 2 0 0 1 2 -2`,key:`svg-0`}]]),n={header:`z-[70]`,mobileMenu:`z-[60]`,enlargedPhoto:`z-50`,actionBar:`z-40`,inSection:`z-10`},r=`/pr-preview/pr-12/`,i=e=>`${r}#${e}`;export{n,t as r,i as t};
