@@ -1,8 +1,7 @@
 ---
-import { VideoText } from './ui/video-text'
+import VideoText from './ui/VideoText.astro'
 import droneRoofVideo from '@/assets/drone_roof_540.mp4'
 import droneRoofPoster from '@/assets/drone_roof_poster.webp'
-import geistFont from '@/assets/fonts/Geist-Variable.woff2?url'
 import { HERO } from '@/lib/hero'
 
 const staticHeadlineLines = ['The Gold', 'Standard of', 'Construction']
@@ -18,23 +17,19 @@ const HEADLINE_LINE_HEIGHT_EM = 1.05
       style="font-size: clamp(2.4rem, 7vw, 6rem)"
     >
       <div
-        class="animate-hero-headline mx-auto w-full"
+        class="mx-auto w-full"
         style={`height: calc(${staticHeadlineLines.length} * ${HEADLINE_LINE_HEIGHT_EM} * ${HEADLINE_FONT_SIZE})`}
       >
         <VideoText
-          client:load
           src={droneRoofVideo}
           poster={droneRoofPoster.src}
-          startOnLoad
           playbackRate={0.5}
           lineHeight={HEADLINE_LINE_HEIGHT_EM}
           fontSize={HEADLINE_FONT_SIZE}
           fontWeight={900}
           letterSpacing="-0.04em"
-          fontFamily="Geist, ui-sans-serif, system-ui"
-          fontSrc={geistFont}
-          className="font-heading"
-          text={staticHeadlineLines}
+          class="font-heading"
+          lines={staticHeadlineLines}
         />
       </div>
     </h1>
