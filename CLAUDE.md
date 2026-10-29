@@ -118,6 +118,7 @@ src/
     roofing-dallas.astro, exterior-renovation-dallas.astro — Service pages (ServicePage layout)
     projects/index.astro — All projects
     projects/[slug].astro — One page per project in src/content/projects
+    privacy.astro       — Privacy policy, linked from the footer and the quote form
     sitemap.xml.ts      — /sitemap.xml: the .astro pages plus written-up projects
   content/projects/     — One .md per project (schema in src/content.config.ts)
   layouts/

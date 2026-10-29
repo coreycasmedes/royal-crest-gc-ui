@@ -68,10 +68,9 @@ const serviceLinks = [
 
     </div>
 
-    <div class="pt-6 border-t border-surface">
-      <p class="text-[0.74rem] text-text/65">
-        © {new Date().getFullYear()} {BUSINESS.legalName}
-      </p>
+    <div class="pt-6 border-t border-surface flex flex-wrap justify-between gap-x-8 gap-y-2 text-[0.74rem] text-text/65">
+      <p>© {new Date().getFullYear()} {BUSINESS.legalName}</p>
+      <a href={page('privacy/')} class="hover:text-text transition-colors">Privacy Policy</a>
     </div>
 
   </div>
