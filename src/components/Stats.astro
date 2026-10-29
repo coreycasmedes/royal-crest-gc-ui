@@ -4,7 +4,7 @@ import { BUSINESS } from '@/lib/business'
 
 <section id="stats" class="py-20 bg-bg">
   <div data-reveal class="max-w-[1260px] mx-auto px-8 lg:px-12">
-    <div class="grid grid-cols-3">
+    <div class="grid max-w-3xl mx-auto" style={`grid-template-columns: repeat(${BUSINESS.stats.length}, minmax(0, 1fr))`}>
       {BUSINESS.stats.map(({ num, label }, i) => (
         <div class={`text-center px-2 sm:px-6 py-4 border-r last:border-r-0 border-surface reveal delay-${i + 1}`}>
           <p

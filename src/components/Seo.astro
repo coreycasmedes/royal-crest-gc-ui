@@ -23,6 +23,7 @@ const business = {
   url: BUSINESS.url,
   telephone: BUSINESS.phone.tel,
   email: BUSINESS.email,
+  foundingDate: String(BUSINESS.founded),
   priceRange: '$$$',
   areaServed: BUSINESS.areaServed.map((name) => ({ '@type': 'City', name })),
   address: {
