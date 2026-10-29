@@ -1,9 +1,16 @@
-import React, { useState } from "react";
-import { AnimatePresence, motion, useMotionTemplate, useMotionValue } from "motion/react";
+import React, { useState, useSyncExternalStore } from "react";
+import {
+  AnimatePresence,
+  MotionConfig,
+  motion,
+  useMotionTemplate,
+  useMotionValue,
+} from "motion/react";
 import { IconVideo } from "@tabler/icons-react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
+import { BUSINESS, telHref } from "@/lib/business";
 
 const services = [
   "Kitchen Remodel",
@@ -29,36 +36,44 @@ const detailsPlaceholder: Record<string, string> = {
     "Tell us what you have in mind and we'll point you in the right direction…",
 };
 
-const RL_KEY     = "rcgc_submissions";
-const COOLDOWN   = 5 * 60 * 1000;   // 5 minutes between submissions
-const DAILY_MAX  = 3;                // max submissions per 24-hour window
-const DAY        = 24 * 60 * 60 * 1000;
+const SUBMISSIONS_STORAGE_KEY = "rcgc_submissions";
+const MS_BETWEEN_SUBMISSIONS = 5 * 60 * 1000;
+const MAX_SUBMISSIONS_PER_DAY = 3;
+const DAY_MS = 24 * 60 * 60 * 1000;
 
-function getTimestamps(): number[] {
+function getSubmissionTimestamps(): number[] {
   try {
-    return JSON.parse(localStorage.getItem(RL_KEY) ?? "[]");
+    return JSON.parse(localStorage.getItem(SUBMISSIONS_STORAGE_KEY) ?? "[]");
   } catch {
     return [];
   }
 }
 
 function hasRecentSubmission(): boolean {
-  const now  = Date.now();
-  const logs = getTimestamps().filter((t) => now - t < DAY);
-  if (logs.length >= DAILY_MAX) return true;
-  const last = logs.at(-1);
-  return !!(last && now - last < COOLDOWN);
+  const now = Date.now();
+  const pastDay = getSubmissionTimestamps().filter((t) => now - t < DAY_MS);
+  if (pastDay.length >= MAX_SUBMISSIONS_PER_DAY) return true;
+  const last = pastDay.at(-1);
+  return !!(last && now - last < MS_BETWEEN_SUBMISSIONS);
 }
+
+// Prerendered without localStorage: useSyncExternalStore hydrates from the server snapshot, so the HTML matches.
+const noSubscription = () => () => {};
+const serverHasRecentSubmission = () => false;
 
 function recordSubmission() {
-  const now  = Date.now();
-  const logs = getTimestamps().filter((t) => now - t < DAY);
-  localStorage.setItem(RL_KEY, JSON.stringify([...logs, now]));
+  const now = Date.now();
+  const pastDay = getSubmissionTimestamps().filter((t) => now - t < DAY_MS);
+  localStorage.setItem(SUBMISSIONS_STORAGE_KEY, JSON.stringify([...pastDay, now]));
 }
 
-const SUBMIT_URL     = "https://api.web3forms.com/submit";
-const SUBMIT_TIMEOUT = 20 * 1000;    // give up on a request that never answers
-const SEND_FAILED    = "We couldn't send your request.";
+const SUBMIT_URL = "https://api.web3forms.com/submit";
+const GIVE_UP_ON_SUBMIT_MS = 20 * 1000;
+const SEND_FAILED = "We couldn't send your request.";
+
+function asSentence(text: string) {
+  return /[.!?]$/.test(text) ? text : `${text}.`;
+}
 
 function isValidEmail(v: string) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim());
@@ -76,8 +91,23 @@ function isValidUSPhone(v: string) {
   return d.length === 10 && /^[2-9]/.test(d) && /^[2-9]/.test(d[3]);
 }
 
+// An Astro island hydrates alone, so it sets its own reduced-motion policy.
 export default function SignupForm() {
-  const [sent, setSent] = useState(() => hasRecentSubmission());
+  return (
+    <MotionConfig reducedMotion="user">
+      <QuoteForm />
+    </MotionConfig>
+  );
+}
+
+function QuoteForm() {
+  const sentEarlier = useSyncExternalStore(
+    noSubscription,
+    hasRecentSubmission,
+    serverHasRecentSubmission,
+  );
+  const [sentNow, setSentNow] = useState(false);
+  const sent = sentEarlier || sentNow;
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [touched, setTouched] = useState({ email: false, phone: false });
@@ -119,7 +149,7 @@ export default function SignupForm() {
 
     const formData = new FormData(e.currentTarget);
     const controller = new AbortController();
-    const timer = window.setTimeout(() => controller.abort(), SUBMIT_TIMEOUT);
+    const timer = window.setTimeout(() => controller.abort(), GIVE_UP_ON_SUBMIT_MS);
 
     try {
       const res = await fetch(SUBMIT_URL, {
@@ -140,20 +170,16 @@ export default function SignupForm() {
         } catch {
           // Storage is unavailable (private mode); the request was still sent.
         }
-        setSent(true);
+        setSentNow(true);
       } else {
-        // Web3Forms explains a rejected submission in `message`; anything
-        // else (server error, unexpected body) gets the generic wording.
-        const reason =
+        // Web3Forms explains a rejected submission in `message`; server errors get SEND_FAILED.
+        const rejectionReason =
           res.status < 500 && typeof body.message === "string"
             ? body.message.trim()
             : "";
-        setError(
-          reason ? (/[.!?]$/.test(reason) ? reason : `${reason}.`) : SEND_FAILED,
-        );
+        setError(rejectionReason ? asSentence(rejectionReason) : SEND_FAILED);
       }
     } catch {
-      // Offline, blocked, DNS failure or timeout.
       setError(SEND_FAILED);
     } finally {
       window.clearTimeout(timer);
@@ -171,10 +197,10 @@ export default function SignupForm() {
         <p className="mt-3 text-sm text-text/70">
           If this is an emergency, please call us directly at{" "}
           <a
-            href="tel:+14694320341"
+            href={telHref}
             className="text-text font-medium hover:text-accent-ink transition-colors duration-200"
           >
-            (469) 432 0341
+            {BUSINESS.phone.display}
           </a>
           .
         </p>
@@ -207,8 +233,7 @@ export default function SignupForm() {
           value="New estimate request from royalcrestgc.com"
         />
         <input type="hidden" name="from_name" value="Royal Crest website" />
-        {/* Web3Forms honeypot: people never see or reach it, and submissions
-            where it is checked are discarded. */}
+        {/* Web3Forms honeypot: it discards submissions with this checked. */}
         <input
           type="checkbox"
           name="botcheck"
@@ -345,10 +370,10 @@ export default function SignupForm() {
             <p className="mt-3 text-sm text-red-600">
               {error} Please try again, or call us at{" "}
               <a
-                href="tel:+14694320341"
+                href={telHref}
                 className="font-medium whitespace-nowrap text-text underline underline-offset-2 hover:text-accent-ink transition-colors duration-200"
               >
-                (469) 432 0341
+                {BUSINESS.phone.display}
               </a>
               .
             </p>

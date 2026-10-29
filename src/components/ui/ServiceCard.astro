@@ -1,0 +1,75 @@
+---
+import { Image } from 'astro:assets'
+import type { ImageMetadata } from 'astro'
+
+type AspectRatioClasses = string
+type ObjectPositionClass = string
+
+interface Props {
+  title: string
+  description: string
+  image: {
+    src: ImageMetadata
+    alt: string
+    /** Sizes the photo frame up front, so the card height never depends on the image having loaded */
+    aspect: AspectRatioClasses
+    position?: ObjectPositionClass
+    sizes: string
+  }
+  href?: string
+  linkLabel?: string
+  cta?: string
+  class?: string
+}
+
+const { title, description, image, href, linkLabel, cta, class: className = '' } = Astro.props
+const descriptionId = `svc-${title.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`
+
+const Tag = href ? 'a' : 'div'
+const cardClass = [
+  'group/bento shadow-input flex flex-col gap-4 rounded-xl border border-surface bg-bg p-4',
+  href &&
+    'transition-colors duration-200 hover:border-accent-ink focus-visible:border-accent-ink focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent-ink',
+  className,
+]
+---
+
+<Tag
+  class:list={cardClass}
+  href={href}
+  aria-label={href ? linkLabel : undefined}
+  aria-describedby={href ? descriptionId : undefined}
+>
+  <div class={`relative w-full shrink-0 overflow-hidden rounded-lg bg-surface ${image.aspect}`}>
+    <Image
+      src={image.src}
+      alt={image.alt}
+      widths={[480, 800, 1200, 1600]}
+      sizes={image.sizes}
+      class={`absolute inset-0 h-full w-full object-cover motion-safe:transition-transform motion-safe:duration-500 motion-safe:group-hover/bento:scale-[1.03] ${image.position ?? 'object-center'}`}
+      style="filter: saturate(0.9) brightness(1.02)"
+    />
+  </div>
+  <div class="flex flex-1 flex-col px-1 pb-1">
+    <div class="flex items-center gap-2.5">
+      <slot name="icon" />
+      <h3 class="font-sans text-lg font-bold leading-snug text-text">{title}</h3>
+    </div>
+    <p id={descriptionId} class="mt-2 font-sans text-sm leading-relaxed font-normal text-text/70">
+      {description}
+    </p>
+    {href && cta && (
+      <span class="mt-auto flex items-center gap-2 pt-5 text-[0.76rem] font-semibold tracking-[0.1em] uppercase text-text transition-colors duration-200 group-hover/bento:text-accent-ink group-focus-visible/bento:text-accent-ink">
+        <span class="border-b border-text pb-0.5 transition-colors duration-200 group-hover/bento:border-accent-ink group-focus-visible/bento:border-accent-ink">
+          {cta}
+        </span>
+        <span
+          aria-hidden="true"
+          class="motion-safe:transition-transform motion-safe:duration-200 motion-safe:group-hover/bento:translate-x-1 motion-safe:group-focus-visible/bento:translate-x-1"
+        >
+          →
+        </span>
+      </span>
+    )}
+  </div>
+</Tag>

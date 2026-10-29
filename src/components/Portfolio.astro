@@ -1,0 +1,64 @@
+---
+import { getImage } from 'astro:assets'
+import type { ImageMetadata } from 'astro'
+import { LayoutGrid, type Card } from './ui/layout-grid'
+import homeImg from '@/assets/home.webp'
+import roofBirdseyeImg from '@/assets/roof_birdseye.webp'
+import roofingTeamImg from '@/assets/roofing_team.webp'
+
+// Sized for the enlarged photo (at most 60rem wide), up to 2x.
+const ENLARGED_PHOTO_SIZES = '(min-width: 1024px) 960px, 100vw'
+const PHOTO_WIDTHS = [640, 960, 1280, 1920]
+
+async function photo(src: ImageMetadata) {
+  const img = await getImage({ src, widths: PHOTO_WIDTHS, sizes: ENLARGED_PHOTO_SIZES })
+  return { thumbnail: img.src, srcSet: img.srcSet.attribute, sizes: ENLARGED_PHOTO_SIZES }
+}
+
+const cards: Card[] = [
+  {
+    id: 2,
+    alt: 'Aerial view of a completed roof, Lakewood Estate, Dallas',
+    tag: 'Roofing',
+    title: 'Lakewood Estate',
+    meta: 'Dallas, TX, 2023',
+    className: 'md:col-span-1',
+    ...(await photo(roofBirdseyeImg)),
+  },
+  {
+    id: 3,
+    alt: 'Front of a home with a new roof, Frisco Residence',
+    tag: 'Residential',
+    title: 'Frisco Residence',
+    meta: 'Frisco, TX, 2024',
+    className: 'md:col-span-1',
+    ...(await photo(homeImg)),
+  },
+  {
+    id: 4,
+    alt: 'Crew installing a roof, Prestonwood, Dallas',
+    tag: 'Roofing',
+    title: 'Prestonwood Installation',
+    meta: 'Dallas, TX, 2024',
+    className: 'md:col-span-2',
+    ...(await photo(roofingTeamImg)),
+  },
+]
+---
+
+<section id="portfolio" class="py-24 lg:py-28 bg-bg">
+  <div class="max-w-[1260px] mx-auto px-8 lg:px-12 mb-12">
+    <div data-reveal class="reveal">
+      <h2
+        class="font-heading font-bold leading-tight text-text"
+        style="font-size: clamp(2.2rem, 4vw, 3.2rem)"
+      >
+        Recent Projects
+      </h2>
+    </div>
+  </div>
+
+  <div class="h-[1200px] md:h-[900px]">
+    <LayoutGrid client:visible cards={cards} />
+  </div>
+</section>

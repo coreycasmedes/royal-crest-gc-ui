@@ -1,0 +1,49 @@
+---
+import '@/styles/global.css'
+import Seo from '@/components/Seo.astro'
+import geistFont from '@/assets/fonts/Geist-Variable.woff2?url'
+import { page } from '@/lib/links'
+
+interface Props {
+  title: string
+  description: string
+}
+
+const { title, description } = Astro.props
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" href={page('favicon.png')} />
+    <link rel="icon" type="image/png" sizes="32x32" href={page('favicon-32.png')} />
+    <link rel="apple-touch-icon" sizes="180x180" href={page('apple-touch-icon.png')} />
+    <meta name="theme-color" content="#899878" />
+    <Seo title={title} description={description} />
+    <link rel="preload" href={geistFont} as="font" type="font/woff2" crossorigin />
+    <slot name="head" />
+    <noscript><style>.reveal { opacity: 1; transform: none; }</style></noscript>
+  </head>
+  <body>
+    <slot />
+
+    <script>
+      const DEFAULT_REVEAL_THRESHOLD = 0.12
+      document.querySelectorAll<HTMLElement>('[data-reveal]').forEach((revealRoot) => {
+        const threshold = Number(revealRoot.dataset.reveal) || DEFAULT_REVEAL_THRESHOLD
+        const observer = new IntersectionObserver(
+          ([entry]) => {
+            if (!entry.isIntersecting) return
+            observer.disconnect()
+            if (revealRoot.classList.contains('reveal')) revealRoot.classList.add('visible')
+            revealRoot.querySelectorAll('.reveal').forEach((el) => el.classList.add('visible'))
+          },
+          { threshold },
+        )
+        observer.observe(revealRoot)
+      })
+    </script>
+  </body>
+</html>

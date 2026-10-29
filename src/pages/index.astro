@@ -1,0 +1,49 @@
+---
+import Base from '@/layouts/Base.astro'
+import Header from '@/components/Header'
+import Hero from '@/components/Hero.astro'
+import Stats from '@/components/Stats.astro'
+import Badges from '@/components/Badges.astro'
+import Services from '@/components/Services.astro'
+import Portfolio from '@/components/Portfolio.astro'
+import Team from '@/components/Team.astro'
+import Testimonials from '@/components/Testimonials.astro'
+import Contact from '@/components/Contact.astro'
+import Footer from '@/components/Footer.astro'
+import MobileActionBar from '@/components/MobileActionBar'
+import droneRoofPoster from '@/assets/drone_roof_poster.webp'
+import { HERO } from '@/lib/hero'
+---
+
+<Base
+  title="Royal Crest General Contractors | Dallas, TX"
+  description="Royal Crest General Contractors is Dallas's premier general contractor, delivering luxury residential and commercial construction in Dallas, Plano, Frisco & Highland Park."
+>
+  <Fragment slot="head">
+    <!-- LCP candidates; the hero preload reads HERO so it matches Hero.astro's srcset -->
+    <link rel="preload" as="image" type="image/webp" fetchpriority="high" href={droneRoofPoster.src} />
+    <link
+      rel="preload"
+      as="image"
+      type="image/webp"
+      fetchpriority="high"
+      href={HERO.src}
+      imagesrcset={HERO.srcset}
+      imagesizes={HERO.sizes}
+    />
+  </Fragment>
+
+  <Header client:load />
+  <main>
+    <Hero />
+    <Stats />
+    <Badges />
+    <Services />
+    <Portfolio />
+    <Team />
+    <Testimonials />
+    <Contact />
+  </main>
+  <Footer />
+  <MobileActionBar client:idle />
+</Base>
