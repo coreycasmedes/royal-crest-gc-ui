@@ -11,6 +11,7 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { BUSINESS, telHref } from "@/lib/business";
+import { page } from "@/lib/links";
 
 const services = [
   "Kitchen Remodel",
@@ -364,6 +365,15 @@ function QuoteForm() {
           {loading ? "Sending…" : "Send Request →"}
           <BottomGradient />
         </button>
+        <p className="mt-3 text-xs text-text/65">
+          We only use your details to reply to your request.{" "}
+          <a
+            href={page("privacy/")}
+            className="underline underline-offset-2 hover:text-accent-ink transition-colors duration-200"
+          >
+            Privacy Policy
+          </a>
+        </p>
         {/* Always in the DOM so the alert is announced when the text arrives. */}
         <div role="alert">
           {error && (

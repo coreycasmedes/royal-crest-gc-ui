@@ -1,0 +1,74 @@
+---
+import Base from '@/layouts/Base.astro'
+import Header from '@/components/Header'
+import Footer from '@/components/Footer.astro'
+import { BUSINESS, telHref } from '@/lib/business'
+
+const LAST_UPDATED = 'October 29, 2026'
+const linkClass = 'text-text underline underline-offset-2 hover:text-accent-ink transition-colors duration-200'
+---
+
+<Base
+  title={`Privacy Policy | ${BUSINESS.name}`}
+  description={`How ${BUSINESS.name} handles the details you send through the quote form, by phone or by email.`}
+>
+  <Header client:load />
+  <main class="bg-bg pt-36 pb-24 lg:pt-40 lg:pb-28">
+    <article class="max-w-[720px] mx-auto px-8 lg:px-12 text-[0.95rem] leading-[1.8] text-text/70">
+      <h1 class="font-heading font-bold text-text leading-tight mb-3" style="font-size: clamp(2.2rem, 4vw, 3.2rem)">
+        Privacy Policy
+      </h1>
+      <p class="text-[0.8rem] text-text/65 mb-12">Last updated {LAST_UPDATED}</p>
+
+      <p class="mb-10">
+        This page explains what {BUSINESS.legalName} collects through this website, why, and what happens to it.
+      </p>
+
+      <h2 class="font-heading font-bold text-text text-xl mb-3">What we collect</h2>
+      <p class="mb-10">
+        When you request a quote, the form asks for your first and last name, email address, phone number, the
+        service you are interested in and an optional message. We collect nothing else through the site, and you do
+        not need an account.
+      </p>
+
+      <h2 class="font-heading font-bold text-text text-xl mb-3">How your request reaches us</h2>
+      <p class="mb-10">
+        The form is delivered by <a href="https://web3forms.com" class={linkClass} rel="noopener">Web3Forms</a>, a
+        form service that emails your request to us. Web3Forms handles it under its own privacy policy.
+      </p>
+
+      <h2 class="font-heading font-bold text-text text-xl mb-3">How we use it</h2>
+      <p class="mb-10">
+        We use your details only to reply to your request and to quote and carry out your project. We do not sell
+        them or share them with anyone for marketing.
+      </p>
+
+      <h2 class="font-heading font-bold text-text text-xl mb-3">What stays in your browser</h2>
+      <p class="mb-10">
+        After you send a request, your browser stores the time it was sent, so the form can prevent accidental
+        repeat submissions. It holds no personal details, and clearing this site's data removes it. The site does
+        not use analytics or advertising trackers.
+      </p>
+
+      <h2 class="font-heading font-bold text-text text-xl mb-3">The map</h2>
+      <p class="mb-10">
+        The contact section shows a Google map. When it loads, Google receives your IP address and may set cookies,
+        as described in <a href="https://policies.google.com/privacy" class={linkClass} rel="noopener">Google's
+        privacy policy</a>.
+      </p>
+
+      <h2 class="font-heading font-bold text-text text-xl mb-3">Your choices</h2>
+      <p class="mb-10">
+        You can ask us to show, correct or delete the details you sent us. This site is not meant for children
+        under 13, and we do not knowingly collect their information.
+      </p>
+
+      <h2 class="font-heading font-bold text-text text-xl mb-3">Contact</h2>
+      <p>
+        Email <a href={`mailto:${BUSINESS.email}`} class={`${linkClass} break-all`}>{BUSINESS.email}</a> or call{' '}
+        <a href={telHref} class={`${linkClass} whitespace-nowrap`}>{BUSINESS.phone.display}</a>.
+      </p>
+    </article>
+  </main>
+  <Footer />
+</Base>
