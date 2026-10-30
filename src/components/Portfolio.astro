@@ -5,6 +5,7 @@ import { LayoutGrid, type Card } from './ui/layout-grid'
 import homeImg from '@/assets/home.webp'
 import roofBirdseyeImg from '@/assets/roof_birdseye.webp'
 import roofingTeamImg from '@/assets/roofing_team.webp'
+import { page } from '@/lib/links'
 
 // Sized for the enlarged photo (at most 60rem wide), up to 2x.
 const ENLARGED_PHOTO_SIZES = '(min-width: 1024px) 960px, 100vw'
@@ -48,13 +49,19 @@ const cards: Card[] = [
 
 <section id="portfolio" class="py-24 lg:py-28 bg-bg">
   <div class="max-w-[1260px] mx-auto px-8 lg:px-12 mb-12">
-    <div data-reveal class="reveal">
+    <div data-reveal class="reveal flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6">
       <h2
         class="font-heading font-bold leading-tight text-text"
         style="font-size: clamp(2.2rem, 4vw, 3.2rem)"
       >
         Recent Projects
       </h2>
+      <a
+        href={page('projects/')}
+        class="self-start sm:self-auto text-[0.76rem] font-semibold tracking-[0.1em] uppercase pb-0.5 border-b border-text text-text hover:text-accent-ink hover:border-accent-ink transition-colors duration-200"
+      >
+        All Projects <span aria-hidden="true">→</span>
+      </a>
     </div>
   </div>
 

@@ -7,9 +7,11 @@ import { page } from '@/lib/links'
 interface Props {
   title: string
   description: string
+  noindex?: boolean
+  jsonLd?: Record<string, unknown>[]
 }
 
-const { title, description } = Astro.props
+const { title, description, noindex, jsonLd } = Astro.props
 ---
 
 <!doctype html>
@@ -21,7 +23,7 @@ const { title, description } = Astro.props
     <link rel="icon" type="image/png" sizes="32x32" href={page('favicon-32.png')} />
     <link rel="apple-touch-icon" sizes="180x180" href={page('apple-touch-icon.png')} />
     <meta name="theme-color" content="#899878" />
-    <Seo title={title} description={description} />
+    <Seo title={title} description={description} noindex={noindex} jsonLd={jsonLd} />
     <link rel="preload" href={geistFont} as="font" type="font/woff2" crossorigin />
     <slot name="head" />
     <noscript><style>.reveal { opacity: 1; transform: none; }</style></noscript>

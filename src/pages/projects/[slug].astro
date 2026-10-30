@@ -1,0 +1,99 @@
+---
+import { Image } from 'astro:assets'
+import { render } from 'astro:content'
+import Base from '@/layouts/Base.astro'
+import Header from '@/components/Header'
+import Footer from '@/components/Footer.astro'
+import { BUSINESS } from '@/lib/business'
+import { page, section } from '@/lib/links'
+import { getProjects, isWrittenUp, projectPath, type Project } from '@/lib/projects'
+import { SERVICES } from '@/lib/services'
+import { breadcrumbList } from '@/lib/structured-data'
+
+export async function getStaticPaths() {
+  const projects = await getProjects()
+  return projects.map((project) => ({ params: { slug: project.id }, props: { project } }))
+}
+
+const { project } = Astro.props as { project: Project }
+const { title, location, summary, photos } = project.data
+const service = SERVICES[project.data.service]
+const { Content } = await render(project)
+const [cover, ...morePhotos] = photos
+const LINK_CLASS = 'border-b border-text pb-0.5 text-[0.76rem] font-semibold tracking-[0.1em] uppercase text-text hover:border-accent-ink hover:text-accent-ink transition-colors duration-200'
+const PHOTO_SIZES = '(min-width: 1024px) 896px, calc(100vw - 64px)'
+---
+
+<Base
+  title={`${title}: ${service.name}${location ? ` in ${location}` : ''} | ${BUSINESS.name}`}
+  description={summary}
+  noindex={!isWrittenUp(project)}
+  jsonLd={[
+    breadcrumbList([
+      { name: 'Home', path: '' },
+      { name: 'Projects', path: 'projects/' },
+      { name: title, path: projectPath(project) },
+    ]),
+  ]}
+>
+  <Header client:idle />
+  <main class="bg-bg pt-32 pb-24 lg:pt-40 lg:pb-28">
+    <article class="max-w-[960px] mx-auto px-8 lg:px-12">
+      <a href={page('projects/')} class="text-[0.84rem] text-text/70 hover:text-text transition-colors">
+        <span aria-hidden="true">←</span> All Projects
+      </a>
+      <h1
+        class="mt-6 font-heading font-black leading-[1.05] tracking-tight text-text"
+        style="font-size: clamp(2.4rem, 5vw, 4rem)"
+      >
+        {title}
+      </h1>
+      <p class="mt-3 text-[0.72rem] font-semibold tracking-[0.14em] uppercase text-accent-ink">
+        {[service.name, location].filter(Boolean).join(' · ')}
+      </p>
+      <p class="mt-6 max-w-2xl text-base leading-relaxed text-pretty text-text/70 md:text-lg">{summary}</p>
+
+      <Image
+        src={cover.src}
+        alt={cover.alt}
+        widths={[640, 960, 1280, 1920]}
+        sizes={PHOTO_SIZES}
+        loading="eager"
+        fetchpriority="high"
+        class="mt-12 w-full rounded-xl"
+        style="filter: saturate(0.9) brightness(1.02)"
+      />
+      {morePhotos.length > 0 && (
+        <div class="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-2">
+          {morePhotos.map((photo) => (
+            <Image
+              src={photo.src}
+              alt={photo.alt}
+              widths={[480, 800, 1200]}
+              sizes="(min-width: 1024px) 438px, (min-width: 640px) calc(50vw - 42px), calc(100vw - 64px)"
+              class="w-full rounded-xl"
+              style="filter: saturate(0.9) brightness(1.02)"
+            />
+          ))}
+        </div>
+      )}
+
+      {isWrittenUp(project) && (
+        <div class="mt-12 max-w-2xl text-[1rem] leading-[1.8] text-text/70 [&_h2]:mt-10 [&_h2]:mb-3 [&_h2]:font-heading [&_h2]:text-xl [&_h2]:font-bold [&_h2]:text-text [&_p]:mb-5 [&_ul]:mb-5 [&_ul]:list-disc [&_ul]:pl-5">
+          <Content />
+        </div>
+      )}
+
+      <div class="mt-16 flex flex-wrap items-center gap-x-10 gap-y-6 border-t border-surface pt-10">
+        <a
+          href={section('contact')}
+          class="rounded-2xl px-8 py-3 text-[0.78rem] font-semibold tracking-[0.08em] uppercase bg-deep text-bg hover:bg-accent-ink transition-colors duration-300"
+        >
+          Get a Quote
+        </a>
+        <a href={page(service.path)} class={LINK_CLASS}>{service.name} in Dallas <span aria-hidden="true">→</span></a>
+      </div>
+    </article>
+  </main>
+  <Footer />
+</Base>

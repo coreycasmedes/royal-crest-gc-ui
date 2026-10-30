@@ -13,7 +13,7 @@ const links = [
   { label: 'Contact',   id: 'contact'      },
 ];
 
-export default function Header() {
+export default function Header({ quoteHref = section('contact') }: { quoteHref?: string }) {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const scrollMarkerRef = useRef<HTMLDivElement>(null);
@@ -90,7 +90,7 @@ export default function Header() {
           </a>
 
           <a
-            href={section('contact')}
+            href={quoteHref}
             className="rounded-2xl hidden md:inline-flex ml-4 lg:ml-6 items-center whitespace-nowrap px-5 py-2.5 text-[0.76rem] font-semibold tracking-[0.07em] uppercase bg-deep text-bg hover:bg-accent-ink transition-colors duration-200"
           >
             Get a Quote
@@ -129,7 +129,7 @@ export default function Header() {
           </a>
         ))}
         <a
-          href={section('contact')}
+          href={quoteHref}
           onClick={close}
           className="rounded-2xl mt-10 w-full py-4 text-center text-[0.85rem] font-semibold tracking-widest uppercase bg-deep text-bg hover:bg-accent-ink transition-colors duration-200"
         >
