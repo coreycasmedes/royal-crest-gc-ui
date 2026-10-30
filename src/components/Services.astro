@@ -6,6 +6,8 @@ import gutterImg from '@/assets/IMG_4673.webp'
 import exteriorWorkImg from '@/assets/IMG_3919_edited.webp'
 import bigRoofImg from '@/assets/big_roof.webp'
 import { BUSINESS } from '@/lib/business'
+import { page } from '@/lib/links'
+import { SERVICES } from '@/lib/services'
 
 // The lg aspect ratios give a 3-column and a 2-column photo the same height, so each row stays level.
 // `sizes` mirrors this layout so each photo is downloaded at the width it is shown.
@@ -27,6 +29,7 @@ const items = [
     description: 'Premium protection built for Texas weather.',
     Icon: IconHammer,
     layout: WIDE_CARD,
+    href: page(SERVICES.roofing.path),
     image: { src: bigRoofImg, alt: `Aerial view of a roofing project by ${BUSINESS.name}` },
   },
   {
@@ -34,6 +37,7 @@ const items = [
     description: 'Painting, stucco, and exterior finish work that lasts.',
     Icon: IconHome2,
     layout: NARROW_CARD,
+    href: page(SERVICES.exterior.path),
     image: { src: exteriorWorkImg, alt: `Exterior finish work by ${BUSINESS.name}`, position: 'object-[50%_60%]' },
   },
   {
@@ -75,12 +79,12 @@ const items = [
 
     {/* The reveal sits on a wrapper so its transition and delay do not override the card's hover transition. */}
     <div data-reveal="0.06" class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:gap-5 lg:grid-cols-5">
-      {items.map(({ title, description, Icon, layout, image }, i) => (
+      {items.map(({ title, description, Icon, layout, image, href }, i) => (
         <div class={`${layout.span} reveal delay-${i + 1}`}>
           <ServiceCard
-            href="#contact"
-            linkLabel={`${title}: get a quote`}
-            cta="Get a Quote"
+            href={href ?? '#contact'}
+            linkLabel={href ? `${title} in Dallas` : `${title}: get a quote`}
+            cta={href ? 'Learn More' : 'Get a Quote'}
             title={title}
             description={description}
             image={{ ...image, aspect: layout.aspect, sizes: layout.sizes }}

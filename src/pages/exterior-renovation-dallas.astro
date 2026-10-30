@@ -1,0 +1,20 @@
+---
+import ServicePage from '@/layouts/ServicePage.astro'
+import exteriorWorkImg from '@/assets/IMG_3919_edited.webp'
+import { BUSINESS } from '@/lib/business'
+---
+
+<ServicePage
+  service="exterior"
+  title={`Exterior Renovation in Dallas, TX | ${BUSINESS.name}`}
+  description={`Exterior painting, stucco, finish work and copper gutters for homes in Dallas, Plano, Frisco and Highland Park. Call ${BUSINESS.phone.display} or get a quote.`}
+  heading="Exterior Renovation in Dallas, TX"
+  intro={`Painting, stucco, and exterior finish work that lasts. ${BUSINESS.name} renovates home exteriors across Dallas, Plano, Frisco and Highland Park, with a co-owner overseeing every job.`}
+  photo={{ src: exteriorWorkImg, alt: `Exterior finish work by ${BUSINESS.name}`, position: 'object-[50%_60%]' }}
+  offerings={[
+    { name: 'Exterior Painting' },
+    { name: 'Stucco' },
+    { name: 'Exterior Finish Work' },
+    { name: 'Copper Gutters', detail: 'Copper gutters and downspouts, like the project below.' },
+  ]}
+/>

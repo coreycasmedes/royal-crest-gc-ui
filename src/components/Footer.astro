@@ -1,17 +1,24 @@
 ---
 import logo from '@/assets/images/royal_crest_logo.svg'
 import { BUSINESS, telHref } from '@/lib/business'
-import { section } from '@/lib/links'
+import { page, section } from '@/lib/links'
+import { SERVICES } from '@/lib/services'
 
 const navLinks = [
-  { label: 'Services', id: 'services' },
-  { label: 'Portfolio', id: 'portfolio' },
-  { label: 'About', id: 'about' },
-  { label: 'Reviews', id: 'testimonials' },
-  { label: 'Contact', id: 'contact' },
+  { label: 'Services', href: section('services') },
+  { label: 'Projects', href: page('projects/') },
+  { label: 'About', href: section('about') },
+  { label: 'Reviews', href: section('testimonials') },
+  { label: 'Contact', href: section('contact') },
 ]
 
-const serviceNames = ['Kitchen Remodels', 'Bathroom Renovations', 'Home Additions', 'Roofing & Exterior']
+const serviceLinks = [
+  { label: 'Roofing', href: page(SERVICES.roofing.path) },
+  { label: 'Exterior Renovation', href: page(SERVICES.exterior.path) },
+  { label: 'Kitchen Remodels', href: section('services') },
+  { label: 'Bathroom Renovations', href: section('services') },
+  { label: 'Home Additions', href: section('services') },
+]
 ---
 
 <footer class="bg-bg border-t border-surface">
@@ -32,8 +39,8 @@ const serviceNames = ['Kitchen Remodels', 'Bathroom Renovations', 'Home Addition
       <div class="flex flex-wrap gap-12 lg:gap-16">
         <div class="flex flex-col gap-2.5">
           <p class="text-[0.66rem] font-bold tracking-[0.22em] uppercase mb-1 text-text">Navigate</p>
-          {navLinks.map(({ label, id }) => (
-            <a href={section(id)} class="text-left text-[0.84rem] text-text/70 hover:text-text transition-colors">
+          {navLinks.map(({ label, href }) => (
+            <a href={href} class="text-left text-[0.84rem] text-text/70 hover:text-text transition-colors">
               {label}
             </a>
           ))}
@@ -41,9 +48,9 @@ const serviceNames = ['Kitchen Remodels', 'Bathroom Renovations', 'Home Addition
 
         <div class="flex flex-col gap-2.5">
           <p class="text-[0.66rem] font-bold tracking-[0.22em] uppercase mb-1 text-text">Services</p>
-          {serviceNames.map((service) => (
-            <a href={section('services')} class="text-left text-[0.84rem] text-text/70 hover:text-text transition-colors">
-              {service}
+          {serviceLinks.map(({ label, href }) => (
+            <a href={href} class="text-left text-[0.84rem] text-text/70 hover:text-text transition-colors">
+              {label}
             </a>
           ))}
         </div>
