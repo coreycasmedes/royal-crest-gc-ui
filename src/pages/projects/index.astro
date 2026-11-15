@@ -5,7 +5,7 @@ import Footer from '@/components/Footer.astro'
 import ProjectCards from '@/components/service/ProjectCards.astro'
 import { BUSINESS } from '@/lib/business'
 import { page, section } from '@/lib/links'
-import { getProjects } from '@/lib/projects'
+import { getProjects, isPublished } from '@/lib/projects'
 import { SERVICES } from '@/lib/services'
 import { breadcrumbList } from '@/lib/structured-data'
 
@@ -14,8 +14,9 @@ const LINK_CLASS = 'border-b border-text pb-0.5 text-[0.76rem] font-semibold tra
 ---
 
 <Base
-  title={`Projects | ${BUSINESS.name}`}
-  description={`Recent roofing and exterior projects by ${BUSINESS.name} in Dallas, Plano, Frisco and Highland Park.`}
+  title={`Dallas Roofing and Renovation Projects | ${BUSINESS.name}`}
+  description={`Roofing and renovation projects by ${BUSINESS.name} in Dallas and the Park Cities, with the scope and materials of each job.`}
+  noindex={!projects.some(isPublished)}
   jsonLd={[breadcrumbList([{ name: 'Home', path: '' }, { name: 'Projects', path: 'projects/' }])]}
 >
   <Header client:idle />
@@ -25,7 +26,7 @@ const LINK_CLASS = 'border-b border-text pb-0.5 text-[0.76rem] font-semibold tra
         class="font-heading font-black leading-[1.05] tracking-tight text-text"
         style="font-size: clamp(2.6rem, 6vw, 4.5rem)"
       >
-        Projects
+        Roofing and Renovation Projects Across Dallas
       </h1>
       <p class="mt-6 max-w-xl text-base leading-relaxed text-pretty text-text/70 md:text-lg">
         Recent roofing and exterior work by {BUSINESS.name} across the Dallas area.

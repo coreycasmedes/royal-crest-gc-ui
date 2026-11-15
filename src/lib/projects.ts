@@ -3,8 +3,10 @@ import type { ServiceKey } from './services'
 
 export type Project = CollectionEntry<'projects'>
 
-// A story without a write-up is too thin to index; it stays out of search and the sitemap until written.
-export const isWrittenUp = (project: Project) => Boolean(project.body?.trim())
+export const hasWriteUp = (project: Project) => Boolean(project.body?.trim())
+
+// A story without a write-up is too thin to index, and a draft waits for approval; both stay out of search and the sitemap.
+export const isPublished = (project: Project) => hasWriteUp(project) && !project.data.draft
 
 export const projectPath = (project: Project) => `projects/${project.id}/`
 

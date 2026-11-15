@@ -1,5 +1,5 @@
 import type { APIRoute } from 'astro'
-import { getProjects, isWrittenUp, projectPath } from '@/lib/projects'
+import { getProjects, isPublished, projectPath } from '@/lib/projects'
 
 const isDynamicRoute = (file: string) => file.includes('[')
 const toUrlPath = (file: string) =>
@@ -11,8 +11,10 @@ const staticPages = Object.keys(import.meta.glob('./**/*.astro'))
   .map(toUrlPath)
 
 export const GET: APIRoute = async ({ site }) => {
-  const projectPages = (await getProjects()).filter(isWrittenUp).map(projectPath)
-  const urls = [...staticPages, ...projectPages]
+  const projectPages = (await getProjects()).filter(isPublished).map(projectPath)
+  // The projects index is noindex until at least one story is published.
+  const indexPages = projectPages.length > 0 ? staticPages : staticPages.filter((path) => path !== 'projects/')
+  const urls = [...indexPages, ...projectPages]
     .sort()
     .map((path) => `  <url><loc>${new URL(path, site).href}</loc></url>`)
     .join('\n')

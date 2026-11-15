@@ -1,6 +1,6 @@
 export const SERVICES = {
-  roofing: { name: 'Roofing', path: 'roofing-dallas/', formOption: 'Roofing & Exterior' },
-  exterior: { name: 'Exterior Renovation', path: 'exterior-renovation-dallas/', formOption: 'Roofing & Exterior' },
+  roofing: { name: 'Roofing', path: 'roofing-dallas/', formOption: 'Roofing' },
+  exterior: { name: 'Exterior Renovation', path: 'exterior-renovation-dallas/', formOption: 'Exterior Renovation' },
 } as const
 
 export type ServiceKey = keyof typeof SERVICES

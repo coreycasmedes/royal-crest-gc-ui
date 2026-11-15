@@ -1,6 +1,6 @@
 # Royal Crest GC — UI
 
-Marketing website for **Royal Crest General Contractors** (Dallas, TX). Built with Astro 7 (static output, React 19 islands) + TypeScript + Tailwind CSS v4. Every page is pre-rendered to HTML at build time. Hosted on GitHub Pages at `www.royalcrestgc.com`.
+Marketing website for **Royal Crest General Contracting** (Dallas, TX). Built with Astro 7 (static output, React 19 islands) + TypeScript + Tailwind CSS v4. Every page is pre-rendered to HTML at build time. Hosted on GitHub Pages at `www.royalcrestgc.com`.
 
 ## Commands
 
@@ -152,7 +152,7 @@ src/
     links.ts            — page() and section() hrefs that respect the PR-preview base path
     hero.ts             — Hero image src/srcset/sizes, shared by Hero.astro and the preload
     services.ts         — Service pages: name, path, quote-form option
-    projects.ts         — getProjects(), projectPath(), isWrittenUp()
+    projects.ts         — getProjects(), projectPath(), hasWriteUp(), isPublished()
     testimonials.ts     — Review excerpts, tagged by service
     structured-data.ts  — BUSINESS_ID, breadcrumb and Service JSON-LD
     layers.ts           — z-index scale (LAYER class strings)
@@ -166,7 +166,7 @@ Name, phone, email, hours, service area and the stats band come from `src/lib/bu
 
 ## Service and project pages
 
-- **Projects** are Markdown files in `src/content/projects/`. Frontmatter holds the title, service (`roofing` or `exterior`), optional location, a one-line summary, photos with alt text and a sort order; the body is the write-up. A project with no body is `noindex` and left out of the sitemap, because a photo and one line is too thin for search. Writing the body publishes it.
+- **Projects** are Markdown files in `src/content/projects/`. Frontmatter holds the title, service (`roofing` or `exterior`), optional location and completion month, a one-line summary, photos with alt text and a sort order; the body is the write-up. A project with no body, or with `draft: true`, is `noindex` and left out of the sitemap, because a photo and one line is too thin for search. Writing the body and removing `draft` publishes it. `/projects/` itself stays `noindex` until one project is published.
 - **Service pages** are thin wrappers around `src/layouts/ServicePage.astro`. Only state what the owner has confirmed; leave an offering's `detail` out rather than inventing one. Sections without content (projects, reviews) drop out on their own.
 - The quote form sends a hidden `page` field and preselects the service, so each lead says where it came from.
 
@@ -264,8 +264,8 @@ GitHub Pages serves the `gh-pages` branch at `www.royalcrestgc.com`. Never commi
 
 ## Brand
 
-- **Company**: Royal Crest General Contractors LLC
-- **Location**: Dallas, TX (also serves Plano, Frisco, Highland Park area)
+- **Company**: Royal Crest General Contracting (legal name Royal Crest General Contracting LLC)
+- **Location**: Dallas, TX. A service-area business with no public street address; areas in priority order are in `business.ts`
 - **Phone**: (469) 432 0341
 - **Email**: royalcrestgeneralcontracting@outlook.com
 - **Theme**: Light minimalist — off-white base, sage green accent (#899878), Geist font, rounded corners

@@ -1,19 +1,73 @@
 ---
 import ServicePage from '@/layouts/ServicePage.astro'
 import bigRoofImg from '@/assets/big_roof.webp'
-import { BUSINESS } from '@/lib/business'
+import { BUSINESS, areaNames } from '@/lib/business'
 ---
 
 <ServicePage
   service="roofing"
-  title={`Roofing in Dallas, TX | ${BUSINESS.name}`}
-  description={`Roofing for homes in Dallas, Plano, Frisco and Highland Park, with GAF, CertainTeed and Brava materials. Call ${BUSINESS.phone.display} or get a quote.`}
-  heading="Roofing in Dallas, TX"
-  intro={`Premium protection built for Texas weather. ${BUSINESS.name} installs roofs on homes across Dallas, Plano, Frisco and Highland Park, with a co-owner overseeing every job.`}
+  title={`Dallas Roofing Contractor | ${BUSINESS.name}`}
+  description={`Roof repair and replacement for homes in Dallas and the Park Cities. GAF, CertainTeed and Brava certified, with a ${BUSINESS.warranty.workmanship}. Request a free estimate.`}
+  heading="Dallas Roofing Contractor"
+  intro={`Premium protection built for Texas weather. ${BUSINESS.name} inspects, repairs and replaces roofs on historic and modern homes across Dallas and the Park Cities. Most replacements are finished in one day.`}
   photo={{ src: bigRoofImg, alt: `Aerial view of a roofing project by ${BUSINESS.name}` }}
+  offeringsHeading="Roof Repair and Replacement in Dallas"
   offerings={[
-    { name: 'New Roofs', detail: 'Complete roof installations on homes in Dallas and the suburbs, from Lakewood and Prestonwood to Frisco.' },
-    { name: 'Trusted Materials', detail: 'We work with GAF, CertainTeed and Brava, and source our materials through ABC Supply.' },
+    { name: 'Roof Inspection', detail: 'We inspect the roof and recommend a repair or a replacement only if it needs one.' },
+    { name: 'Roof Repair', detail: 'When the inspection shows the roof does not need replacing, we repair it.' },
+    { name: 'Roof Replacement', detail: 'Everything from the roofline up, with up to three sheets of rotted decking replaced at no extra cost.' },
+    { name: 'Insurance Claims', detail: 'We walk you through the pros and cons of an insurance claim for your situation, so you can decide.' },
   ]}
+  materials={{
+    heading: 'Roofing Materials We Install',
+    paragraphs: [
+      `We install every type of roofing material and any brand you ask for. We are certified by GAF, CertainTeed and Brava.`,
+      `Every roof comes with our ${BUSINESS.warranty.workmanship}. ${BUSINESS.warranty.manufacturer}.`,
+    ],
+  }}
   showPartners
+  process={{
+    heading: 'Our Inspection and Installation Process',
+    steps: [
+      { name: 'Inspection', detail: 'We inspect the roof and recommend a repair or a replacement if one is needed.' },
+      { name: 'Insurance or Estimate', detail: 'For a replacement, you weigh the pros and cons of going through insurance. Otherwise you approve the estimate, scope of work and materials.' },
+      { name: 'Permit', detail: 'Once insurance approves the roof and funds arrive, or once you approve the estimate, we pull the permit.' },
+      { name: 'Installation', detail: 'Most roofs take one day, and larger homes up to three. Gutters come off the day before and go back on the day after.' },
+      { name: 'Cleanup', detail: 'We sweep the front and back yards with nail magnets at least four times and check with the neighbors on both sides.' },
+      { name: 'Walkthrough and Payment', detail: 'We walk the property with you, and collect payment only once the work is done and you are happy with it.' },
+    ],
+  }}
+  faq={{
+    heading: 'Roofing Questions',
+    items: [
+      {
+        question: 'What exactly is replaced during a roof replacement?',
+        answer: 'Everything from the roofline up, except the roof deck itself and any stone or masonry rework. Up to three sheets of decking are included at no extra cost to repair rotted deck we find while working.',
+      },
+      {
+        question: 'How long will the project take?',
+        answer: 'Typically one to three days, depending on the size of the home. About 90% of the time we finish in one day, with the gutters coming off the day before and going back on the day after.',
+      },
+      {
+        question: 'When is payment collected?',
+        answer: 'After all the work is complete and we have walked through it with you to make sure everything meets our standards and you are happy.',
+      },
+      {
+        question: 'How do you protect my home during the work?',
+        answer: 'We bring 8 to 15 sheets of decking and sawhorses to protect your windows and landscaping. A Spanish-speaking team member is on site to coordinate with the crew and help protect the property.',
+      },
+      {
+        question: 'How clean will my property be afterward?',
+        answer: 'We sweep the front and back yards with nail magnets at least four times, and we check with the neighbors on both sides.',
+      },
+      {
+        question: 'Should I go through insurance?',
+        answer: 'After the inspection we walk you through the pros and cons of an insurance claim for your situation, so you can decide.',
+      },
+      {
+        question: 'Which areas do you serve?',
+        answer: `${areaNames.join(', ')}. We always come to you.`,
+      },
+    ],
+  }}
 />

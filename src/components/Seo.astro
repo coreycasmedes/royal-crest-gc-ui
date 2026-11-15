@@ -1,6 +1,6 @@
 ---
 import { BUSINESS } from '@/lib/business'
-import { BUSINESS_ID } from '@/lib/structured-data'
+import { BUSINESS_ID, areaServedJsonLd } from '@/lib/structured-data'
 
 interface Props {
   title: string
@@ -20,13 +20,21 @@ const businessJsonLd = {
   '@type': 'GeneralContractor',
   '@id': BUSINESS_ID,
   name: BUSINESS.name,
+  legalName: BUSINESS.legalName,
   image: ogImage,
   url: BUSINESS.url,
   telephone: BUSINESS.phone.tel,
   email: BUSINESS.email,
   foundingDate: String(BUSINESS.founded),
   priceRange: '$$$',
-  areaServed: BUSINESS.areaServed.map((name) => ({ '@type': 'City', name })),
+  areaServed: areaServedJsonLd,
+  openingHoursSpecification: BUSINESS.openingHours.map(({ days, opens, closes }) => ({
+    '@type': 'OpeningHoursSpecification',
+    dayOfWeek: days,
+    opens,
+    closes,
+  })),
+  sameAs: [BUSINESS.reviews.yelp, BUSINESS.social.instagram],
   address: {
     '@type': 'PostalAddress',
     addressLocality: BUSINESS.locality.city,
