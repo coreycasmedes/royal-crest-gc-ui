@@ -11,7 +11,6 @@ const team = [
     src: alanImg,
     objectPosition: 'center 10%',
     zoom: 1,
-    figureClass: 'col-start-1 row-start-1',
   },
   {
     name: 'Daniel',
@@ -20,7 +19,6 @@ const team = [
     objectPosition: 'center top',
     // The zoom crops out a dark strip along the bottom edge of the file.
     zoom: 1.05,
-    figureClass: 'col-start-2 row-start-1 sm:mt-16',
   },
 ]
 ---
@@ -52,7 +50,7 @@ const team = [
         class="lg:col-span-8 grid grid-cols-2 content-start gap-x-4 gap-y-5 sm:gap-x-6 reveal"
       >
         {team.map((member) => (
-          <figure class={member.figureClass}>
+          <figure>
             <div class="overflow-hidden rounded-xl">
               <Image
                 src={member.src}
