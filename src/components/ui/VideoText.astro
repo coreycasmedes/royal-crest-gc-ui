@@ -1,6 +1,6 @@
 ---
 import subsetFont from 'subset-font'
-import geistInline from '@/assets/fonts/Geist-Variable.woff2?inline'
+import headlineInline from '@/assets/fonts/LibreFranklin-Variable.woff2?inline'
 import { cn } from '@/lib/utils'
 
 interface Props {
@@ -21,8 +21,8 @@ const escapeXml = (text: string) => text.replace(/&/g, '&amp;').replace(/</g, '&
 
 // An SVG used as a mask cannot see the page's fonts, so it carries its own,
 // cut down to the headline's letters at its one weight (a few KB).
-const geistWoff2 = Buffer.from(geistInline.split(',')[1], 'base64')
-const headlineFont = await subsetFont(geistWoff2, lines.join(''), {
+const headlineWoff2 = Buffer.from(headlineInline.split(',')[1], 'base64')
+const headlineFont = await subsetFont(headlineWoff2, lines.join(''), {
   targetFormat: 'woff2',
   variationAxes: { wght: fontWeight },
 })

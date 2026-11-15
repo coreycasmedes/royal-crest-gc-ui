@@ -1,16 +1,16 @@
 @import "tailwindcss";
 
 @font-face {
-  font-family: 'Geist';
-  src: url('../assets/fonts/Geist-Variable.woff2') format('woff2');
+  font-family: 'Libre Franklin';
+  src: url('../assets/fonts/LibreFranklin-Variable.woff2') format('woff2');
   font-weight: 100 900;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Geist';
-  src: url('../assets/fonts/Geist-Italic[wght].woff2') format('woff2');
+  font-family: 'Libre Franklin';
+  src: url('../assets/fonts/LibreFranklin-Italic-Variable.woff2') format('woff2');
   font-weight: 100 900;
   font-style: italic;
   font-display: swap;
@@ -24,10 +24,9 @@
   --color-text:    #222725;
   --color-deep:    #121113;
 
-  --font-heading: "Geist", ui-sans-serif, system-ui;
-  --font-body:    "Geist", ui-sans-serif, system-ui;
-  --font-geist:   "Geist", ui-sans-serif, system-ui;
-  --font-sans:    "Geist", ui-sans-serif, system-ui;
+  --font-heading: "Libre Franklin", ui-sans-serif, system-ui;
+  --font-body:    "Libre Franklin", ui-sans-serif, system-ui;
+  --font-sans:    "Libre Franklin", ui-sans-serif, system-ui;
 }
 
 @layer base {
