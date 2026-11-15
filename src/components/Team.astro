@@ -4,28 +4,21 @@ import alanImg from '@/assets/alan.webp'
 import danImg from '@/assets/dan.webp'
 import { BUSINESS, callLabel, telHref } from '@/lib/business'
 
-// From sm the second portrait drops 4rem (sm:mt-16), so the first bio pulls up by the same (sm:-mt-16).
 const team = [
   {
     name: 'Alan',
     role: 'Co-owner',
-    bio: "Alan co-founded Royal Crest on a simple principle: build it right, or don't build it at all. He oversees every project personally, holding each job to the standard of craftsmanship Dallas expects from Royal Crest. He spent five years in construction before co-founding the company in 2025.",
     src: alanImg,
     objectPosition: 'center 10%',
     zoom: 1,
-    figureClass: 'col-start-1 row-start-1',
-    bioClass: 'col-span-2 row-start-2 sm:col-span-1 sm:col-start-1 sm:-mt-16',
   },
   {
     name: 'Daniel',
     role: 'Co-owner',
-    bio: 'Daniel co-founded Royal Crest and keeps every job on schedule and on budget, coordinating trades and inspections so clients never have to. His background in luxury renovation means no detail goes unchecked. He spent five years in construction before co-founding the company in 2025.',
     src: danImg,
     objectPosition: 'center top',
     // The zoom crops out a dark strip along the bottom edge of the file.
     zoom: 1.05,
-    figureClass: 'col-start-2 row-start-1 sm:mt-16',
-    bioClass: 'col-span-2 row-start-3 sm:col-span-1 sm:col-start-2 sm:row-start-2',
   },
 ]
 ---
@@ -57,7 +50,7 @@ const team = [
         class="lg:col-span-8 grid grid-cols-2 content-start gap-x-4 gap-y-5 sm:gap-x-6 reveal"
       >
         {team.map((member) => (
-          <figure class={member.figureClass}>
+          <figure>
             <div class="overflow-hidden rounded-xl">
               <Image
                 src={member.src}
@@ -73,9 +66,6 @@ const team = [
               <p class="mt-0.5 text-sm text-text/65">{member.role}</p>
             </figcaption>
           </figure>
-        ))}
-        {team.map((member) => (
-          <p class={`text-[0.88rem] leading-[1.78] text-text/70 ${member.bioClass}`}>{member.bio}</p>
         ))}
       </div>
     </div>
