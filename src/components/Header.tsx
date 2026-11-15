@@ -123,7 +123,7 @@ export default function Header({ quoteHref = section('contact') }: { quoteHref?:
             key={id}
             href={section(id)}
             onClick={close}
-            className="font-heading text-[1.6rem] font-normal leading-tight text-left py-3.5 border-b border-surface text-text"
+            className="font-heading text-[1.6rem] font-normal leading-tight text-left py-3.5 text-text"
           >
             {label}
           </a>
