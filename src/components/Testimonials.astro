@@ -29,7 +29,7 @@ const LG_COLUMNS = ['lg:grid-cols-1', 'lg:grid-cols-2', 'lg:grid-cols-3'][Math.m
       {items.map((t, i) => (
         <figure class={`reveal delay-${i + 1} shadow-input flex flex-col rounded-xl border border-surface bg-bg p-6 sm:p-8`}>
           <blockquote>
-            <p class="text-[1.1rem] leading-[1.65] text-text">&ldquo;{t.quote}&rdquo;</p>
+            <p class="text-[1.1rem] leading-[1.65] text-pretty text-text">&ldquo;{t.quote}&rdquo;</p>
           </blockquote>
           <figcaption class="mt-auto pt-8">
             <span class="block font-heading font-bold text-[0.98rem] leading-snug text-text">{t.name}</span>
