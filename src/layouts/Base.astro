@@ -1,7 +1,7 @@
 ---
 import '@/styles/global.css'
 import Seo from '@/components/Seo.astro'
-import geistFont from '@/assets/fonts/Geist-Variable.woff2?url'
+import bodyFont from '@/assets/fonts/Inter-Variable.woff2?url'
 import { page } from '@/lib/links'
 
 interface Props {
@@ -24,7 +24,7 @@ const { title, description, noindex, jsonLd } = Astro.props
     <link rel="apple-touch-icon" sizes="180x180" href={page('apple-touch-icon.png')} />
     <meta name="theme-color" content="#899878" />
     <Seo title={title} description={description} noindex={noindex} jsonLd={jsonLd} />
-    <link rel="preload" href={geistFont} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={bodyFont} as="font" type="font/woff2" crossorigin />
     <slot name="head" />
     <noscript><style>.reveal { opacity: 1; transform: none; }</style></noscript>
   </head>
