@@ -32,7 +32,7 @@ export const BUSINESS = {
   },
   social: { instagram: 'https://www.instagram.com/royalcrestgc/' },
   reviews: {
-    google: 'https://g.page/r/Cc_zNupJP5_WEBM/review',
+    google: 'https://www.google.com/maps?cid=15465149232108205007',
     yelp: 'https://www.yelp.com/biz/royal-crest-general-contracting-dallas',
   },
   stats: [
