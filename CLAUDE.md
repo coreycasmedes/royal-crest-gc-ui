@@ -107,7 +107,8 @@ Sections are listed in the order `src/pages/index.astro` renders them. `.astro` 
 astro.config.mjs        — site URL, `base` from VITE_BASE_URL (PR previews), trailingSlash 'always', React + Tailwind
 public/                 — Copied to the site root unchanged
   robots.txt
-  favicon.png, favicon-32.png, apple-touch-icon.png, og-image.jpg
+  favicon.ico (16/32/48), icon.svg, favicon-96.png, apple-touch-icon.png (180, opaque),
+  icon-192.png, icon-512.png, icon-mask.png (maskable), og-image.jpg — the RC-on-onyx mark
 .github/workflows/
   deploy.yml            — Production deploy on push to main
   pr-preview.yml        — Per-pull-request preview deploy
@@ -119,6 +120,7 @@ src/
     projects/index.astro — All projects
     projects/[slug].astro — One page per project in src/content/projects
     privacy.astro       — Privacy policy, linked from the footer and the quote form
+    manifest.webmanifest.ts — Web app manifest (name from business.ts, Android icons)
     sitemap.xml.ts      — /sitemap.xml: the .astro pages plus written-up projects
   content/projects/     — One .md per project (schema in src/content.config.ts)
   layouts/
