@@ -19,7 +19,7 @@ npm run lint     # eslint
 | Islands    | React 19 + TypeScript 6 via `@astrojs/react` |
 | Images     | `astro:assets` (`<Image>`, `getImage`)      |
 | Styling    | Tailwind CSS v4 (no config file)            |
-| Fonts      | Geist Variable (headings + body) via local woff2 |
+| Fonts      | Libre Baskerville (headings) + Libre Franklin Variable (body), self-hosted woff2 |
 | Animation  | `motion/react` (Motion v12)                 |
 | Icons      | `@tabler/icons-react`                       |
 
@@ -27,7 +27,7 @@ npm run lint     # eslint
 
 ## Tailwind Setup
 
-Tailwind v4 uses **no `tailwind.config.js`**. Configuration lives entirely in `src/styles/global.css` (imported by `src/layouts/Base.astro`), which also declares the two Geist `@font-face` rules. The `@theme` block:
+Tailwind v4 uses **no `tailwind.config.js`**. Configuration lives entirely in `src/styles/global.css` (imported by `src/layouts/Base.astro`), which also declares the `@font-face` rules. The `@theme` block:
 
 ```css
 @import "tailwindcss";
@@ -40,10 +40,9 @@ Tailwind v4 uses **no `tailwind.config.js`**. Configuration lives entirely in `s
   --color-text:    #222725;
   --color-deep:    #121113;
 
-  --font-heading: "Geist", ui-sans-serif, system-ui;
-  --font-body:    "Geist", ui-sans-serif, system-ui;
-  --font-geist:   "Geist", ui-sans-serif, system-ui;
-  --font-sans:    "Geist", ui-sans-serif, system-ui;
+  --font-heading: "Libre Baskerville", ui-serif, Georgia, serif;
+  --font-body:    "Libre Franklin", ui-sans-serif, system-ui;
+  --font-sans:    "Libre Franklin", ui-sans-serif, system-ui;
 }
 ```
 
@@ -197,7 +196,7 @@ Most sections reveal on scroll (the hero, badges and footer do not). Put `data-r
 - **Tailwind only** — no `style={{ color: ... }}` or `style={{ background: ... }}` anywhere. All colors come from token classes.
 - **Inline `style` only for layout values** — `fontSize: 'clamp(...)'`, `paddingTop`, etc. Never for colors.
 - **No `onMouseEnter`/`onMouseLeave` for color changes** — use Tailwind `hover:` variants instead.
-- `font-heading` utility class maps to the Geist variable font.
+- `font-heading` maps to Libre Baskerville (400 and 700 only; `font-black` renders as 700). Body text, labels and buttons use Libre Franklin.
 - Section heading: an `<h2 className="font-heading font-bold ...">` sized with `clamp(2.2rem, 4vw, 3.2rem)`. No eyebrow label above it.
 - Section padding: `py-24 lg:py-28` for the main sections.
 - Max content width: `max-w-[1260px] mx-auto px-8 lg:px-12`.
@@ -225,7 +224,7 @@ These decisions are easy to undo by accident. Keep them when editing nearby code
 - **The headline and the hero image are the LCP candidates** (the headline on phones). Both must render immediately: no entrance animation (an element that starts at opacity 0 or blurred is timed late by Chrome), no island, no `loading="lazy"`. The hero image keeps `fetchpriority="high"`.
 - **Hero `srcset`/`sizes` must match its preload.** Both `Hero.astro` and the `<link rel="preload" as="image">` in `index.astro` read `HERO` from `src/lib/hero.ts`. Keep it that way, or the browser downloads the hero twice. The three hero files are hand-encoded and served as they are, not through `<Image>`.
 - **The headline video must not compete with the first paint.** Its poster is preloaded and shown first; the video itself is only fetched after the page has loaded, and not at all under reduced motion.
-- **The headline paints with the HTML.** `VideoText.astro` builds its SVG mask at build time and embeds a copy of Geist cut down to the headline's letters (via `subset-font`, a few KB), so no JavaScript or font download stands between the HTML and the headline. Do not turn it back into an island or load the mask font at runtime: the headline is the mobile LCP element.
+- **The headline paints with the HTML.** `VideoText.astro` builds its SVG mask at build time and embeds a copy of the heading font (Libre Baskerville Bold) cut down to the headline's letters (via `subset-font`, a few KB), so no JavaScript or font download stands between the HTML and the headline. Do not turn it back into an island or load the mask font at runtime: the headline is the mobile LCP element.
 - **Below-the-fold photos use `<Image>` from `astro:assets`** with `widths` and a `sizes` that matches the layout, so each is downloaded at the size it is shown. `<Image>` sets `loading="lazy"` and the real `width`/`height`, so the photo reserves its space. `ServiceCard.astro` shows the pattern; an island gets the same from `getImage()` (see `Portfolio.astro`).
 - **Reduced motion is respected in two places.** Every island that uses `motion/react` wraps itself in `<MotionConfig reducedMotion="user">`, and `global.css` has a `prefers-reduced-motion` block that disables smooth scrolling, the hero entrance and the `reveal` transition. Timers and autoplay are not covered by either: guard them with `useReducedMotion()`.
 - **Nothing should animate endlessly without a way to pause it.** Anything that autoplays, loops or cycles must stop under reduced motion and either pause on hover and focus or offer a control.
@@ -249,7 +248,7 @@ Media lives in `src/assets/` and is imported from components, so it is fingerpri
 - `alan.webp`, `dan.webp` — co-owner portraits
 - `images/` — `royal_crest_logo.svg`
 - `logos/` — partner logos (`gaf`, `brava`, `certainteed`, `abc-supply`) as single-color SVGs with `fill="currentColor"`, imported as Astro SVG components so they inline and take the text color. Paths are taken unchanged from each company's own vector logo, only recolored; keep them one color
-- `fonts/` — `Geist-Variable.woff2`, `Geist-Italic[wght].woff2`
+- `fonts/` — `LibreBaskerville-400.woff2`, `LibreBaskerville-700.woff2`, `LibreFranklin-Variable.woff2` (latin subsets from Fontsource)
 
 Kept as originals and **not shipped** (nothing imports them, so they are not in `dist/`): `72959.webp` (uncropped portrait original of the hero image) and `drone_roof.mp4` (1280×720 original of the headline video). Do not import them.
 
@@ -269,4 +268,4 @@ GitHub Pages serves the `gh-pages` branch at `www.royalcrestgc.com`. Never commi
 - **Location**: Dallas, TX. A service-area business with no public street address; areas in priority order are in `business.ts`
 - **Phone**: (469) 432 0341
 - **Email**: royalcrestgeneralcontracting@outlook.com
-- **Theme**: Light minimalist — off-white base, sage green accent (#899878), Geist font, rounded corners
+- **Theme**: Light minimalist — off-white base, sage green accent (#899878), Libre Baskerville and Libre Franklin, rounded corners
