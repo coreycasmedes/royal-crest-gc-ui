@@ -10,9 +10,11 @@ const projects = defineCollection({
       title: z.string(),
       service: z.enum(SERVICE_KEYS),
       location: z.string().optional(),
+      completed: z.string().optional(),
       summary: z.string(),
       photos: z.array(z.object({ src: image(), alt: z.string() })).min(1),
       order: z.number(),
+      draft: z.boolean().default(false),
     }),
 })
 

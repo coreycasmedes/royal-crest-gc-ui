@@ -5,8 +5,8 @@ import Base from '@/layouts/Base.astro'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer.astro'
 import { BUSINESS } from '@/lib/business'
-import { page, section } from '@/lib/links'
-import { getProjects, isWrittenUp, projectPath, type Project } from '@/lib/projects'
+import { page } from '@/lib/links'
+import { getProjects, hasWriteUp, isPublished, projectPath, type Project } from '@/lib/projects'
 import { SERVICES } from '@/lib/services'
 import { breadcrumbList } from '@/lib/structured-data'
 
@@ -16,18 +16,19 @@ export async function getStaticPaths() {
 }
 
 const { project } = Astro.props as { project: Project }
-const { title, location, summary, photos } = project.data
+const { title, location, completed, summary, photos } = project.data
 const service = SERVICES[project.data.service]
 const { Content } = await render(project)
 const [cover, ...morePhotos] = photos
 const LINK_CLASS = 'border-b border-text pb-0.5 text-[0.76rem] font-semibold tracking-[0.1em] uppercase text-text hover:border-accent-ink hover:text-accent-ink transition-colors duration-200'
+const quoteHref = `${page(service.path)}#contact`
 const PHOTO_SIZES = '(min-width: 1024px) 896px, calc(100vw - 64px)'
 ---
 
 <Base
   title={`${title}: ${service.name}${location ? ` in ${location}` : ''} | ${BUSINESS.name}`}
   description={summary}
-  noindex={!isWrittenUp(project)}
+  noindex={!isPublished(project)}
   jsonLd={[
     breadcrumbList([
       { name: 'Home', path: '' },
@@ -36,7 +37,7 @@ const PHOTO_SIZES = '(min-width: 1024px) 896px, calc(100vw - 64px)'
     ]),
   ]}
 >
-  <Header client:idle />
+  <Header client:idle quoteHref={quoteHref} />
   <main class="bg-bg pt-32 pb-24 lg:pt-40 lg:pb-28">
     <article class="max-w-[960px] mx-auto px-8 lg:px-12">
       <a href={page('projects/')} class="text-[0.84rem] text-text/70 hover:text-text transition-colors">
@@ -49,7 +50,7 @@ const PHOTO_SIZES = '(min-width: 1024px) 896px, calc(100vw - 64px)'
         {title}
       </h1>
       <p class="mt-3 text-[0.72rem] font-semibold tracking-[0.14em] uppercase text-accent-ink">
-        {[service.name, location].filter(Boolean).join(' · ')}
+        {[service.name, location, completed].filter(Boolean).join(' · ')}
       </p>
       <p class="mt-6 max-w-2xl text-base leading-relaxed text-pretty text-text/70 md:text-lg">{summary}</p>
 
@@ -78,7 +79,7 @@ const PHOTO_SIZES = '(min-width: 1024px) 896px, calc(100vw - 64px)'
         </div>
       )}
 
-      {isWrittenUp(project) && (
+      {hasWriteUp(project) && (
         <div class="mt-12 max-w-2xl text-[1rem] leading-[1.8] text-text/70 [&_h2]:mt-10 [&_h2]:mb-3 [&_h2]:font-heading [&_h2]:text-xl [&_h2]:font-bold [&_h2]:text-text [&_p]:mb-5 [&_ul]:mb-5 [&_ul]:list-disc [&_ul]:pl-5">
           <Content />
         </div>
@@ -86,7 +87,7 @@ const PHOTO_SIZES = '(min-width: 1024px) 896px, calc(100vw - 64px)'
 
       <div class="mt-16 flex flex-wrap items-center gap-x-10 gap-y-6 border-t border-surface pt-10">
         <a
-          href={section('contact')}
+          href={quoteHref}
           class="rounded-2xl px-8 py-3 text-[0.78rem] font-semibold tracking-[0.08em] uppercase bg-deep text-bg hover:bg-accent-ink transition-colors duration-300"
         >
           Get a Quote

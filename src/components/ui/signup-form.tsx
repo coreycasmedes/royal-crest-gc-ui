@@ -14,11 +14,11 @@ import { BUSINESS, telHref } from "@/lib/business";
 import { page } from "@/lib/links";
 
 const services = [
+  "Roofing",
+  "Exterior Renovation",
   "Kitchen Remodel",
   "Bathroom Renovation",
   "Home Addition",
-  "Roofing & Exterior",
-  "Commercial Construction",
   "Other",
 ];
 
@@ -29,10 +29,10 @@ const detailsPlaceholder: Record<string, string> = {
     "Full gut or cosmetic update? Any specific fixtures, tile, or layout changes in mind?",
   "Home Addition":
     "What type of addition (bedroom, garage, ADU)? Approximate square footage?",
-  "Roofing & Exterior":
-    "New install, repair, or replacement? Any storm damage or specific materials you're considering?",
-  "Commercial Construction":
-    "Describe the project type, scope, and any deadlines or zoning considerations…",
+  Roofing:
+    "Repair or replacement? Any storm damage, an insurance claim, or specific materials you're considering?",
+  "Exterior Renovation":
+    "Painting, stucco, trim, gutters or shutters? Tell us about the home and what you'd like done…",
   Other:
     "Tell us what you have in mind and we'll point you in the right direction…",
 };
@@ -198,7 +198,7 @@ function QuoteForm({ sourcePage, defaultService = "" }: QuoteFormProps) {
       <div className="rounded-2xl shadow-input mx-auto w-full bg-bg p-4 md:rounded-2xl md:p-8">
         <h2 className="text-xl font-bold text-text">Request Received</h2>
         <p className="mt-2 text-sm text-text/70">
-          We received your request and will get back to you within one business day.
+          We received your request and will get back to you {BUSINESS.responseTime}.
         </p>
         <p className="mt-3 text-sm text-text/70">
           If this is an emergency, please call us directly at{" "}
@@ -224,7 +224,7 @@ function QuoteForm({ sourcePage, defaultService = "" }: QuoteFormProps) {
         </div>
       </h2>
       <p className="mt-2 max-w-sm text-sm text-text/70">
-        Fill out the form and we'll get back to you within one business day.
+        Fill out the form and we'll get back to you {BUSINESS.responseTime}.
       </p>
 
       <form className="my-8" onSubmit={handleSubmit}>

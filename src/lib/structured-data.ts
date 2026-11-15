@@ -2,6 +2,8 @@ import { BUSINESS } from './business'
 
 export const BUSINESS_ID = `${BUSINESS.url}#business`
 
+export const areaServedJsonLd = BUSINESS.areaServed.map(({ name, type }) => ({ '@type': type, name }))
+
 export function breadcrumbList(trail: { name: string; path: string }[]) {
   return {
     '@context': 'https://schema.org',
@@ -24,6 +26,6 @@ export function serviceOffer(name: string, path: string, description: string) {
     description,
     url: new URL(path, BUSINESS.url).href,
     provider: { '@id': BUSINESS_ID },
-    areaServed: BUSINESS.areaServed.map((city) => ({ '@type': 'City', name: city })),
+    areaServed: areaServedJsonLd,
   }
 }

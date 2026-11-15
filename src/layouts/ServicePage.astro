@@ -9,7 +9,7 @@ import Contact from '@/components/Contact.astro'
 import Footer from '@/components/Footer.astro'
 import MobileActionBar from '@/components/MobileActionBar'
 import ProjectCards from '@/components/service/ProjectCards.astro'
-import { BUSINESS, telHref } from '@/lib/business'
+import { BUSINESS, areaNames, telHref } from '@/lib/business'
 import { page, section } from '@/lib/links'
 import { getProjects } from '@/lib/projects'
 import { SERVICES, type ServiceKey } from '@/lib/services'
@@ -23,11 +23,18 @@ interface Props {
   heading: string
   intro: string
   photo: { src: ImageMetadata; alt: string; position?: string }
+  offeringsHeading?: string
   offerings: { name: string; detail?: string }[]
+  materials?: { heading: string; paragraphs: string[] }
+  process?: { heading: string; steps: { name: string; detail: string }[] }
+  faq?: { heading: string; items: { question: string; answer: string }[] }
   showPartners?: boolean
 }
 
-const { service, title, description, heading, intro, photo, offerings, showPartners = false } = Astro.props
+const {
+  service, title, description, heading, intro, photo,
+  offeringsHeading = 'What We Do', offerings, materials, process, faq, showPartners = false,
+} = Astro.props
 const { name, path, formOption } = SERVICES[service]
 const projects = await getProjects(service)
 const testimonials = TESTIMONIALS.filter((t) => t.service === service)
@@ -41,8 +48,13 @@ const H2_CLASS = 'font-heading font-bold leading-tight text-text'
 const H2_SIZE = 'font-size: clamp(2.2rem, 4vw, 3.2rem)'
 const OFFERING_COLUMNS = offerings.length % 3 === 0 ? 'sm:grid-cols-2 lg:grid-cols-3' : 'sm:grid-cols-2'
 const owners = [
-  { name: 'Alan', detail: 'Oversees every project personally, holding each job to the standard of craftsmanship Dallas expects.' },
-  { name: 'Daniel', detail: 'Keeps every job on schedule and on budget, coordinating trades and inspections so you never have to.' },
+  { name: 'Alan', detail: 'Oversees every project personally, holding each job to the standard of craftsmanship Dallas expects. Five years in construction before co-founding Royal Crest.' },
+  { name: 'Daniel', detail: 'Keeps every job on schedule and on budget, coordinating trades and inspections so you never have to. Five years in construction before co-founding Royal Crest.' },
+]
+const credentials = [
+  { label: 'Certified', value: `${BUSINESS.certifications.join(', ')} certified` },
+  { label: 'Insured', value: BUSINESS.insurance },
+  { label: 'Warranty', value: `${BUSINESS.warranty.workmanship}. ${BUSINESS.warranty.manufacturer}.` },
 ]
 ---
 
@@ -89,7 +101,7 @@ const owners = [
 
     <section class="bg-bg py-20 lg:py-24">
       <div class={CONTAINER}>
-        <h2 data-reveal class={`${H2_CLASS} reveal`} style={H2_SIZE}>What We Do</h2>
+        <h2 data-reveal class={`${H2_CLASS} reveal`} style={H2_SIZE}>{offeringsHeading}</h2>
         <ul data-reveal="0.08" class={`mt-12 grid grid-cols-1 ${OFFERING_COLUMNS} gap-px bg-surface border border-surface`}>
           {offerings.map((offering, i) => (
             <li class={`bg-bg p-8 reveal delay-${(i % 6) + 1}`}>
@@ -101,7 +113,35 @@ const owners = [
       </div>
     </section>
 
+    {materials && (
+      <section class="bg-bg py-20 lg:py-24">
+        <div data-reveal class={`${CONTAINER} reveal`}>
+          <h2 class={H2_CLASS} style={H2_SIZE}>{materials.heading}</h2>
+          {materials.paragraphs.map((text) => (
+            <p class="mt-6 max-w-2xl text-base leading-relaxed text-pretty text-text/70 md:text-lg">{text}</p>
+          ))}
+        </div>
+      </section>
+    )}
+
     {showPartners && <Badges />}
+
+    {process && (
+      <section class="bg-bg py-20 lg:py-24">
+        <div class={CONTAINER}>
+          <h2 data-reveal class={`${H2_CLASS} reveal`} style={H2_SIZE}>{process.heading}</h2>
+          <ol data-reveal="0.08" class="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-surface border border-surface">
+            {process.steps.map((step, i) => (
+              <li class={`bg-bg p-8 reveal delay-${(i % 6) + 1}`}>
+                <p class="font-heading text-sm font-bold text-accent-ink" aria-hidden="true">{String(i + 1).padStart(2, '0')}</p>
+                <h3 class="mt-3 font-heading text-lg font-bold leading-snug text-text">{step.name}</h3>
+                <p class="mt-2 text-[0.95rem] leading-relaxed text-text/70">{step.detail}</p>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
+    )}
 
     <section class="bg-bg py-20 lg:py-24">
       <div class={CONTAINER}>
@@ -120,6 +160,14 @@ const owners = [
         >
           Meet the Team <span aria-hidden="true">→</span>
         </a>
+        <dl data-reveal="0.08" class="mt-14 grid grid-cols-1 lg:grid-cols-3 gap-px bg-surface border border-surface">
+          {credentials.map(({ label, value }, i) => (
+            <div class={`bg-bg p-6 reveal delay-${i + 1}`}>
+              <dt class="text-[0.7rem] font-semibold tracking-[0.14em] uppercase text-text/65">{label}</dt>
+              <dd class="mt-2 text-[0.95rem] leading-relaxed text-text">{value}</dd>
+            </div>
+          ))}
+        </dl>
       </div>
     </section>
 
@@ -140,17 +188,32 @@ const owners = [
       </section>
     )}
 
+    {faq && (
+      <section class="bg-bg py-20 lg:py-24">
+        <div class={CONTAINER}>
+          <h2 data-reveal class={`${H2_CLASS} reveal`} style={H2_SIZE}>{faq.heading}</h2>
+          <div data-reveal="0.06" class="mt-12 max-w-3xl border-t border-surface">
+            {faq.items.map(({ question, answer }) => (
+              <div class="reveal border-b border-surface py-8">
+                <h3 class="font-heading text-lg font-bold leading-snug text-text">{question}</h3>
+                <p class="mt-3 text-[0.95rem] leading-relaxed text-text/70">{answer}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    )}
+
     {testimonials.length > 0 && <Testimonials items={testimonials} />}
 
     <section class="bg-bg py-20 lg:py-24">
       <div class={CONTAINER}>
         <h2 data-reveal class={`${H2_CLASS} reveal`} style={H2_SIZE}>Areas We Serve</h2>
         <ul class="mt-10 flex flex-wrap gap-2">
-          {BUSINESS.areaServed.map((city) => (
-            <li class="rounded-2xl border border-surface px-5 py-2 text-[0.9rem] text-text">{city}</li>
+          {areaNames.map((area) => (
+            <li class="rounded-2xl border border-surface px-5 py-2 text-[0.9rem] text-text">{area}</li>
           ))}
         </ul>
-        <p class="mt-6 text-[0.95rem] text-text/70">Service area: {BUSINESS.serviceArea}</p>
       </div>
     </section>
 

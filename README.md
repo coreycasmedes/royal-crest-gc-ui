@@ -1,6 +1,6 @@
-# Royal Crest General Contractors — website
+# Royal Crest General Contracting — website
 
-The single-page marketing site for Royal Crest General Contractors, a roofing and
+The single-page marketing site for Royal Crest General Contracting, a roofing and
 home-improvement contractor in Dallas, TX. Live at <https://www.royalcrestgc.com/>.
 
 Built with Vite, React 19, TypeScript and Tailwind CSS v4. There is no backend: the

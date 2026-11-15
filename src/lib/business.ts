@@ -1,20 +1,47 @@
 export const BUSINESS = {
-  name: 'Royal Crest General Contractors',
-  legalName: 'Royal Crest General Contractors LLC',
+  name: 'Royal Crest General Contracting',
+  legalName: 'Royal Crest General Contracting LLC',
   url: 'https://www.royalcrestgc.com/',
   phone: { display: '(469) 432 0341', tel: '+14694320341' },
   email: 'royalcrestgeneralcontracting@outlook.com',
-  // serviceArea is the contact-section text; areaServed is the city list in the JSON-LD.
-  serviceArea: 'Dallas, Ft. Worth & Surrounding Areas',
+  // serviceArea is the contact-section text; areaServed lists every area in priority order.
+  serviceArea: 'Dallas, the Park Cities, Richardson, Plano & Frisco',
   hours: 'Mon-Fri  7 AM - 6 PM\nSat  8 AM - 4 PM',
-  areaServed: ['Dallas', 'Plano', 'Frisco', 'Highland Park'],
+  openingHours: [
+    { days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'], opens: '07:00', closes: '18:00' },
+    { days: ['Saturday'], opens: '08:00', closes: '16:00' },
+  ],
+  responseTime: 'the same day',
+  areaServed: [
+    { name: 'Highland Park', type: 'City' },
+    { name: 'University Park', type: 'City' },
+    { name: 'Lakewood', type: 'Place' },
+    { name: 'Lake Highlands', type: 'Place' },
+    { name: 'Dallas', type: 'City' },
+    { name: 'Richardson', type: 'City' },
+    { name: 'Frisco', type: 'City' },
+    { name: 'Plano', type: 'City' },
+  ],
   locality: { city: 'Dallas', region: 'TX', country: 'US' },
   founded: 2025,
+  certifications: ['GAF', 'CertainTeed', 'Brava'],
+  insurance: 'General liability insurance: $1,000,000 per occurrence, $2,000,000 aggregate',
+  warranty: {
+    workmanship: '5-year workmanship warranty',
+    manufacturer: 'Lifetime warranty options through GAF or CertainTeed, depending on the system installed',
+  },
+  social: { instagram: 'https://www.instagram.com/royalcrestgc/' },
+  reviews: {
+    google: 'https://g.page/r/Cc_zNupJP5_WEBM/review',
+    yelp: 'https://www.yelp.com/biz/royal-crest-general-contracting-dallas',
+  },
   stats: [
-    { num: '5★', label: 'Average Client Rating' },
+    { num: '5★', label: 'Rated on Google & Yelp' },
+    { num: '5 yr', label: 'Workmanship Warranty' },
     { num: '2025', label: 'Founded in Dallas' },
   ],
 } as const
 
 export const telHref = `tel:${BUSINESS.phone.tel}`
 export const callLabel = `Call ${BUSINESS.phone.display}`
+export const areaNames = BUSINESS.areaServed.map((area) => area.name)
