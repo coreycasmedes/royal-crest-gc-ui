@@ -2,7 +2,7 @@
 import { Image } from 'astro:assets'
 import alanImg from '@/assets/alan.webp'
 import danImg from '@/assets/dan.webp'
-import { BUSINESS } from '@/lib/business'
+import { BUSINESS, callLabel, telHref } from '@/lib/business'
 
 // From sm the second portrait drops 4rem (sm:mt-16), so the first bio pulls up by the same (sm:-mt-16).
 const team = [
@@ -40,6 +40,16 @@ const team = [
         >
           Our Team
         </h2>
+        <p class="mt-5 max-w-sm text-[0.95rem] leading-relaxed text-text/70">
+          Alan and Daniel each spent five years in construction before founding Royal Crest in 2025. One of them
+          is on every job, from the first visit to the final walkthrough.
+        </p>
+        <a
+          href={telHref}
+          class="mt-6 inline-block border-b border-text pb-0.5 text-[0.76rem] font-semibold tracking-[0.1em] uppercase text-text hover:border-accent-ink hover:text-accent-ink transition-colors duration-200"
+        >
+          {callLabel}
+        </a>
       </div>
 
       <div
