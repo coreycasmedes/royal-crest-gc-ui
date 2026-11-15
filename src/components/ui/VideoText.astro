@@ -1,0 +1,79 @@
+---
+import subsetFont from 'subset-font'
+import geistInline from '@/assets/fonts/Geist-Variable.woff2?inline'
+import { cn } from '@/lib/utils'
+
+interface Props {
+  src: string
+  poster: string
+  lines: string[]
+  fontSize: string
+  lineHeight: number
+  fontWeight: number
+  letterSpacing?: string
+  playbackRate?: number
+  class?: string
+}
+
+const { src, poster, lines, fontSize, lineHeight, fontWeight, letterSpacing, playbackRate = 1, class: className } = Astro.props
+
+const escapeXml = (text: string) => text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+
+// An SVG used as a mask cannot see the page's fonts, so it carries its own,
+// cut down to the headline's letters at its one weight (a few KB).
+const geistWoff2 = Buffer.from(geistInline.split(',')[1], 'base64')
+const headlineFont = await subsetFont(geistWoff2, lines.join(''), {
+  targetFormat: 'woff2',
+  variationAxes: { wght: fontWeight },
+})
+const fontFace = `@font-face{font-family:'HeadlineMask';src:url(data:font/woff2;base64,${headlineFont.toString('base64')}) format('woff2');}`
+
+const firstLineDy = -((lines.length - 1) / 2) * lineHeight
+const tspans = lines
+  .map((line, index) => `<tspan x='50%' dy='${index === 0 ? firstLineDy : lineHeight}em'>${escapeXml(line)}</tspan>`)
+  .join('')
+const letterSpacingAttr = letterSpacing ? ` letter-spacing='${letterSpacing}'` : ''
+const svgMask = `<svg xmlns='http://www.w3.org/2000/svg' width='100%' height='100%'><defs><style>${fontFace}</style></defs><text x='50%' y='50%' font-size='${fontSize}' font-weight='${fontWeight}' text-anchor='middle' dominant-baseline='middle' font-family='HeadlineMask'${letterSpacingAttr}>${tspans}</text></svg>`
+const maskImage = `url("data:image/svg+xml,${encodeURIComponent(svgMask)}")`
+const maskStyle = [
+  `mask-image: ${maskImage}`,
+  `-webkit-mask-image: ${maskImage}`,
+  'mask-size: contain',
+  '-webkit-mask-size: contain',
+  'mask-repeat: no-repeat',
+  '-webkit-mask-repeat: no-repeat',
+  'mask-position: center',
+  '-webkit-mask-position: center',
+].join('; ')
+---
+
+<div class={cn('relative size-full', className)}>
+  <div class="absolute inset-0 flex items-center justify-center" style={maskStyle}>
+    <video
+      class="h-full w-full object-cover"
+      src={src}
+      poster={poster}
+      data-playback-rate={playbackRate}
+      data-start-after-load
+      muted
+      loop
+      playsinline
+      preload="none"
+    ></video>
+  </div>
+  <span class="sr-only">{lines.join(' ')}</span>
+</div>
+
+<script>
+  // Fetched only after page load so the video never competes with first paint.
+  const prefersReducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches
+  document.querySelectorAll<HTMLVideoElement>('video[data-start-after-load]').forEach((video) => {
+    if (prefersReducedMotion) return
+    const start = () => {
+      video.playbackRate = Number(video.dataset.playbackRate)
+      video.play().catch(() => {})
+    }
+    if (document.readyState === 'complete') start()
+    else addEventListener('load', start, { once: true })
+  })
+</script>

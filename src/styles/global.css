@@ -76,14 +76,10 @@
   }
   .animate-scroll-bob { animation: scrollBob 2.2s ease-in-out infinite; }
 
-  /* No entrance animation for the hero photo: it is the LCP element. */
-  @keyframes heroHeadline {
-    from { opacity: 0; filter: blur(4px); transform: translateY(10px); }
-  }
+  /* No entrance animation on the headline or hero photo: they are the LCP candidates. */
   @keyframes heroFadeIn {
     from { opacity: 0; }
   }
-  .animate-hero-headline { animation: heroHeadline 0.5s ease-in-out both; }
   .animate-hero-actions { animation: heroFadeIn 0.4s ease-out 0.3s both; }
 
   .shadow-input {
@@ -97,7 +93,6 @@
     html { scroll-behavior: auto; }
     .reveal { opacity: 1; transform: none; transition: none; }
     .animate-scroll-bob,
-    .animate-hero-headline,
     .animate-hero-actions { animation: none; }
   }
 

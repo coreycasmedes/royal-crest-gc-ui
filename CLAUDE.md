@@ -47,7 +47,7 @@ Tailwind v4 uses **no `tailwind.config.js`**. Configuration lives entirely in `s
 }
 ```
 
-Custom utilities (`label`, `reveal`, stagger delays `delay-1`…`delay-6`, `shadow-input`, `grid-pattern`, `animate-scroll-bob`, `animate-hero-headline`, `animate-hero-actions`) are defined in `@layer utilities` inside the same file, along with the `prefers-reduced-motion` block. Do **not** create a separate config file.
+Custom utilities (`label`, `reveal`, stagger delays `delay-1`…`delay-6`, `shadow-input`, `grid-pattern`, `animate-scroll-bob`, `animate-hero-actions`) are defined in `@layer utilities` inside the same file, along with the `prefers-reduced-motion` block. Do **not** create a separate config file.
 
 The Vite plugin is wired in `astro.config.mjs`:
 ```js
@@ -122,8 +122,8 @@ src/
     global.css          — Tailwind entry, @font-face, @theme tokens, @layer utilities
   components/
     Seo.astro           — title, description, canonical, Open Graph, JSON-LD (from business.ts)
-    Header.tsx          — client:load. Fixed nav, scroll-aware background, mobile overlay menu
-    Hero.astro          — Video-masked headline (VideoText, client:load), CTAs, hero image
+    Header.tsx          — client:idle. Fixed nav, scroll-aware background, mobile overlay menu
+    Hero.astro          — Video-masked headline (VideoText), CTAs, hero image
     Stats.astro         — Three-metric stats band
     Badges.astro        — Partner/certification logos (grayscale → color on hover)
     Services.astro      — Wide/narrow grid of service cards (ServiceCard)
@@ -135,7 +135,7 @@ src/
     MobileActionBar.tsx — client:idle. Call / Get a Quote bar on phones
     ui/
       ServiceCard.astro         — Service card with a responsive photo; whole card is a link
-      video-text.tsx            — Video clipped to text by an SVG mask, with poster fallback
+      VideoText.astro           — Video clipped to text by an SVG mask built at build time; no React
       layout-grid.tsx           — LayoutGrid with click-to-expand (Aceternity)
       input.tsx                 — Text input with a pointer-following gradient border
       label.tsx                 — Radix UI label wrapper
@@ -156,7 +156,7 @@ Name, phone, email, hours, service area and the stats band come from `src/lib/bu
 ## Islands
 
 Only interactive parts are React islands. Everything else is `.astro`. An island:
-- is a `.tsx` file used from an `.astro` file with a `client:*` directive (`client:load` above the fold, `client:visible` below it, `client:idle` for chrome like the action bar).
+- is a `.tsx` file used from an `.astro` file with a `client:*` directive (`client:visible` below the fold, `client:idle` for chrome like the header and action bar; avoid `client:load`, whose early JavaScript delays the mobile LCP).
 - is rendered to HTML at build time too, so it must not touch `window`, `document` or `localStorage` during render. Read browser state in effects, or through `useSyncExternalStore` with a server snapshot (see `signup-form.tsx`).
 - is hydrated on its own. If it uses `motion`, wrap it in `<MotionConfig reducedMotion="user">`.
 - gets strings and arrays as props, not as children: Astro passes children to islands as rendered HTML.
@@ -205,9 +205,10 @@ className="text-text/70 hover:text-text transition-colors"
 
 These decisions are easy to undo by accident. Keep them when editing nearby code.
 
-- **The hero image is the LCP element.** It must render immediately: no entrance animation, no island, no `loading="lazy"`. It keeps `fetchpriority="high"`.
+- **The headline and the hero image are the LCP candidates** (the headline on phones). Both must render immediately: no entrance animation (an element that starts at opacity 0 or blurred is timed late by Chrome), no island, no `loading="lazy"`. The hero image keeps `fetchpriority="high"`.
 - **Hero `srcset`/`sizes` must match its preload.** Both `Hero.astro` and the `<link rel="preload" as="image">` in `index.astro` read `HERO` from `src/lib/hero.ts`. Keep it that way, or the browser downloads the hero twice. The three hero files are hand-encoded and served as they are, not through `<Image>`.
 - **The headline video must not compete with the first paint.** Its poster is preloaded and shown first; the video itself is only fetched after the page has loaded, and not at all under reduced motion.
+- **The headline paints with the HTML.** `VideoText.astro` builds its SVG mask at build time and embeds a copy of Geist cut down to the headline's letters (via `subset-font`, a few KB), so no JavaScript or font download stands between the HTML and the headline. Do not turn it back into an island or load the mask font at runtime: the headline is the mobile LCP element.
 - **Below-the-fold photos use `<Image>` from `astro:assets`** with `widths` and a `sizes` that matches the layout, so each is downloaded at the size it is shown. `<Image>` sets `loading="lazy"` and the real `width`/`height`, so the photo reserves its space. `ServiceCard.astro` shows the pattern; an island gets the same from `getImage()` (see `Portfolio.astro`).
 - **Reduced motion is respected in two places.** Every island that uses `motion/react` wraps itself in `<MotionConfig reducedMotion="user">`, and `global.css` has a `prefers-reduced-motion` block that disables smooth scrolling, the hero entrance and the `reveal` transition. Timers and autoplay are not covered by either: guard them with `useReducedMotion()`.
 - **Nothing should animate endlessly without a way to pause it.** Anything that autoplays, loops or cycles must stop under reduced motion and either pause on hover and focus or offer a control.
