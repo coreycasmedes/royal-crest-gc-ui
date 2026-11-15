@@ -19,9 +19,12 @@ const { title, description, noindex, jsonLd } = Astro.props
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" type="image/png" href={page('favicon.png')} />
-    <link rel="icon" type="image/png" sizes="32x32" href={page('favicon-32.png')} />
-    <link rel="apple-touch-icon" sizes="180x180" href={page('apple-touch-icon.png')} />
+    <!-- sizes="32x32" on the ICO stops Chrome preferring it over the SVG; the 96px PNG is for Google Search, which skips SVG -->
+    <link rel="icon" href={page('favicon.ico')} sizes="32x32" />
+    <link rel="icon" href={page('icon.svg')} type="image/svg+xml" />
+    <link rel="icon" href={page('favicon-96.png')} type="image/png" sizes="96x96" />
+    <link rel="apple-touch-icon" href={page('apple-touch-icon.png')} />
+    <link rel="manifest" href={page('manifest.webmanifest')} />
     <meta name="theme-color" content="#899878" />
     <Seo title={title} description={description} noindex={noindex} jsonLd={jsonLd} />
     <link rel="preload" href={bodyFont} as="font" type="font/woff2" crossorigin />
