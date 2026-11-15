@@ -3,12 +3,9 @@ import {
   AnimatePresence,
   MotionConfig,
   motion,
-  useMotionTemplate,
-  useMotionValue,
 } from "motion/react";
-import { IconVideo } from "@tabler/icons-react";
 import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
+import { Input, fieldClass } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { BUSINESS, telHref } from "@/lib/business";
 import { page } from "@/lib/links";
@@ -216,13 +213,7 @@ function QuoteForm({ sourcePage, defaultService = "" }: QuoteFormProps) {
 
   return (
     <div className="shadow-input mx-auto w-full rounded-2xl bg-bg p-4 md:p-8">
-      <h2 className="flex flex-wrap items-center gap-2.5 text-xl font-bold text-text">
-        Request a Free Estimate
-        <div className="flex-shrink-0 inline-flex items-center gap-1.5 border border-surface rounded-2xl px-2 py-0.5 font-light text-xs text-text/70">
-          <IconVideo className="h-4 w-4 text-accent flex-shrink-0" />
-          <span className="whitespace-nowrap">Online Available</span>
-        </div>
-      </h2>
+      <h2 className="text-xl font-bold text-text">Request a Free Estimate</h2>
       <p className="mt-2 max-w-sm text-sm text-text/70">
         Fill out the form and we'll get back to you {BUSINESS.responseTime}.
       </p>
@@ -323,7 +314,7 @@ function QuoteForm({ sourcePage, defaultService = "" }: QuoteFormProps) {
             name="service"
             value={form.service}
             onChange={(e) => setForm({ ...form, service: e.target.value })}
-            className="shadow-input flex h-10 w-full rounded-md border-none bg-bg px-3 py-2 text-sm text-text placeholder:text-text/65 focus-visible:ring-[2px] focus-visible:ring-accent-ink focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
+            className={cn(fieldClass, "h-11")}
           >
             <option value="" disabled>
               Select a service…
@@ -366,10 +357,9 @@ function QuoteForm({ sourcePage, defaultService = "" }: QuoteFormProps) {
         <button
           type="submit"
           disabled={loading}
-          className="group/btn relative block h-10 w-full rounded-md bg-deep font-medium text-bg hover:bg-accent-ink transition-colors duration-200 disabled:opacity-60 disabled:cursor-not-allowed"
+          className="block h-12 w-full rounded-2xl bg-deep text-[0.95rem] font-semibold text-bg hover:bg-accent-ink transition-colors duration-200 disabled:opacity-60 disabled:cursor-not-allowed"
         >
-          {loading ? "Sending…" : "Send Request →"}
-          <BottomGradient />
+          {loading ? "Sending…" : "Send Request"}
         </button>
         <p className="mt-3 text-xs text-text/65">
           We only use your details to reply to your request.{" "}
@@ -418,50 +408,10 @@ const FieldError = ({ id, message }: { id: string; message: string }) => (
   </AnimatePresence>
 );
 
-const BottomGradient = () => (
-  <>
-    <span className="absolute inset-x-0 -bottom-px block h-px w-full bg-gradient-to-r from-transparent via-accent to-transparent opacity-0 transition duration-500 group-hover/btn:opacity-100" />
-    <span className="absolute inset-x-10 -bottom-px mx-auto block h-px w-1/2 bg-gradient-to-r from-transparent via-accent to-transparent opacity-0 blur-sm transition duration-500 group-hover/btn:opacity-100" />
-  </>
-);
 
 const TextareaInput = (
   props: React.TextareaHTMLAttributes<HTMLTextAreaElement>,
-) => {
-  const radius = 100;
-  const [visible, setVisible] = React.useState(false);
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
-
-  function handleMouseMove(e: React.MouseEvent<HTMLDivElement>) {
-    const { left, top } = e.currentTarget.getBoundingClientRect();
-    mouseX.set(e.clientX - left);
-    mouseY.set(e.clientY - top);
-  }
-
-  return (
-    <motion.div
-      style={{
-        background: useMotionTemplate`radial-gradient(${visible ? radius + "px" : "0px"} circle at ${mouseX}px ${mouseY}px, var(--color-accent), transparent 80%)`,
-      }}
-      onMouseMove={handleMouseMove}
-      onMouseEnter={() => setVisible(true)}
-      onMouseLeave={() => setVisible(false)}
-      className="group/input rounded-lg p-[2px] transition duration-300"
-    >
-      <textarea
-        {...props}
-        className={cn(
-          "shadow-input flex w-full rounded-md border-none bg-bg px-3 py-2 text-sm text-text transition duration-400 group-hover/input:shadow-none",
-          "placeholder:text-text/65",
-          "focus-visible:ring-[2px] focus-visible:ring-accent-ink focus-visible:outline-none",
-          "disabled:cursor-not-allowed disabled:opacity-50",
-          "resize-none",
-        )}
-      />
-    </motion.div>
-  );
-};
+) => <textarea {...props} className={cn(fieldClass, "resize-none py-2.5")} />;
 
 const LabelInputContainer = ({
   children,

@@ -145,7 +145,7 @@ src/
       ServiceCard.astro         — Service card with a responsive photo; whole card is a link
       VideoText.astro           — Video clipped to text by an SVG mask built at build time; no React
       layout-grid.tsx           — LayoutGrid with click-to-expand (Aceternity)
-      input.tsx                 — Text input with a pointer-following gradient border
+      input.tsx                 — Text input and the shared fieldClass for every form field
       label.tsx                 — Radix UI label wrapper
       signup-form.tsx           — Quote request form; submits to Web3Forms
   lib/
