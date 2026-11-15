@@ -1,13 +1,16 @@
 ---
 import { BUSINESS } from '@/lib/business'
+import { BUSINESS_ID } from '@/lib/structured-data'
 
 interface Props {
   title: string
   description: string
   noindex?: boolean
+  /** Page-level structured data, linked to the business through its @id */
+  jsonLd?: Record<string, unknown>[]
 }
 
-const { title, description, noindex = false } = Astro.props
+const { title, description, noindex = false, jsonLd = [] } = Astro.props
 const canonical = new URL(Astro.url.pathname, Astro.site).href
 const ogImage = new URL('og-image.jpg', Astro.site).href
 
@@ -15,7 +18,7 @@ const ogImage = new URL('og-image.jpg', Astro.site).href
 const businessJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'GeneralContractor',
-  '@id': `${BUSINESS.url}#business`,
+  '@id': BUSINESS_ID,
   name: BUSINESS.name,
   image: ogImage,
   url: BUSINESS.url,
@@ -53,4 +56,6 @@ const businessJsonLd = {
 <meta name="twitter:description" content={description} />
 <meta name="twitter:image" content={ogImage} />
 
-{!noindex && <script type="application/ld+json" is:inline set:html={JSON.stringify(businessJsonLd)} />}
+{!noindex && [businessJsonLd, ...jsonLd].map((data) => (
+  <script type="application/ld+json" is:inline set:html={JSON.stringify(data)} />
+))}

@@ -115,9 +115,14 @@ src/
   pages/
     index.astro         — Home page: sections in order, hero preloads
     404.astro           — Standalone not-found page (inline CSS, no JS) → dist/404.html
-    sitemap.xml.ts      — /sitemap.xml, built from the .astro files in pages/
+    roofing-dallas.astro, exterior-renovation-dallas.astro — Service pages (ServicePage layout)
+    projects/index.astro — All projects
+    projects/[slug].astro — One page per project in src/content/projects
+    sitemap.xml.ts      — /sitemap.xml: the .astro pages plus written-up projects
+  content/projects/     — One .md per project (schema in src/content.config.ts)
   layouts/
     Base.astro          — <html>, <head> (Seo, favicons, font preload), scroll-reveal script
+    ServicePage.astro   — Service page: intro, offerings, partners, owners, projects, reviews, areas, quote form
   styles/
     global.css          — Tailwind entry, @font-face, @theme tokens, @layer utilities
   components/
@@ -132,6 +137,7 @@ src/
     Testimonials.astro  — Client review excerpts
     Contact.astro       — Quote form (SignupForm, client:visible), contact details, map
     Footer.astro        — Logo, nav, services list, CTA
+    service/ProjectCards.astro — Project card grid linking to project pages
     MobileActionBar.tsx — client:idle. Call / Get a Quote bar on phones
     ui/
       ServiceCard.astro         — Service card with a responsive photo; whole card is a link
@@ -144,6 +150,10 @@ src/
     business.ts         — Every business fact: name, phone, email, hours, areas, stats
     links.ts            — page() and section() hrefs that respect the PR-preview base path
     hero.ts             — Hero image src/srcset/sizes, shared by Hero.astro and the preload
+    services.ts         — Service pages: name, path, quote-form option
+    projects.ts         — getProjects(), projectPath(), isWrittenUp()
+    testimonials.ts     — Review excerpts, tagged by service
+    structured-data.ts  — BUSINESS_ID, breadcrumb and Service JSON-LD
     layers.ts           — z-index scale (LAYER class strings)
     utils.ts            — cn() utility (clsx + tailwind-merge)
   assets/               — Photos, video, logos and fonts (see Images)
@@ -152,6 +162,12 @@ src/
 ## Business facts
 
 Name, phone, email, hours, service area and the stats band come from `src/lib/business.ts`. Components, the JSON-LD and the 404 page all read it, so never write a phone number or the business name into a component. Change a value only after the owner approves it.
+
+## Service and project pages
+
+- **Projects** are Markdown files in `src/content/projects/`. Frontmatter holds the title, service (`roofing` or `exterior`), optional location, a one-line summary, photos with alt text and a sort order; the body is the write-up. A project with no body is `noindex` and left out of the sitemap, because a photo and one line is too thin for search. Writing the body publishes it.
+- **Service pages** are thin wrappers around `src/layouts/ServicePage.astro`. Only state what the owner has confirmed; leave an offering's `detail` out rather than inventing one. Sections without content (projects, reviews) drop out on their own.
+- The quote form sends a hidden `page` field and preselects the service, so each lead says where it came from.
 
 ## Islands
 

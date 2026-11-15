@@ -92,15 +92,20 @@ function isValidUSPhone(v: string) {
 }
 
 // An Astro island hydrates alone, so it sets its own reduced-motion policy.
-export default function SignupForm() {
+interface QuoteFormProps {
+  sourcePage: string;
+  defaultService?: string;
+}
+
+export default function SignupForm(props: QuoteFormProps) {
   return (
     <MotionConfig reducedMotion="user">
-      <QuoteForm />
+      <QuoteForm {...props} />
     </MotionConfig>
   );
 }
 
-function QuoteForm() {
+function QuoteForm({ sourcePage, defaultService = "" }: QuoteFormProps) {
   const sentEarlier = useSyncExternalStore(
     noSubscription,
     hasRecentSubmission,
@@ -116,7 +121,7 @@ function QuoteForm() {
     last: "",
     email: "",
     phone: "",
-    service: "",
+    service: defaultService,
     message: "",
   });
 
@@ -233,6 +238,7 @@ function QuoteForm() {
           value="New estimate request from royalcrestgc.com"
         />
         <input type="hidden" name="from_name" value="Royal Crest website" />
+        <input type="hidden" name="page" value={sourcePage} />
         {/* Web3Forms honeypot: it discards submissions with this checked. */}
         <input
           type="checkbox"

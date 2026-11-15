@@ -8,7 +8,7 @@ import { section } from '@/lib/links';
 const HIDE_WHILE_VISIBLE = ['hero-actions', 'contact'];
 const SCROLLED_HEADER_HEIGHT_PX = 88;
 
-export default function MobileActionBar() {
+export default function MobileActionBar({ quoteHref = section('contact') }: { quoteHref?: string }) {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
@@ -60,7 +60,7 @@ export default function MobileActionBar() {
             Call
           </a>
           <a
-            href={section('contact')}
+            href={quoteHref}
             className="rounded-2xl flex min-h-12 items-center justify-center px-4 text-[0.78rem] font-semibold tracking-[0.08em] uppercase bg-deep text-bg hover:bg-accent-ink transition-colors duration-200"
           >
             Get a Quote

@@ -1,0 +1,46 @@
+---
+import { Image } from 'astro:assets'
+import { page } from '@/lib/links'
+import { projectPath, type Project } from '@/lib/projects'
+import { SERVICES } from '@/lib/services'
+
+interface Props {
+  projects: Project[]
+  headingLevel?: 'h2' | 'h3'
+  /** First thing on the page: no reveal, and the first photo (the LCP image) loads eagerly */
+  aboveFold?: boolean
+}
+
+const { projects, headingLevel: Heading = 'h3', aboveFold = false } = Astro.props
+const CARD_SIZES = '(min-width: 1280px) 380px, (min-width: 1024px) calc(33vw - 56px), (min-width: 640px) calc(50vw - 56px), calc(100vw - 64px)'
+---
+
+<ul data-reveal={aboveFold ? undefined : '0.06'} class="grid grid-cols-1 gap-x-5 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
+  {projects.map((project, i) => {
+    const [cover] = project.data.photos
+    return (
+      <li class={aboveFold ? undefined : `reveal delay-${(i % 6) + 1}`}>
+        <a href={page(projectPath(project))} class="group/project block">
+          <div class="relative aspect-[4/3] overflow-hidden rounded-xl bg-surface">
+            <Image
+              src={cover.src}
+              alt={cover.alt}
+              widths={[400, 600, 800, 1200]}
+              sizes={CARD_SIZES}
+              loading={aboveFold && i === 0 ? 'eager' : 'lazy'}
+              fetchpriority={aboveFold && i === 0 ? 'high' : undefined}
+              class="absolute inset-0 h-full w-full object-cover motion-safe:transition-transform motion-safe:duration-500 motion-safe:group-hover/project:scale-[1.03]"
+              style="filter: saturate(0.9) brightness(1.02)"
+            />
+          </div>
+          <Heading class="mt-4 font-heading text-lg font-bold leading-snug text-text group-hover/project:text-accent-ink transition-colors">
+            {project.data.title}
+          </Heading>
+          <p class="mt-1 text-[0.72rem] font-semibold tracking-[0.14em] uppercase text-text/65">
+            {[SERVICES[project.data.service].name, project.data.location].filter(Boolean).join(' · ')}
+          </p>
+        </a>
+      </li>
+    )
+  })}
+</ul>

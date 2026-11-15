@@ -1,22 +1,12 @@
 ---
-// Word-for-word review excerpts cut to fit three lines; [brackets] mark a substituted word.
-const testimonials = [
-  {
-    quote: 'We were thoroughly impressed with the professionalism and attention to detail.',
-    name: 'Ryan Jeffrey',
-    designation: 'Exterior · Highland Park',
-  },
-  {
-    quote: '[They] transformed our vision into reality with their impeccable workmanship.',
-    name: 'Nima Mojahed',
-    designation: 'Roof · Frisco',
-  },
-  {
-    quote: 'They exceeded our expectations in every way.',
-    name: 'Christopher Strenger',
-    designation: 'Roof · Plano',
-  },
-]
+import { TESTIMONIALS, type Testimonial } from '@/lib/testimonials'
+
+interface Props {
+  items?: Testimonial[]
+}
+
+const { items = TESTIMONIALS } = Astro.props
+const LG_COLUMNS = ['lg:grid-cols-1', 'lg:grid-cols-2', 'lg:grid-cols-3'][Math.min(items.length, 3) - 1]
 ---
 
 <section id="testimonials" class="py-24 lg:py-28 bg-bg">
@@ -32,9 +22,9 @@ const testimonials = [
 
     <div
       data-reveal="0.08"
-      class="grid grid-cols-1 lg:grid-cols-3 border border-surface divide-y divide-surface lg:divide-y-0 lg:divide-x"
+      class={`grid grid-cols-1 ${LG_COLUMNS} border border-surface divide-y divide-surface lg:divide-y-0 lg:divide-x`}
     >
-      {testimonials.map((t, i) => (
+      {items.map((t, i) => (
         <figure class={`reveal delay-${i + 1} flex flex-col p-6 sm:p-8 md:max-lg:flex-row md:max-lg:gap-8 md:max-lg:p-10 xl:p-10`}>
           <div class="md:max-lg:flex-1">
             <span
