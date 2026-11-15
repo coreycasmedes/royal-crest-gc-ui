@@ -47,7 +47,7 @@ Tailwind v4 uses **no `tailwind.config.js`**. Configuration lives entirely in `s
 }
 ```
 
-Custom utilities (`label`, `reveal`, stagger delays `delay-1`…`delay-6`, `shadow-input`, `grid-pattern`, `animate-scroll-bob`, `animate-hero-actions`) are defined in `@layer utilities` inside the same file, along with the `prefers-reduced-motion` block. Do **not** create a separate config file.
+Custom utilities (`label`, `reveal`, stagger delays `delay-1`…`delay-6`, `shadow-input`, `animate-hero-actions`) are defined in `@layer utilities` inside the same file, along with the `prefers-reduced-motion` block. Do **not** create a separate config file.
 
 The Vite plugin is wired in `astro.config.mjs`:
 ```js
@@ -62,7 +62,8 @@ vite: { plugins: [tailwindcss()] }
 - **Reference:** The structural layout of uniqueconstruction.com.
 - **Design-taste rules** (from the `design-taste-frontend` skill, applied 2026-10-21):
   - No em dash or en dash in visible text, alt text included. Use a hyphen, comma or parentheses.
-  - At most one section eyebrow per three sections, with two sections between eyebrows (currently Badges and Contact).
+  - No eyebrow or kicker label directly above a heading; the heading carries its own weight. The Badges caption labels a logo row, not a heading.
+  - Functional text is at least 11px (0.72rem for uppercase labels).
   - One label per action: quote buttons say "Get a Quote" everywhere.
   - No text over photos. Captions go below the image.
   - No pure black or white: use `deep` and `bg`, and tint shadows (`shadow-deep/30`).
@@ -144,7 +145,7 @@ src/
       ServiceCard.astro         — Service card with a responsive photo; whole card is a link
       VideoText.astro           — Video clipped to text by an SVG mask built at build time; no React
       layout-grid.tsx           — LayoutGrid with click-to-expand (Aceternity)
-      input.tsx                 — Text input with a pointer-following gradient border
+      input.tsx                 — Text input and the shared fieldClass for every form field
       label.tsx                 — Radix UI label wrapper
       signup-form.tsx           — Quote request form; submits to Web3Forms
   lib/
@@ -197,11 +198,10 @@ Most sections reveal on scroll (the hero, badges and footer do not). Put `data-r
 - **Inline `style` only for layout values** — `fontSize: 'clamp(...)'`, `paddingTop`, etc. Never for colors.
 - **No `onMouseEnter`/`onMouseLeave` for color changes** — use Tailwind `hover:` variants instead.
 - `font-heading` utility class maps to the Geist variable font.
-- Section heading: an `<h2 className="font-heading font-bold ...">` sized with `clamp(2.2rem, 4vw, 3.2rem)`. A `<p className="label">` eyebrow above it only within the eyebrow limit in Design Guardrails.
+- Section heading: an `<h2 className="font-heading font-bold ...">` sized with `clamp(2.2rem, 4vw, 3.2rem)`. No eyebrow label above it.
 - Section padding: `py-24 lg:py-28` for the main sections.
 - Max content width: `max-w-[1260px] mx-auto px-8 lg:px-12`.
 - Gap-px grid pattern: set `gap-px bg-surface` on the grid, `bg-bg` on each cell — the surface color bleeds through as hairline dividers.
-- `grid-pattern` is a blueprint-grid background utility for card headers that have no photo.
 
 ## Button Patterns
 

@@ -70,12 +70,6 @@
   .delay-5 { transition-delay: 0.38s; }
   .delay-6 { transition-delay: 0.46s; }
 
-  @keyframes scrollBob {
-    0%, 100% { transform: translateX(-50%) translateY(0); }
-    50%       { transform: translateX(-50%) translateY(8px); }
-  }
-  .animate-scroll-bob { animation: scrollBob 2.2s ease-in-out infinite; }
-
   /* No entrance animation on the headline or hero photo: they are the LCP candidates. */
   @keyframes heroFadeIn {
     from { opacity: 0; }
@@ -92,15 +86,7 @@
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
     .reveal { opacity: 1; transform: none; transition: none; }
-    .animate-scroll-bob,
     .animate-hero-actions { animation: none; }
   }
 
-  .grid-pattern {
-    background-color: rgba(137, 152, 120, 0.05);
-    background-image:
-      linear-gradient(rgba(137, 152, 120, 0.14) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(137, 152, 120, 0.14) 1px, transparent 1px);
-    background-size: 24px 24px;
-  }
 }
