@@ -131,7 +131,7 @@ src/
     Header.tsx          — client:idle. Fixed nav, scroll-aware background, mobile overlay menu
     Hero.astro          — Video-masked headline (VideoText), CTAs, hero image
     Stats.astro         — Three-metric stats band
-    Badges.astro        — Partner/certification logos (grayscale → color on hover)
+    Badges.astro        — Partner/certification logos in one row (single-color SVGs, darken on hover)
     Services.astro      — Wide/narrow grid of service cards (ServiceCard)
     Portfolio.astro     — Project photos (LayoutGrid, client:visible) with click-to-expand
     Team.astro          — Co-owner profiles
@@ -247,7 +247,8 @@ Media lives in `src/assets/` and is imported from components, so it is fingerpri
 - `IMG_3919_edited.webp` — exterior finish work
 - `IMG_4454.webp` — copper downspout close-up
 - `alan.webp`, `dan.webp` — co-owner portraits
-- `images/` — partner logos (`gaf`, `brava`, `certainteed`, `abc`, all `.avif`) and `royal_crest_logo.svg`
+- `images/` — `royal_crest_logo.svg`
+- `logos/` — partner logos (`gaf`, `brava`, `certainteed`, `abc-supply`) as single-color SVGs with `fill="currentColor"`, imported as Astro SVG components so they inline and take the text color. Paths are taken unchanged from each company's own vector logo, only recolored; keep them one color
 - `fonts/` — `Geist-Variable.woff2`, `Geist-Italic[wght].woff2`
 
 Kept as originals and **not shipped** (nothing imports them, so they are not in `dist/`): `72959.webp` (uncropped portrait original of the hero image) and `drone_roof.mp4` (1280×720 original of the headline video). Do not import them.

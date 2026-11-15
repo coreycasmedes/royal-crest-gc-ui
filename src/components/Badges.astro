@@ -1,35 +1,32 @@
 ---
-import gaf from '@/assets/images/gaf.avif'
-import brava from '@/assets/images/brava.avif'
-import certainteed from '@/assets/images/certainteed.avif'
-import abc from '@/assets/images/abc.avif'
+// Single-color vector logos (fill="currentColor"), inlined so they take the
+// text colour. Heights are tuned per logo so they read at the same visual
+// weight: GAF is a solid block, CertainTeed a long wordmark.
+import Gaf from '@/assets/logos/gaf.svg'
+import Brava from '@/assets/logos/brava.svg'
+import CertainTeed from '@/assets/logos/certainteed.svg'
+import AbcSupply from '@/assets/logos/abc-supply.svg'
 
-const badges = [
-  { img: gaf, alt: 'GAF American Owned' },
-  { img: brava, alt: 'Brava Authorized Contractor' },
-  { img: certainteed, alt: 'CertainTeed Saint-Gobain' },
-  { img: abc, alt: 'ABC Supply Co.' },
+const logos = [
+  { Logo: Gaf, size: 'h-[22px] sm:h-7 lg:h-9' },
+  { Logo: Brava, size: 'h-6 sm:h-8 lg:h-10' },
+  { Logo: CertainTeed, size: 'h-5 sm:h-6 lg:h-8' },
+  { Logo: AbcSupply, size: 'h-[26px] sm:h-8 lg:h-[42px]' },
 ]
 ---
 
-<section class="py-14 bg-bg">
-  <div class="max-w-[1260px] mx-auto px-8 lg:px-12">
-    <p class="text-center text-[0.66rem] font-semibold tracking-[0.26em] uppercase mb-14 text-text/65">
-      Partners &amp; Certifications
+<section class="py-10 lg:py-14 bg-bg">
+  <div class="max-w-[1260px] mx-auto px-8 lg:px-12 flex flex-col gap-7 lg:flex-row lg:items-center lg:gap-12">
+    <p class="shrink-0 text-center lg:text-left lg:max-w-[10rem] lg:border-r lg:border-text/10 lg:pr-12 text-[0.66rem] font-semibold tracking-[0.26em] uppercase leading-relaxed text-text/65">
+      Certified installer
     </p>
 
-    <div class="flex flex-wrap items-center justify-center gap-10 lg:gap-16">
-      {badges.map(({ img, alt }) => (
-        <img
-          src={img.src}
-          alt={alt}
-          width={img.width}
-          height={img.height}
-          loading="lazy"
-          decoding="async"
-          class="h-24 w-auto object-contain transition-all duration-300 grayscale opacity-55 hover:grayscale-0 hover:opacity-100"
-        />
+    <ul class="flex flex-1 items-center justify-between gap-4 sm:justify-around">
+      {logos.map(({ Logo, size }) => (
+        <li class="flex">
+          <Logo class={`${size} w-auto text-text/55 transition-colors duration-300 hover:text-text`} />
+        </li>
       ))}
-    </div>
+    </ul>
   </div>
 </section>
