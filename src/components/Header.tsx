@@ -114,7 +114,7 @@ export default function Header({ quoteHref = section('contact') }: { quoteHref?:
         id="mobile-menu"
         aria-label="Mobile"
         inert={!open}
-        className={`md:hidden fixed inset-0 ${LAYER.mobileMenu} bg-bg flex flex-col overflow-y-auto px-8 pt-24 pb-12 transition-all duration-300 ${
+        className={`md:hidden fixed inset-0 ${LAYER.mobileMenu} bg-bg flex flex-col overflow-y-auto px-8 pt-28 pb-10 transition-all duration-300 ${
           open ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
         }`}
       >
@@ -123,7 +123,7 @@ export default function Header({ quoteHref = section('contact') }: { quoteHref?:
             key={id}
             href={section(id)}
             onClick={close}
-            className="font-heading text-[2.2rem] font-semibold text-left py-4 border-b border-surface text-text"
+            className="font-heading text-[1.6rem] font-normal leading-tight text-left py-3.5 text-text"
           >
             {label}
           </a>
