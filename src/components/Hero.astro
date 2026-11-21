@@ -9,35 +9,39 @@ import { callLabel, telHref } from '@/lib/business'
 // Phones get four short lines; from md up, three longer ones fill the wider box.
 const staticHeadlineLines = ['Exterior and', 'Interior Finishes', 'on Historic and', 'Modern Homes']
 const wideHeadlineLines = ['Exterior and Interior', 'Finishes on Historic', 'and Modern Homes']
-// Inside the mask, vw is a percentage of the mask box. The longest line is about 8.1em
-// ("Interior Finishes") or 10.2em ("Exterior and Interior") wide, so these keep it inside the box.
-const HEADLINE_FONT_SIZE = 'clamp(1.8rem, 9.5vw, 6rem)'
-const WIDE_HEADLINE_FONT_SIZE = 'clamp(1.8rem, 8.6vw, 7rem)'
-const HEADLINE_LINE_HEIGHT_EM = 1.05
-const headlineHeight = (lineCount: number, fontSize: string) => `calc(${lineCount} * ${HEADLINE_LINE_HEIGHT_EM} * ${fontSize})`
+// Font size as a percentage of the headline box's width. The longest line is about 8.1em
+// ("Interior Finishes") or 10.2em ("Exterior and Interior") wide, so it fills about 93% of the box.
+// Inside the mask SVG, vw is a percentage of the mask box; on the page the same size is cqw of the
+// <h1> (a size container), so the box is exactly as tall as the lines in the mask.
+const HEADLINE_SIZE = { percent: 11.5, max: '6rem' }
+const WIDE_HEADLINE_SIZE = { percent: 9.1, max: '7rem' }
+const HEADLINE_LINE_HEIGHT_EM = 1.08
+const maskFontSize = ({ percent, max }: typeof HEADLINE_SIZE) => `min(${percent}vw, ${max})`
+const headlineHeight = (lineCount: number, { percent, max }: typeof HEADLINE_SIZE) =>
+  `calc(${lineCount} * ${HEADLINE_LINE_HEIGHT_EM} * min(${percent}cqw, ${max}))`
 ---
 
 <section id="hero" class="relative flex flex-col items-center justify-center bg-bg" style="padding-top: 88px">
-  <div class="w-full max-w-7xl mx-auto px-8 py-10 md:py-16 lg:px-12">
+  <div class="w-full max-w-7xl mx-auto px-8 py-8 md:py-16 lg:px-12">
     <h1
-      class="relative font-heading z-10 mx-auto max-w-4xl md:max-w-none text-center font-black leading-tight tracking-tight text-text"
+      class="@container relative font-heading z-10 mx-auto max-w-4xl md:max-w-none text-center font-black leading-tight tracking-tight text-text"
       style="font-size: clamp(2.4rem, 7vw, 6rem)"
     >
       <div
         class="mx-auto w-full h-(--headline-h) md:h-(--headline-h-wide)"
-        style={`--headline-h: ${headlineHeight(staticHeadlineLines.length, HEADLINE_FONT_SIZE)}; --headline-h-wide: ${headlineHeight(wideHeadlineLines.length, WIDE_HEADLINE_FONT_SIZE)}`}
+        style={`--headline-h: ${headlineHeight(staticHeadlineLines.length, HEADLINE_SIZE)}; --headline-h-wide: ${headlineHeight(wideHeadlineLines.length, WIDE_HEADLINE_SIZE)}`}
       >
         <VideoText
           src={droneRoofVideo}
           poster={droneRoofPoster.src}
           playbackRate={0.5}
           lineHeight={HEADLINE_LINE_HEIGHT_EM}
-          fontSize={HEADLINE_FONT_SIZE}
+          fontSize={maskFontSize(HEADLINE_SIZE)}
           fontWeight={700}
           letterSpacing="-0.04em"
           class="font-heading"
           lines={staticHeadlineLines}
-          wide={{ lines: wideHeadlineLines, fontSize: WIDE_HEADLINE_FONT_SIZE }}
+          wide={{ lines: wideHeadlineLines, fontSize: maskFontSize(WIDE_HEADLINE_SIZE) }}
         />
       </div>
     </h1>
@@ -60,7 +64,7 @@ const headlineHeight = (lineCount: number, fontSize: string) => `calc(${lineCoun
     </div>
 
     {/* LCP element: no entrance animation, no lazy loading */}
-    <div class="relative z-10 mt-16 p-3">
+    <div class="relative z-10 mt-8 p-3 md:mt-16">
       <div class="w-full overflow-hidden">
         <img
           src={HERO.src}
