@@ -61,12 +61,12 @@ vite: { plugins: [tailwindcss()] }
 - **Reference:** The structural layout of uniqueconstruction.com.
 - **Design-taste rules** (from the `design-taste-frontend` skill, applied 2026-10-21):
   - No em dash or en dash in visible text, alt text included. Use a hyphen, comma or parentheses.
-  - No eyebrow or kicker label directly above a heading; the heading carries its own weight. The Badges caption labels a logo row, not a heading.
+  - No eyebrow or kicker label directly above a heading; the heading carries its own weight.
   - Functional text is at least 11px (0.72rem for uppercase labels).
   - One label per action: quote buttons say "Get a Quote" everywhere.
   - No text over photos. Captions go below the image.
   - No pure black or white: use `deep` and `bg`, and tint shadows (`shadow-deep/30`).
-  - Hero: headline, one subhead, buttons. Nothing else.
+  - Hero: headline and buttons (the owners dropped the subhead on 2026-11-21). Nothing else.
   - No `window.addEventListener('scroll')`. Use an IntersectionObserver or Motion's `useScroll`.
   - Stacking order comes from `src/lib/layers.ts`; do not add new z-index values without adding them there.
 
@@ -133,7 +133,7 @@ src/
     Header.tsx          — client:idle. Fixed nav, scroll-aware background, mobile overlay menu
     Hero.astro          — Video-masked headline (VideoText), CTAs, hero image
     Stats.astro         — Three-metric stats band
-    Badges.astro        — Partner/certification logos in one row (single-color SVGs, darken on hover)
+    Badges.astro        — Brand logos, each linking to the brand's site, in an endless marquee (one color, darken on hover; pauses on hover and focus, wraps and stands still under reduced motion)
     Services.astro      — Wide/narrow grid of service cards (ServiceCard)
     Portfolio.astro     — Project photos (LayoutGrid, client:visible) with click-to-expand
     Team.astro          — Co-owner profiles
@@ -248,8 +248,7 @@ Media lives in `src/assets/` and is imported from components, so it is fingerpri
 - `IMG_3919_edited.webp` — exterior finish work
 - `IMG_4454.webp` — copper downspout close-up
 - `alan.webp`, `dan.webp` — co-owner portraits
-- `images/` — `royal_crest_logo.svg`
-- `logos/` — partner logos (`gaf`, `brava`, `certainteed`, `abc-supply`) as single-color SVGs with `fill="currentColor"`, imported as Astro SVG components so they inline and take the text color. Paths are taken unchanged from each company's own vector logo, only recolored; keep them one color
+- `logos/` — brand logos for the Badges marquee (GAF, CertainTeed, Owens Corning, TAMKO, Malarkey, SOPREMA, MAPEI, Schluter, TileBar, Daltile, James Hardie, ZIP System, Sherwin-Williams, Benjamin Moore, Home Depot, Lowe's, ABC Supply, QXO) as single-color SVGs with `fill="currentColor"`, imported as Astro SVG components so they inline and take the text color. Paths are taken unchanged from each company's own vector logo (or Wikimedia Commons where the site has none), only recolored. Lettering knocked out of a solid block is painted `var(--color-bg)`. Daltile has no vector logo: `daltile.png` is its PNG turned into an alpha mask and drawn in the text color with CSS `mask`. Keep every logo one color
 - `fonts/` — `LibreBaskerville-400.woff2`, `LibreBaskerville-700.woff2`, `LibreFranklin-Variable.woff2` (latin subsets from Fontsource)
 
 Kept as originals and **not shipped** (nothing imports them, so they are not in `dist/`): `72959.webp` (uncropped portrait original of the hero image) and `drone_roof.mp4` (1280×720 original of the headline video). Do not import them.
@@ -268,6 +267,6 @@ GitHub Pages serves the `gh-pages` branch at `www.royalcrestgc.com`. Never commi
 
 - **Company**: Royal Crest General Contracting (legal name Royal Crest General Contracting LLC)
 - **Location**: Dallas, TX. A service-area business with no public street address; areas in priority order are in `business.ts`
-- **Phone**: (469) 432 0341
-- **Email**: royalcrestgeneralcontracting@outlook.com
+- **Phone**: (469) 809-5900 (office line)
+- **Email**: inquiries@royalcrestgc.com
 - **Theme**: Light minimalist — off-white base, sage green accent (#899878), Libre Baskerville and Libre Franklin, rounded corners

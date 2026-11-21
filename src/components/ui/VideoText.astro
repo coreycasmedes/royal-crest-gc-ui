@@ -12,42 +12,55 @@ interface Props {
   fontWeight: number
   letterSpacing?: string
   playbackRate?: number
+  /** A second line layout used from the md breakpoint up, so wide screens get fewer, longer lines. */
+  wide?: { lines: string[]; fontSize: string }
   class?: string
 }
 
-const { src, poster, lines, fontSize, lineHeight, fontWeight, letterSpacing, playbackRate = 1, class: className } = Astro.props
+const { src, poster, lines, fontSize, lineHeight, fontWeight, letterSpacing, playbackRate = 1, wide, class: className } = Astro.props
 
 const escapeXml = (text: string) => text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
 
 // An SVG used as a mask cannot see the page's fonts, so it carries its own,
 // cut down to the headline's letters at its one weight (a few KB).
 const headlineWoff2 = Buffer.from(headlineInline.split(',')[1], 'base64')
-const headlineFont = await subsetFont(headlineWoff2, lines.join(''), {
+const headlineFont = await subsetFont(headlineWoff2, lines.join('') + (wide?.lines.join('') ?? ''), {
   targetFormat: 'woff2',
 })
 const fontFace = `@font-face{font-family:'HeadlineMask';src:url(data:font/woff2;base64,${headlineFont.toString('base64')}) format('woff2');}`
 
-const firstLineDy = -((lines.length - 1) / 2) * lineHeight
-const tspans = lines
-  .map((line, index) => `<tspan x='50%' dy='${index === 0 ? firstLineDy : lineHeight}em'>${escapeXml(line)}</tspan>`)
-  .join('')
 const letterSpacingAttr = letterSpacing ? ` letter-spacing='${letterSpacing}'` : ''
-const svgMask = `<svg xmlns='http://www.w3.org/2000/svg' width='100%' height='100%'><defs><style>${fontFace}</style></defs><text x='50%' y='50%' font-size='${fontSize}' font-weight='${fontWeight}' text-anchor='middle' dominant-baseline='middle' font-family='HeadlineMask'${letterSpacingAttr}>${tspans}</text></svg>`
-const maskImage = `url("data:image/svg+xml,${encodeURIComponent(svgMask)}")`
+const maskImage = (maskLines: string[], maskFontSize: string) => {
+  const firstLineDy = -((maskLines.length - 1) / 2) * lineHeight
+  const tspans = maskLines
+    .map((line, index) => `<tspan x='50%' dy='${index === 0 ? firstLineDy : lineHeight}em'>${escapeXml(line)}</tspan>`)
+    .join('')
+  const svgMask = `<svg xmlns='http://www.w3.org/2000/svg' width='100%' height='100%'><defs><style>${fontFace}</style></defs><text x='50%' y='50%' font-size='${maskFontSize}' font-weight='${fontWeight}' text-anchor='middle' dominant-baseline='middle' font-family='HeadlineMask'${letterSpacingAttr}>${tspans}</text></svg>`
+  return `url("data:image/svg+xml,${encodeURIComponent(svgMask)}")`
+}
+// The mask images are custom properties so the md breakpoint can swap in the wide layout.
 const maskStyle = [
-  `mask-image: ${maskImage}`,
-  `-webkit-mask-image: ${maskImage}`,
+  `--mask: ${maskImage(lines, fontSize)}`,
+  wide && `--mask-wide: ${maskImage(wide.lines, wide.fontSize)}`,
   'mask-size: contain',
   '-webkit-mask-size: contain',
   'mask-repeat: no-repeat',
   '-webkit-mask-repeat: no-repeat',
   'mask-position: center',
   '-webkit-mask-position: center',
-].join('; ')
+]
+  .filter(Boolean)
+  .join('; ')
 ---
 
 <div class={cn('relative size-full', className)}>
-  <div class="absolute inset-0 flex items-center justify-center" style={maskStyle}>
+  <div
+    class:list={[
+      'absolute inset-0 flex items-center justify-center [mask-image:var(--mask)] [-webkit-mask-image:var(--mask)]',
+      wide && 'md:[mask-image:var(--mask-wide)] md:[-webkit-mask-image:var(--mask-wide)]',
+    ]}
+    style={maskStyle}
+  >
     <video
       class="h-full w-full object-cover"
       src={src}

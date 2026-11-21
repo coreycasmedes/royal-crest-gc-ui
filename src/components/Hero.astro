@@ -6,21 +6,26 @@ import { IconPhone } from '@tabler/icons-react'
 import { HERO } from '@/lib/hero'
 import { callLabel, telHref } from '@/lib/business'
 
-const staticHeadlineLines = ['Roofs Built', 'by the', 'Owners']
-// 15vw keeps the longest line inside the mask box; at 16vw it clips.
-const HEADLINE_FONT_SIZE = 'clamp(2.4rem, 15vw, 9rem)'
+// Phones get four short lines; from md up, three longer ones fill the wider box.
+const staticHeadlineLines = ['Exterior and', 'Interior Finishes', 'on Historic and', 'Modern Homes']
+const wideHeadlineLines = ['Exterior and Interior', 'Finishes on Historic', 'and Modern Homes']
+// Inside the mask, vw is a percentage of the mask box. The longest line is about 8.1em
+// ("Interior Finishes") or 10.2em ("Exterior and Interior") wide, so these keep it inside the box.
+const HEADLINE_FONT_SIZE = 'clamp(1.8rem, 9.5vw, 6rem)'
+const WIDE_HEADLINE_FONT_SIZE = 'clamp(1.8rem, 8.6vw, 7rem)'
 const HEADLINE_LINE_HEIGHT_EM = 1.05
+const headlineHeight = (lineCount: number, fontSize: string) => `calc(${lineCount} * ${HEADLINE_LINE_HEIGHT_EM} * ${fontSize})`
 ---
 
 <section id="hero" class="relative flex flex-col items-center justify-center bg-bg" style="padding-top: 88px">
   <div class="w-full max-w-7xl mx-auto px-8 py-10 md:py-16 lg:px-12">
     <h1
-      class="relative font-heading z-10 mx-auto max-w-4xl text-center font-black leading-tight tracking-tight text-text"
+      class="relative font-heading z-10 mx-auto max-w-4xl md:max-w-none text-center font-black leading-tight tracking-tight text-text"
       style="font-size: clamp(2.4rem, 7vw, 6rem)"
     >
       <div
-        class="mx-auto w-full"
-        style={`height: calc(${staticHeadlineLines.length} * ${HEADLINE_LINE_HEIGHT_EM} * ${HEADLINE_FONT_SIZE})`}
+        class="mx-auto w-full h-(--headline-h) md:h-(--headline-h-wide)"
+        style={`--headline-h: ${headlineHeight(staticHeadlineLines.length, HEADLINE_FONT_SIZE)}; --headline-h-wide: ${headlineHeight(wideHeadlineLines.length, WIDE_HEADLINE_FONT_SIZE)}`}
       >
         <VideoText
           src={droneRoofVideo}
@@ -32,18 +37,13 @@ const HEADLINE_LINE_HEIGHT_EM = 1.05
           letterSpacing="-0.04em"
           class="font-heading"
           lines={staticHeadlineLines}
+          wide={{ lines: wideHeadlineLines, fontSize: WIDE_HEADLINE_FONT_SIZE }}
         />
       </div>
     </h1>
 
-    <p class="relative z-10 mx-auto mt-5 max-w-xl text-center text-base leading-relaxed text-pretty text-text/70 md:text-lg">
-      Co-owners Alan and Daniel run every job themselves: roof replacements,
-      remodeling and finish work for historic and modern homes across Dallas and
-      the Park Cities.
-    </p>
-
     {/* MobileActionBar hides while #hero-actions is on screen */}
-    <div id="hero-actions" class="animate-hero-actions relative z-10 mt-6 flex flex-wrap items-center justify-center gap-2">
+    <div id="hero-actions" class="animate-hero-actions relative z-10 mt-8 flex flex-wrap items-center justify-center gap-2">
       <a
         href={telHref}
         class="inline-flex min-w-52 items-center justify-center gap-2 rounded-2xl px-6 py-3 text-[0.78rem] font-semibold tracking-[0.08em] uppercase bg-deep text-bg hover:bg-accent-ink transition-colors duration-300"
