@@ -29,7 +29,7 @@ const detailsPlaceholder: Record<string, string> = {
   Roofing:
     "Repair or replacement? Any storm damage, an insurance claim, or specific materials you're considering?",
   "Exterior Renovation":
-    "Painting, stucco, trim, gutters or shutters? Tell us about the home and what you'd like done…",
+    "Siding, painting, masonry, stucco or windows? Tell us about the home and what you'd like done…",
   Other:
     "Tell us what you have in mind and we'll point you in the right direction…",
 };

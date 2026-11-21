@@ -2,8 +2,8 @@ export const BUSINESS = {
   name: 'Royal Crest General Contracting',
   legalName: 'Royal Crest General Contracting LLC',
   url: 'https://www.royalcrestgc.com/',
-  phone: { display: '(469) 432 0341', tel: '+14694320341' },
-  email: 'royalcrestgeneralcontracting@outlook.com',
+  phone: { display: '(469) 809-5900', tel: '+14698095900' },
+  email: 'inquiries@royalcrestgc.com',
   // serviceArea is the contact-section text; areaServed lists every area in priority order.
   serviceArea: 'Dallas, the Park Cities, Richardson, Plano & Frisco',
   hours: 'Mon-Fri  7 AM - 6 PM\nSat  8 AM - 4 PM',
@@ -32,13 +32,15 @@ export const BUSINESS = {
   },
   social: { instagram: 'https://www.instagram.com/royalcrestgc/' },
   reviews: {
-    google: 'https://www.google.com/maps?cid=15465149232108205007',
+    // Opens the reviews tab of the Google Business Profile (same listing as cid 15465149232108205007).
+    google:
+      'https://www.google.com/maps/place/Royal+Crest+General+Contracting/@32.8296512,-96.6477935,17z/data=!4m8!3m7!1s0x61b937d3bd43ebb:0xd69f3f49ea36f3cf!8m2!3d32.8296512!4d-96.6477935!9m1!1b1!16s%2Fg%2F11xkmqx7fb',
     yelp: 'https://www.yelp.com/biz/royal-crest-general-contracting-dallas',
   },
   stats: [
     { num: '5★', label: 'Rated on Google & Yelp' },
     { num: '5 yr', label: 'Workmanship Warranty' },
-    { num: '2025', label: 'Founded in Dallas' },
+    { num: '7', label: 'Years of Experience' },
   ],
 } as const
 

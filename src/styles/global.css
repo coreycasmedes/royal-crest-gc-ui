@@ -35,6 +35,12 @@
   --font-heading: "Libre Baskerville", ui-serif, Georgia, serif;
   --font-body:    "Libre Franklin", ui-sans-serif, system-ui;
   --font-sans:    "Libre Franklin", ui-sans-serif, system-ui;
+
+  /* Partner logo marquee (Badges.astro): each row slides left by its own width. */
+  --animate-marquee: marquee 80s linear infinite;
+  @keyframes marquee {
+    to { transform: translateX(-100%); }
+  }
 }
 
 @layer base {

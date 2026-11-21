@@ -1,32 +1,104 @@
 ---
-// Single-color vector logos (fill="currentColor"), inlined so they take the
-// text colour. Heights are tuned per logo so they read at the same visual
-// weight: GAF is a solid block, CertainTeed a long wordmark.
+// Brand logos in one colour: the SVGs use fill="currentColor" and are inlined so they
+// take the text colour. A few logos have lettering cut out of a solid block (Home Depot,
+// Lowe's, Benjamin Moore); those letters are painted the page background.
+// Daltile publishes no vector logo, so its PNG is used as a mask over the text colour.
 import Gaf from '@/assets/logos/gaf.svg'
-import Brava from '@/assets/logos/brava.svg'
 import CertainTeed from '@/assets/logos/certainteed.svg'
+import OwensCorning from '@/assets/logos/owens-corning.svg'
+import Tamko from '@/assets/logos/tamko.svg'
+import Malarkey from '@/assets/logos/malarkey.svg'
+import Soprema from '@/assets/logos/soprema.svg'
+import Mapei from '@/assets/logos/mapei.svg'
+import Schluter from '@/assets/logos/schluter.svg'
+import TileBar from '@/assets/logos/tilebar.svg'
+import daltile from '@/assets/logos/daltile.png'
+import JamesHardie from '@/assets/logos/james-hardie.svg'
+import ZipSystem from '@/assets/logos/zip-system.svg'
+import SherwinWilliams from '@/assets/logos/sherwin-williams.svg'
+import BenjaminMoore from '@/assets/logos/benjamin-moore.svg'
+import HomeDepot from '@/assets/logos/home-depot.svg'
+import Lowes from '@/assets/logos/lowes.svg'
 import AbcSupply from '@/assets/logos/abc-supply.svg'
+import Qxo from '@/assets/logos/qxo.svg'
 
-const logos = [
-  { Logo: Gaf, size: 'h-[22px] sm:h-7 lg:h-9' },
-  { Logo: Brava, size: 'h-6 sm:h-8 lg:h-10' },
-  { Logo: CertainTeed, size: 'h-5 sm:h-6 lg:h-8' },
-  { Logo: AbcSupply, size: 'h-[26px] sm:h-8 lg:h-[42px]' },
+type Brand = { name: string; href: string; scale: number } & (
+  | { Logo: typeof Gaf }
+  | { mask: ImageMetadata }
+)
+
+// `scale` multiplies the row's logo height so each logo reads at about the same
+// visual weight: solid blocks run smaller, thin or wide wordmarks larger.
+const brands: Brand[] = [
+  { name: 'GAF', href: 'https://www.gaf.com/', Logo: Gaf, scale: 1.1 },
+  { name: 'CertainTeed', href: 'https://www.certainteed.com/', Logo: CertainTeed, scale: 0.9 },
+  { name: 'Owens Corning', href: 'https://www.owenscorning.com/', Logo: OwensCorning, scale: 1.15 },
+  { name: 'TAMKO', href: 'https://www.tamko.com/', Logo: Tamko, scale: 0.95 },
+  { name: 'Malarkey Roofing Products', href: 'https://www.malarkeyroofing.com/', Logo: Malarkey, scale: 0.95 },
+  { name: 'SOPREMA', href: 'https://www.soprema.us/', Logo: Soprema, scale: 1.15 },
+  { name: 'MAPEI', href: 'https://www.mapei.com/us/en-us/', Logo: Mapei, scale: 0.85 },
+  { name: 'Schluter Systems', href: 'https://www.schluter.com/', Logo: Schluter, scale: 1.1 },
+  { name: 'TileBar', href: 'https://www.tilebar.com/', Logo: TileBar, scale: 0.95 },
+  { name: 'Daltile', href: 'https://www.daltile.com/', mask: daltile, scale: 0.8 },
+  { name: 'James Hardie', href: 'https://www.jameshardie.com/', Logo: JamesHardie, scale: 0.85 },
+  { name: 'ZIP System', href: 'https://www.huberwood.com/zip-system', Logo: ZipSystem, scale: 1 },
+  { name: 'Sherwin-Williams', href: 'https://www.sherwin-williams.com/', Logo: SherwinWilliams, scale: 1.05 },
+  { name: 'Benjamin Moore', href: 'https://www.benjaminmoore.com/', Logo: BenjaminMoore, scale: 1.35 },
+  { name: 'The Home Depot', href: 'https://www.homedepot.com/', Logo: HomeDepot, scale: 1.1 },
+  { name: "Lowe's", href: 'https://www.lowes.com/', Logo: Lowes, scale: 0.95 },
+  { name: 'ABC Supply', href: 'https://www.abcsupply.com/', Logo: AbcSupply, scale: 1.15 },
+  { name: 'QXO', href: 'https://www.qxo.com/', Logo: Qxo, scale: 0.75 },
 ]
+
+const logoHeight = (scale: number) => `height: calc(var(--logo-h) * ${scale})`
+
+// An endless marquee: two identical rows side by side, each at least as wide as the
+// box, both sliding left by their own width so the second takes the first's place.
+// The padding after each row equals the gap between logos, so the seam is even.
+// It pauses on hover and while a logo has keyboard focus. Under reduced motion it
+// stands still, the copy is hidden and the logos wrap onto several centred lines.
+const ROW_SPACING = 'gap-10 pr-10 sm:gap-14 sm:pr-14 lg:gap-16 lg:pr-16'
 ---
 
 <section class="py-10 lg:py-14 bg-bg">
-  <div class="max-w-[1260px] mx-auto px-8 lg:px-12 flex flex-col gap-7 lg:flex-row lg:items-center lg:gap-12">
-    <p class="shrink-0 text-center lg:text-left lg:max-w-[10rem] lg:border-r lg:border-text/10 lg:pr-12 text-[0.72rem] font-semibold tracking-[0.22em] uppercase leading-relaxed text-text/65">
-      Certified installer
-    </p>
-
-    <ul class="flex flex-1 items-center justify-between gap-4 sm:justify-around">
-      {logos.map(({ Logo, size }) => (
-        <li class="flex">
-          <Logo class={`${size} w-auto text-text/55 transition-colors duration-300 hover:text-text`} />
-        </li>
+  <div class="max-w-[1260px] mx-auto px-8 lg:px-12">
+    <div
+      class="group flex overflow-hidden py-2 mask-x-from-90% motion-reduce:mask-none [--logo-h:26px] sm:[--logo-h:30px] lg:[--logo-h:36px]"
+    >
+      {[false, true].map((isCopy) => (
+        <ul
+          aria-label={isCopy ? undefined : 'Brands we work with'}
+          aria-hidden={isCopy ? 'true' : undefined}
+          inert={isCopy}
+          class:list={[
+            'flex min-w-full shrink-0 items-center justify-around animate-marquee group-hover:[animation-play-state:paused] group-focus-within:[animation-play-state:paused]',
+            ROW_SPACING,
+            'motion-reduce:animate-none motion-reduce:min-w-0 motion-reduce:shrink motion-reduce:flex-wrap motion-reduce:justify-center motion-reduce:gap-x-10 motion-reduce:gap-y-6 motion-reduce:pr-0',
+            isCopy && 'motion-reduce:hidden',
+          ]}
+        >
+          {brands.map((brand) => (
+            <li class="flex shrink-0">
+              <a
+                href={brand.href}
+                rel="noopener"
+                aria-label={brand.name}
+                class="block rounded-md text-text opacity-55 transition-opacity duration-300 hover:opacity-100 focus-visible:opacity-100 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent-ink"
+              >
+                {'Logo' in brand ? (
+                  <brand.Logo aria-hidden="true" class="block w-auto" style={logoHeight(brand.scale)} />
+                ) : (
+                  <span
+                    aria-hidden="true"
+                    class="block bg-current"
+                    style={`${logoHeight(brand.scale)}; aspect-ratio: ${brand.mask.width} / ${brand.mask.height}; mask: url(${brand.mask.src}) center / contain no-repeat; -webkit-mask: url(${brand.mask.src}) center / contain no-repeat`}
+                  ></span>
+                )}
+              </a>
+            </li>
+          ))}
+        </ul>
       ))}
-    </ul>
+    </div>
   </div>
 </section>
